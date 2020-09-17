@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>N_Tier.Infrastructure</RootNamespace>
+    <RootNamespace>N_Tier.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
+    <Folder Include="Entities\" />
   </ItemGroup>
 
 </Project>
