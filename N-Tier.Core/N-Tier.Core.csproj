@@ -5,8 +5,4 @@
     <RootNamespace>N_Tier.Core</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Entities\" />
-  </ItemGroup>
-
 </Project>
