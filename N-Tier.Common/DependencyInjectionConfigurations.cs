@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using N_Tier.Application.MappingProfiles;
 using N_Tier.Application.Services;
 using N_Tier.Application.Services.Impl;
 using N_Tier.Common.ConfigurationModels;
@@ -15,6 +17,7 @@ namespace N_Tier.Common
         public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IWeatherForecastService, WeatherForecastService>();
+            services.AddScoped<ITodoListService, TodoListService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)
@@ -38,7 +41,11 @@ namespace N_Tier.Common
                     options.UseSqlServer(databaseConfig.ConnectionString,
                     opt => opt.MigrationsAssembly(typeof(DatabaseContext).Assembly.FullName)));
             }
+        }
 
+        public static void RegisterAutoMapper(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(TodoListProfile).Assembly);
         }
     }
 }

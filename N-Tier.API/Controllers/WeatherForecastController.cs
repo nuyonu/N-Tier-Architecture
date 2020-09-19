@@ -7,11 +7,8 @@ using N_Tier.Application.Services;
 
 namespace N_Tier.API.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : ApiController
     {
-
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IWeatherForecastService _weatherForecastService;
 

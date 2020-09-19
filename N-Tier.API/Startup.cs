@@ -27,6 +27,8 @@ namespace N_Tier.API
             services.AddRepositories();
 
             services.AddServices();
+
+            services.RegisterAutoMapper();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

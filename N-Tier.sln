@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.API", "N-Tier.API\N-Tier.API.csproj", "{82838190-1934-4EA8-8F64-E37A2601A5E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N-Tier.Application", "N-Tier.Application\N-Tier.Application.csproj", "{5E06FE1C-2A7C-44DC-A885-42610E597397}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Application", "N-Tier.Application\N-Tier.Application.csproj", "{5E06FE1C-2A7C-44DC-A885-42610E597397}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N-Tier.Infrastructure", "N-Tier.Infrastructure\N-Tier.Infrastructure.csproj", "{9551A22F-132B-4DA9-9C88-652A576676B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Infrastructure", "N-Tier.Infrastructure\N-Tier.Infrastructure.csproj", "{9551A22F-132B-4DA9-9C88-652A576676B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N-Tier.Core", "N-Tier.Core\N-Tier.Core.csproj", "{674E7FDA-AD7A-47FA-8E2C-C582D5CC326A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Core", "N-Tier.Core\N-Tier.Core.csproj", "{674E7FDA-AD7A-47FA-8E2C-C582D5CC326A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N-Tier.Common", "N-Tier.Common\N-Tier.Common.csproj", "{682C9768-29F4-43F7-AB72-1E99AF993569}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Common", "N-Tier.Common\N-Tier.Common.csproj", "{682C9768-29F4-43F7-AB72-1E99AF993569}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
