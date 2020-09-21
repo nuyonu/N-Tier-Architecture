@@ -16,9 +16,17 @@ namespace N_Tier.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Guid>> Create(CreateTodoListModel createTodoListModel)
+        public async Task<ActionResult<Guid>> CreateAsync(CreateTodoListModel createTodoListModel)
         {
-            return Ok(await _todoListService.Create(createTodoListModel));
+            return Ok(await _todoListService.CreateAsync(createTodoListModel));
+        }
+
+        [HttpDelete("id")]
+        public async Task<ActionResult> DeleteAsync(Guid id)
+        {
+            await _todoListService.DeleteAsync(id);
+
+            return NoContent();
         }
     }
 }

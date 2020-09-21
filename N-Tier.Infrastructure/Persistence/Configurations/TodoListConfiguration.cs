@@ -11,6 +11,10 @@ namespace N_Tier.Infrastructure.Persistence.Configurations
             builder.Property(tl => tl.Title)
                 .HasMaxLength(50)
                 .IsRequired();
+
+            builder.HasMany(tl => tl.Items)
+                .WithOne(ti => ti.List)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

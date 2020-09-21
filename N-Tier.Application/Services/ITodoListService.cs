@@ -6,6 +6,7 @@ namespace N_Tier.Application.Services
 {
     public interface ITodoListService
     {
-        Task<Guid> Create(CreateTodoListModel createTodoListModel);
+        Task<Guid> CreateAsync(CreateTodoListModel createTodoListModel);
+        Task DeleteAsync(Guid id);
     }
 }
