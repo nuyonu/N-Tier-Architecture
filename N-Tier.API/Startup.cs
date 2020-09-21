@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using N_Tier.API.Filters;
+using N_Tier.API.Middleware;
 using N_Tier.Application.Models.Validators;
 using N_Tier.Common;
 
@@ -58,6 +59,8 @@ namespace N_Tier.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

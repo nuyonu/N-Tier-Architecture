@@ -4,6 +4,7 @@ using N_Tier.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace N_Tier.Infrastructure.Repositories.Impl
@@ -40,9 +41,9 @@ namespace N_Tier.Infrastructure.Repositories.Impl
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<TEntity> GetById(Guid id)
+        public async Task<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _dbSet.Where(e => e.Id == id).FirstOrDefaultAsync();
+            return await _dbSet.Where(predicate).FirstOrDefaultAsync();
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)

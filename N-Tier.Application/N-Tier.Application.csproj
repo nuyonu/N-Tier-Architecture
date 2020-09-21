@@ -15,8 +15,4 @@
     <ProjectReference Include="..\N-Tier.Infrastructure\N-Tier.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-  </ItemGroup>
-
 </Project>

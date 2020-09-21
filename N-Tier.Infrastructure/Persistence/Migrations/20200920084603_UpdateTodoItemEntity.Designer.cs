@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using N_Tier.Infrastructure.Persistence;
 
 namespace N_Tier.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200920084603_UpdateTodoItemEntity")]
+    partial class UpdateTodoItemEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,17 +35,17 @@ namespace N_Tier.Infrastructure.Persistence.Migrations
                     b.Property<bool>("IsDone")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("ListId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<Guid?>("TodoListId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ListId");
+                    b.HasIndex("TodoListId");
 
                     b.ToTable("TodoItems");
                 });
@@ -66,10 +68,9 @@ namespace N_Tier.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("N_Tier.Core.Entities.TodoItem", b =>
                 {
-                    b.HasOne("N_Tier.Core.Entities.TodoList", "List")
+                    b.HasOne("N_Tier.Core.Entities.TodoList", null)
                         .WithMany("Items")
-                        .HasForeignKey("ListId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TodoListId");
                 });
 #pragma warning restore 612, 618
         }
