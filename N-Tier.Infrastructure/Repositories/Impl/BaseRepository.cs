@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using N_Tier.Core.Entities.Common;
 using N_Tier.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;

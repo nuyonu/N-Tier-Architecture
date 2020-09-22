@@ -32,7 +32,6 @@ namespace N_Tier.Application.Services.Impl
             }
 
             return Guid.Parse((await _userManager.FindByNameAsync(user.UserName)).Id);
-
         }
     }
 }

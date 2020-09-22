@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using N_Tier.Core.Entities.Common;
+using System.Collections.Generic;
 
 namespace N_Tier.Core.Entities
 {
