@@ -37,6 +37,8 @@ namespace N_Tier.API
 
             services.AddServices();
 
+            services.AddIdentity();
+
             services.RegisterAutoMapper();
         }
 

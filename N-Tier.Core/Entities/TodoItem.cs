@@ -1,4 +1,6 @@
-﻿namespace N_Tier.Core.Entities
+﻿using N_Tier.Core.Entities.Common;
+
+namespace N_Tier.Core.Entities
 {
     public class TodoItem : BaseEntity
     {
