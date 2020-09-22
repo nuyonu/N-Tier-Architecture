@@ -31,6 +31,8 @@ namespace N_Tier.Application.Services.Impl
                 throw new BadRequestException(result.Errors.FirstOrDefault().Description);
             }
 
+            // TODO send email with confirmation token
+
             return Guid.Parse((await _userManager.FindByNameAsync(user.UserName)).Id);
         }
     }

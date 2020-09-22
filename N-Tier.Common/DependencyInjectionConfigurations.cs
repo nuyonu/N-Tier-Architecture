@@ -22,6 +22,7 @@ namespace N_Tier.Common
             services.AddScoped<IWeatherForecastService, WeatherForecastService>();
             services.AddScoped<ITodoListService, TodoListService>();
             services.AddScoped<ITodoItemService, TodoItemService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)

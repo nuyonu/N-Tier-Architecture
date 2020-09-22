@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace N_Tier.API.Controllers
 {
-    public class TodoListController : ApiController
+    public class TodoListsController : ApiController
     {
         private readonly ITodoListService _todoListService;
 
-        public TodoListController(ITodoListService todoListService)
+        public TodoListsController(ITodoListService todoListService)
         {
             _todoListService = todoListService;
         }

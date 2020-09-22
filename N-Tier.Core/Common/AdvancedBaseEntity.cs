@@ -1,5 +1,4 @@
-﻿using N_Tier.Core.Entities.Common;
-using System;
+﻿using System;
 
 namespace N_Tier.Core.Common
 {
