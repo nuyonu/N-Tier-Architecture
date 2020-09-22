@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using N_Tier.Core.Entities;
+using N_Tier.Infrastructure.Identity;
 using System.Reflection;
 
 namespace N_Tier.Infrastructure.Persistence
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<ApplicationUser>
     {
         public DatabaseContext(DbContextOptions options) : base(options)
         { }

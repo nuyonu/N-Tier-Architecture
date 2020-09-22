@@ -1,6 +1,8 @@
-﻿namespace N_Tier.Core.Entities
+﻿using N_Tier.Core.Common;
+
+namespace N_Tier.Core.Entities
 {
-    public class TodoItem : BaseEntity
+    public class TodoItem : AdvancedBaseEntity
     {
         public string Title { get; set; }
         public string Body { get; set; }
