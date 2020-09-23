@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using N_Tier.Application.MappingProfiles;
 using N_Tier.Application.Services;
 using N_Tier.Application.Services.Impl;
@@ -12,6 +14,7 @@ using N_Tier.Infrastructure.Persistence;
 using N_Tier.Infrastructure.Repositories;
 using N_Tier.Infrastructure.Repositories.Impl;
 using System;
+using System.Text;
 
 namespace N_Tier.Common
 {
@@ -75,6 +78,29 @@ namespace N_Tier.Common
 
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false; // true
+            });
+        }
+
+        public static void AddJwt(this IServiceCollection services)
+        {
+            var key = Encoding.ASCII.GetBytes("Secret token, TODO later");
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
         }
     }

@@ -11,7 +11,7 @@ namespace N_Tier.Application.Helpers
     {
         public static string GenerateToken(ApplicationUser user)
         {
-            var key = Encoding.ASCII.GetBytes("Secret token, todo later");
+            var key = Encoding.ASCII.GetBytes("Secret token, TODO later");
 
             var tokenHandler = new JwtSecurityTokenHandler();
             

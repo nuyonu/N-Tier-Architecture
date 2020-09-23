@@ -4,10 +4,17 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using N_Tier.API.Filters;
 using N_Tier.API.Middleware;
 using N_Tier.Application.Models.Validators;
 using N_Tier.Common;
+using Swashbuckle.Swagger;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace N_Tier.API
 {
@@ -29,7 +36,33 @@ namespace N_Tier.API
                     options => options.RegisterValidatorsFromAssemblyContaining<CreateTodoListModelValidator>()
                 );
 
-            services.AddSwaggerGen();
+            // TODO extract this
+            services.AddSwaggerGen(s =>
+            {
+                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer YOUR_TOKEN')",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+            });
 
             services.AddDatabase(_configuration);
 
@@ -38,6 +71,8 @@ namespace N_Tier.API
             services.AddServices();
 
             services.AddIdentity();
+
+            services.AddJwt();
 
             services.RegisterAutoMapper();
         }
@@ -59,6 +94,8 @@ namespace N_Tier.API
             });
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
