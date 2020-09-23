@@ -1,0 +1,30 @@
+﻿using Microsoft.IdentityModel.Tokens;
+using N_Tier.Infrastructure.Identity;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
+namespace N_Tier.Application.Helpers
+{
+    public static class JwtHelper
+    {
+        public static string GenerateToken(ApplicationUser user)
+        {
+            var key = Encoding.ASCII.GetBytes("Secret token, todo later");
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
+    }
+}

@@ -10,8 +10,8 @@ using N_Tier.Infrastructure.Persistence;
 namespace N_Tier.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200923164649_AddAuditableEntities")]
-    partial class AddAuditableEntities
+    [Migration("20200923172056_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

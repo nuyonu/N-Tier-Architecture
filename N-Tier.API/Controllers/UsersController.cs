@@ -20,5 +20,11 @@ namespace N_Tier.API.Controllers
         {
             return Ok(await _userService.CreateAsync(createUserModel));
         }
+
+        [HttpPost]
+        public async Task<ActionResult<LoginResponseModel>> LoginAsync(LoginUserModel loginUserModel)
+        {
+            return Ok(await _userService.LoginAsync(loginUserModel));
+        }
     }
 }
