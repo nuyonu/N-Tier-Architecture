@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using N_Tier.Application.Models.User;
 using N_Tier.Application.Services;
 using System;
@@ -16,9 +17,17 @@ namespace N_Tier.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<Guid>> RegisterAsync(CreateUserModel createUserModel)
         {
             return Ok(await _userService.CreateAsync(createUserModel));
+        }
+
+        [HttpPost("authenticate")]
+        [AllowAnonymous]
+        public async Task<ActionResult<LoginResponseModel>> LoginAsync(LoginUserModel loginUserModel)
+        {
+            return Ok(await _userService.LoginAsync(loginUserModel));
         }
     }
 }

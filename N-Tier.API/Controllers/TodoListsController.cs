@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using N_Tier.Application.Models.TodoList;
 using N_Tier.Application.Services;
 using System;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace N_Tier.API.Controllers
 {
+    [Authorize]
     public class TodoListsController : ApiController
     {
         private readonly ITodoListService _todoListService;

@@ -7,5 +7,6 @@ namespace N_Tier.Application.Services
     public interface IUserService
     {
         Task<Guid> CreateAsync(CreateUserModel createUserModel);
+        Task<LoginResponseModel> LoginAsync(LoginUserModel loginUserModel);
     }
 }
