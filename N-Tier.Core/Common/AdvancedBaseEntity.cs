@@ -2,7 +2,7 @@
 
 namespace N_Tier.Core.Common
 {
-    public class AdvancedBaseEntity : BaseEntity
+    public abstract class AdvancedBaseEntity : BaseEntity
     {
         public string CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }

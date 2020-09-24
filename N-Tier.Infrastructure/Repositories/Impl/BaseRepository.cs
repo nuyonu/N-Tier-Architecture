@@ -36,12 +36,12 @@ namespace N_Tier.Infrastructure.Repositories.Impl
             return removedEntity;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public async Task<List<TEntity>> Get(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.Where(predicate).ToListAsync();
         }
 
-        public async Task<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
+        public async Task<TEntity> GetFirst(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbSet.Where(predicate).FirstOrDefaultAsync();
         }

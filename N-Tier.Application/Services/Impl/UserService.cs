@@ -47,12 +47,10 @@ namespace N_Tier.Application.Services.Impl
             if (user == null)
                 throw new NotFoundException("Username or password is incorrect");
 
-
             var signInResult = await _signInManager.PasswordSignInAsync(user, loginUserModel.Password, false, false);
 
             if (!signInResult.Succeeded)
                 throw new BadRequestException("Username or password is incorrect");
-
 
             var token = JwtHelper.GenerateToken(user);
 

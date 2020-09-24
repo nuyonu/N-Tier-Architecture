@@ -9,6 +9,8 @@ namespace N_Tier.Application.MappingProfiles
         public TodoListProfile()
         {
             CreateMap<CreateTodoListModel, TodoList>();
+
+            CreateMap<TodoList, TodoListResponseModel>();
         }
     }
 }

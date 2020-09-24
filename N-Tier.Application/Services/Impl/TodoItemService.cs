@@ -23,7 +23,7 @@ namespace N_Tier.Application.Services.Impl
 
         public async Task<Guid> CreateAsync(CreateTodoItemModel createTodoItemModel)
         {
-            var todoList = await _todoListRepository.Get(tl => tl.Id == createTodoItemModel.TodoListId);
+            var todoList = await _todoListRepository.GetFirst(tl => tl.Id == createTodoItemModel.TodoListId);
             var todoItem = _mapper.Map<TodoItem>(createTodoItemModel);
 
             todoItem.List = todoList ?? throw new NotFoundException("List does not exist anymore");
