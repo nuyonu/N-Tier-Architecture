@@ -9,12 +9,7 @@ using N_Tier.API.Filters;
 using N_Tier.API.Middleware;
 using N_Tier.Application.Models.Validators;
 using N_Tier.Common;
-using Swashbuckle.Swagger;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 
 namespace N_Tier.API
 {

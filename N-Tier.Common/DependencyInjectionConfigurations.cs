@@ -13,6 +13,7 @@ using N_Tier.Infrastructure.Identity;
 using N_Tier.Infrastructure.Persistence;
 using N_Tier.Infrastructure.Repositories;
 using N_Tier.Infrastructure.Repositories.Impl;
+using N_Tier.Infrastructure.Services;
 using System;
 using System.Text;
 
@@ -26,6 +27,7 @@ namespace N_Tier.Common
             services.AddScoped<ITodoListService, TodoListService>();
             services.AddScoped<ITodoItemService, TodoItemService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IClaimService, ClaimService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)

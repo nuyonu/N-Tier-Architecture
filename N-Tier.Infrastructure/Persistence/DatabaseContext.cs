@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using N_Tier.Core.Common;
 using N_Tier.Core.Entities;
 using N_Tier.Infrastructure.Identity;
+using N_Tier.Infrastructure.Services;
 using System;
 using System.Reflection;
 using System.Threading;
@@ -13,8 +14,12 @@ namespace N_Tier.Infrastructure.Persistence
 {
     public class DatabaseContext : IdentityDbContext<ApplicationUser>
     {
-        public DatabaseContext(DbContextOptions options) : base(options)
-        { }
+        private readonly IClaimService _claimService;
+
+        public DatabaseContext(DbContextOptions options, IClaimService claimService) : base(options)
+        {
+            _claimService = claimService;
+        }
 
         public DbSet<TodoItem> TodoItems { get; set; }
 
@@ -34,12 +39,12 @@ namespace N_Tier.Infrastructure.Persistence
                 switch (entry.State)
                 {
                     case EntityState.Added:
-                        entry.Entity.CreatedBy = new Guid().ToString();
+                        entry.Entity.CreatedBy = _claimService.GetUserId();
                         entry.Entity.CreatedOn = DateTime.Now;
                         break;
 
                     case EntityState.Modified:
-                        entry.Entity.UpdatedBy = new Guid().ToString();
+                        entry.Entity.UpdatedBy = _claimService.GetUserId();
                         entry.Entity.UpdatedOn = DateTime.Now;
                         break;
                 }
