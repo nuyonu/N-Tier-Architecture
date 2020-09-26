@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using N_Tier.Application.Models.TodoItem;
 using N_Tier.Application.Models.TodoList;
 using N_Tier.Application.Services;
 using System;
@@ -12,16 +13,24 @@ namespace N_Tier.API.Controllers
     public class TodoListsController : ApiController
     {
         private readonly ITodoListService _todoListService;
+        private readonly ITodoItemService _todoItemService;
 
-        public TodoListsController(ITodoListService todoListService)
+        public TodoListsController(ITodoListService todoListService, ITodoItemService todoItemService)
         {
             _todoListService = todoListService;
+            _todoItemService = todoItemService;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoListResponseModel>>> GetAll()
         {
             return Ok(await _todoListService.GetAllAsync());
+        }
+
+        [HttpGet("{id}/todoItems")]
+        public async Task<ActionResult<IEnumerable<TodoItemResponseModel>>> GetAllTodoItemsAsync(Guid id)
+        {
+            return Ok(await _todoItemService.GetAllByListIdAsync(id));
         }
 
         [HttpPost]
