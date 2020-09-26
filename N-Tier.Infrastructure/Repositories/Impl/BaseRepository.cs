@@ -36,7 +36,7 @@ namespace N_Tier.Infrastructure.Repositories.Impl
             return removedEntity;
         }
 
-        public async Task<List<TEntity>> Get(Expression<Func<TEntity, bool>> predicate)
+        public async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();
         }

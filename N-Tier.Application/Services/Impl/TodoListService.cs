@@ -27,7 +27,7 @@ namespace N_Tier.Application.Services.Impl
         {
             var currentUserId = _claimService.GetUserId();
 
-            var todoLists = await _todoListRepository.Get(tl => tl.CreatedBy == currentUserId);
+            var todoLists = await _todoListRepository.GetAsync(tl => tl.CreatedBy == currentUserId);
 
             return _mapper.Map<IEnumerable<TodoListResponseModel>>(todoLists);
         }

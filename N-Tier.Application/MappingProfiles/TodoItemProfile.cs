@@ -9,6 +9,10 @@ namespace N_Tier.Application.MappingProfiles
         public TodoItemProfile()
         {
             CreateMap<CreateTodoItemModel, TodoItem>();
+
+            CreateMap<UpdateTodoItemModel, TodoItem>();
+
+            CreateMap<TodoItem, TodoItemResponseModel>();
         }
     }
 }

@@ -22,5 +22,19 @@ namespace N_Tier.API.Controllers
         {
             return Ok(await _todoItemService.CreateAsync(createTodoItemModel));
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Guid>> UpdateAsync(Guid id, UpdateTodoItemModel updateTodoItemModel)
+        {
+            return Ok(await _todoItemService.UpdateAsync(id, updateTodoItemModel));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(Guid id)
+        {
+            await _todoItemService.DeleteAsync(id);
+
+            return NoContent();
+        }
     }
 }
