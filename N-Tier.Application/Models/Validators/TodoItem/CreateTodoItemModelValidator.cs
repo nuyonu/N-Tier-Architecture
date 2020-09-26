@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using N_Tier.Application.Models.TodoItem;
 
-namespace N_Tier.Application.Models.Validators
+namespace N_Tier.Application.Models.Validators.TodoItem
 {
     public class CreateTodoItemModelValidator : AbstractValidator<CreateTodoItemModel>
     {

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using N_Tier.Application.Models.TodoList;
 
-namespace N_Tier.Application.Models.Validators
+namespace N_Tier.Application.Models.Validators.TodoList
 {
     public class CreateTodoListModelValidator : AbstractValidator<CreateTodoListModel>
     {
