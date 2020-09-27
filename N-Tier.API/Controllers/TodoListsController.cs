@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using N_Tier.Application.Models;
 using N_Tier.Application.Models.TodoItem;
 using N_Tier.Application.Models.TodoList;
 using N_Tier.Application.Services;
@@ -22,35 +23,33 @@ namespace N_Tier.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoListResponseModel>>> GetAll()
+        public async Task<ActionResult> GetAll()
         {
-            return Ok(await _todoListService.GetAllAsync());
+            return Ok(ApiResult<IEnumerable<TodoListResponseModel>>.Success200(await _todoListService.GetAllAsync()));
         }
 
         [HttpGet("{id}/todoItems")]
-        public async Task<ActionResult<IEnumerable<TodoItemResponseModel>>> GetAllTodoItemsAsync(Guid id)
+        public async Task<ActionResult> GetAllTodoItemsAsync(Guid id)
         {
-            return Ok(await _todoItemService.GetAllByListIdAsync(id));
+            return Ok(ApiResult<IEnumerable<TodoItemResponseModel>>.Success200(await _todoItemService.GetAllByListIdAsync(id)));
         }
 
         [HttpPost]
         public async Task<ActionResult<Guid>> CreateAsync(CreateTodoListModel createTodoListModel)
         {
-            return Ok(await _todoListService.CreateAsync(createTodoListModel));
+            return Ok(ApiResult<Guid>.Success(201, await _todoListService.CreateAsync(createTodoListModel)));
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Guid>> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
         {
-            return Ok(await _todoListService.UpdateAsync(id, updateTodoListModel));
+            return Ok(ApiResult<Guid>.Success200(await _todoListService.UpdateAsync(id, updateTodoListModel)));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(Guid id)
         {
-            await _todoListService.DeleteAsync(id);
-
-            return NoContent();
+            return Ok(ApiResult<Guid>.Success200(await _todoListService.DeleteAsync(id)));
         }
     }
 }

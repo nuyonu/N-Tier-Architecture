@@ -8,7 +8,7 @@ namespace N_Tier.Application.Services
     public interface ITodoListService
     {
         Task<Guid> CreateAsync(CreateTodoListModel createTodoListModel);
-        Task DeleteAsync(Guid id);
+        Task<Guid> DeleteAsync(Guid id);
         Task<IEnumerable<TodoListResponseModel>> GetAllAsync();
         Task<Guid> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel);
     }
