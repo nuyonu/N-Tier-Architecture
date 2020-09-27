@@ -1,13 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using N_Tier.Infrastructure.Identity;
 using N_Tier.Infrastructure.Persistence;
 using System;
+using System.Threading.Tasks;
 
 namespace N_Tier.Common
 {
     public static class AutomatedMigration
     {
-        public static void Migrate(IServiceProvider services)
+        public static async Task MigrateAsync(IServiceProvider services)
         {
             var context = services.GetRequiredService<DatabaseContext>();
 
@@ -15,6 +18,10 @@ namespace N_Tier.Common
             {
                 context.Database.Migrate();
             }
+
+            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+            await DatabaseContextSeed.SeedDatabaseAsync(context, userManager);
         }
     }
 }

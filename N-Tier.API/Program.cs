@@ -14,7 +14,7 @@ namespace N_Tier.API
 
             using (var scope = host.Services.CreateScope())
             {
-                AutomatedMigration.Migrate(scope.ServiceProvider);
+                await AutomatedMigration.MigrateAsync(scope.ServiceProvider);
             }
 
             await host.RunAsync();
