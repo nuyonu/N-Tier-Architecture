@@ -50,9 +50,8 @@ namespace N_Tier.Application.Services.Impl
 
             var userId = _claimService.GetUserId();
 
-            // TODO
             if (userId != todoList.CreatedBy)
-                Console.WriteLine("TODO");
+                throw new BadRequestException("The selected list does not belong to you");
 
             todoList.Title = updateTodoListModel.Title;
 

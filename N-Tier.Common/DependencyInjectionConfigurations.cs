@@ -83,8 +83,12 @@ namespace N_Tier.Common
             });
         }
 
-        public static void AddJwt(this IServiceCollection services)
+        public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
+            var secretKey = configuration.GetValue<string>("JwtConfiguration:SecretKey");
+
+            Console.WriteLine($"Here = [{secretKey}]");
+
             var key = Encoding.ASCII.GetBytes("Secret token, TODO later");
 
             services.AddAuthentication(x =>

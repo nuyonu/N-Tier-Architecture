@@ -44,6 +44,10 @@ namespace N_Tier.API.Middleware
             {
                 code = HttpStatusCode.NotFound;
             }
+            else if(ex is BadRequestException)
+            {
+                code = HttpStatusCode.BadRequest;
+            }
 
             string result = JsonConvert.SerializeObject(ApiResult<string>.Failure(400, errors));
 
