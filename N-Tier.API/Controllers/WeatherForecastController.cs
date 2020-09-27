@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using N_Tier.Application.Models;
 using N_Tier.Application.Models.WeatherForecast;
 using N_Tier.Application.Services;
 
@@ -11,16 +11,15 @@ namespace N_Tier.API.Controllers
     [Authorize]
     public class WeatherForecastController : ApiController
     {
-        private readonly ILogger<WeatherForecastController> _logger;
         private readonly IWeatherForecastService _weatherForecastService;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IWeatherForecastService weatherForecastService)
+        public WeatherForecastController(IWeatherForecastService weatherForecastService)
         {
-            _logger = logger;
             _weatherForecastService = weatherForecastService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeatherForecastResponseModel>>> Get() => Ok(await _weatherForecastService.GetAsync());
+        public async Task<ActionResult> Get()
+            => Ok(ApiResult<IEnumerable<WeatherForecastResponseModel>>.Success200(await _weatherForecastService.GetAsync()));
     }
 }

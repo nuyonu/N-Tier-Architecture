@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using N_Tier.Application.Exceptions;
+using N_Tier.Application.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -33,19 +35,24 @@ namespace N_Tier.API.Middleware
 
         private Task HandleException(HttpContext context, Exception ex)
         {
-            var code = HttpStatusCode.InternalServerError;
-
             _logger.LogError(ex.Message);
+
+            var code = HttpStatusCode.InternalServerError;
+            var errors = new List<string>() { ex.Message };
 
             if (ex is NotFoundException)
             {
                 code = HttpStatusCode.NotFound;
             }
+            else if(ex is BadRequestException)
+            {
+                code = HttpStatusCode.BadRequest;
+            }
+
+            string result = JsonConvert.SerializeObject(ApiResult<string>.Failure(400, errors));
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
-
-            string result = JsonConvert.SerializeObject(new { error = ex.Message });
 
             return context.Response.WriteAsync(result);
         }

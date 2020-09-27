@@ -67,7 +67,7 @@ namespace N_Tier.API
 
             services.AddIdentity();
 
-            services.AddJwt();
+            services.AddJwt(_configuration);
 
             services.RegisterAutoMapper();
         }

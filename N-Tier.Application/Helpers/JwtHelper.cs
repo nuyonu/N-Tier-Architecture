@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using N_Tier.Infrastructure.Identity;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,9 +10,11 @@ namespace N_Tier.Application.Helpers
 {
     public static class JwtHelper
     {
-        public static string GenerateToken(ApplicationUser user)
+        public static string GenerateToken(ApplicationUser user, IConfiguration configuration)
         {
-            var key = Encoding.ASCII.GetBytes("Secret token, TODO later");
+            var secretKey = configuration.GetValue<string>("JwtConfiguration:SecretKey");
+
+            var key = Encoding.ASCII.GetBytes(secretKey);
 
             var tokenHandler = new JwtSecurityTokenHandler();
             

@@ -65,12 +65,14 @@ namespace N_Tier.Application.Services.Impl
             return todoItem.Id;
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task<Guid> DeleteAsync(Guid id)
         {
             var todoItem = await _todoItemRepository.GetFirst(ti => ti.Id == id);
 
             if (todoItem == null)
                 throw new NotFoundException("Todo item does not exist anymore");
+
+            return (await _todoItemRepository.DeleteAsync(todoItem)).Id;
         }
     }
 }

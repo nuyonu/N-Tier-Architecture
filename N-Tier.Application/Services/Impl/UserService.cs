@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using N_Tier.Application.Exceptions;
 using N_Tier.Application.Helpers;
 using N_Tier.Application.Models.User;
@@ -16,12 +17,17 @@ namespace N_Tier.Application.Services.Impl
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IConfiguration _configuration;
 
-        public UserService(IMapper mapper, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public UserService(IMapper mapper,
+                           UserManager<ApplicationUser> userManager,
+                           SignInManager<ApplicationUser> signInManager,
+                           IConfiguration configuration)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _configuration = configuration;
         }
 
         public async Task<Guid> CreateAsync(CreateUserModel createUserModel)
@@ -52,7 +58,7 @@ namespace N_Tier.Application.Services.Impl
             if (!signInResult.Succeeded)
                 throw new BadRequestException("Username or password is incorrect");
 
-            var token = JwtHelper.GenerateToken(user);
+            var token = JwtHelper.GenerateToken(user, _configuration);
 
             return new LoginResponseModel()
             {

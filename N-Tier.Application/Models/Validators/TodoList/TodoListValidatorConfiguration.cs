@@ -2,7 +2,7 @@
 {
     public static class TodoListValidatorConfiguration
     {
-        public static int MinimumTitleLength { get; set; }
-        public static int MaximumTitleLength { get; set; }
+        public static int MinimumTitleLength = 5;
+        public static int MaximumTitleLength = 50;
     }
 }

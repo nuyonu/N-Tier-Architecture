@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using N_Tier.Application.Models;
 using N_Tier.Application.Models.TodoItem;
 using N_Tier.Application.Services;
 using System;
@@ -18,23 +19,21 @@ namespace N_Tier.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Guid>> CreateAsync(CreateTodoItemModel createTodoItemModel)
+        public async Task<ActionResult> CreateAsync(CreateTodoItemModel createTodoItemModel)
         {
-            return Ok(await _todoItemService.CreateAsync(createTodoItemModel));
+            return Ok(ApiResult<Guid>.Success(201, await _todoItemService.CreateAsync(createTodoItemModel)));
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Guid>> UpdateAsync(Guid id, UpdateTodoItemModel updateTodoItemModel)
+        public async Task<ActionResult> UpdateAsync(Guid id, UpdateTodoItemModel updateTodoItemModel)
         {
-            return Ok(await _todoItemService.UpdateAsync(id, updateTodoItemModel));
+            return Ok(ApiResult<Guid>.Success200(await _todoItemService.UpdateAsync(id, updateTodoItemModel)));
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(Guid id)
         {
-            await _todoItemService.DeleteAsync(id);
-
-            return NoContent();
+            return Ok(ApiResult<Guid>.Success200(await _todoItemService.DeleteAsync(id)));
         }
     }
 }

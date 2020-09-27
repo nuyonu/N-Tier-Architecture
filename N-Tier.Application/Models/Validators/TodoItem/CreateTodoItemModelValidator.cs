@@ -9,7 +9,7 @@ namespace N_Tier.Application.Models.Validators.TodoItem
         {
             RuleFor(cti => cti.Title)
                 .MinimumLength(CreateTodoItemValidatorConfiguration.MinimumTitleLength)
-                .WithMessage($"Todo item title should have minimum ${CreateTodoItemValidatorConfiguration.MaximumTitleLength} characters")
+                .WithMessage($"Todo item title should have minimum {CreateTodoItemValidatorConfiguration.MinimumTitleLength} characters")
                 .MaximumLength(CreateTodoItemValidatorConfiguration.MaximumTitleLength)
                 .WithMessage($"Todo item title should have maximum {CreateTodoItemValidatorConfiguration.MaximumTitleLength} characters");
 
