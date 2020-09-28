@@ -87,9 +87,7 @@ namespace N_Tier.Common
         {
             var secretKey = configuration.GetValue<string>("JwtConfiguration:SecretKey");
 
-            Console.WriteLine($"Here = [{secretKey}]");
-
-            var key = Encoding.ASCII.GetBytes("Secret token, TODO later");
+            var key = Encoding.ASCII.GetBytes(secretKey);
 
             services.AddAuthentication(x =>
             {
