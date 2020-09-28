@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using N_Tier.Application.Common.Email;
 using N_Tier.Application.Exceptions;
 using N_Tier.Application.Helpers;
 using N_Tier.Application.Models.User;
@@ -18,16 +19,19 @@ namespace N_Tier.Application.Services.Impl
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
         public UserService(IMapper mapper,
                            UserManager<ApplicationUser> userManager,
                            SignInManager<ApplicationUser> signInManager,
-                           IConfiguration configuration)
+                           IConfiguration configuration,
+                           IEmailService emailService)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         public async Task<Guid> CreateAsync(CreateUserModel createUserModel)
@@ -41,7 +45,9 @@ namespace N_Tier.Application.Services.Impl
                 throw new BadRequestException(result.Errors.FirstOrDefault().Description);
             }
 
-            // TODO send email with confirmation token
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            await _emailService.SendEmailAsync(EmailMessage.Create(user.Email, token, "Confirmation token"));
 
             return Guid.Parse((await _userManager.FindByNameAsync(user.UserName)).Id);
         }

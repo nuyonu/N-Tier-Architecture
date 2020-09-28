@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using N_Tier.Application.Common.Email;
 using N_Tier.Application.MappingProfiles;
 using N_Tier.Application.Services;
 using N_Tier.Application.Services.Impl;
@@ -28,6 +29,7 @@ namespace N_Tier.Common
             services.AddScoped<ITodoItemService, TodoItemService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IClaimService, ClaimService>();
+            services.AddScoped<IEmailService, EmailService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)
@@ -106,6 +108,11 @@ namespace N_Tier.Common
                     ValidateAudience = false
                 };
             });
+        }
+
+        public static void AddEmailConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddSingleton(configuration.GetSection("SmtpSettings").Get<SmtpSettings>());
         }
     }
 }
