@@ -70,6 +70,8 @@ namespace N_Tier.API
             services.AddJwt(_configuration);
 
             services.RegisterAutoMapper();
+
+            services.AddEmailConfiguration(_configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

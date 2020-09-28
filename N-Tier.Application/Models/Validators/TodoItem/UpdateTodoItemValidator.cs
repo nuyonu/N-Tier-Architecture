@@ -8,16 +8,16 @@ namespace N_Tier.Application.Models.Validators.TodoItem
         public UpdateTodoItemValidator()
         {
             RuleFor(cti => cti.Title)
-                .MinimumLength(CreateTodoItemValidatorConfiguration.MinimumTitleLength)
-                .WithMessage($"Todo item title should have minimum ${CreateTodoItemValidatorConfiguration.MaximumTitleLength} characters")
-                .MaximumLength(CreateTodoItemValidatorConfiguration.MaximumTitleLength)
-                .WithMessage($"Todo item title should have maximum {CreateTodoItemValidatorConfiguration.MaximumTitleLength} characters");
+                .MinimumLength(TodoItemValidatorConfiguration.MinimumTitleLength)
+                .WithMessage($"Todo item title should have minimum ${TodoItemValidatorConfiguration.MaximumTitleLength} characters")
+                .MaximumLength(TodoItemValidatorConfiguration.MaximumTitleLength)
+                .WithMessage($"Todo item title should have maximum {TodoItemValidatorConfiguration.MaximumTitleLength} characters");
 
             RuleFor(cti => cti.Body)
-                .MinimumLength(CreateTodoItemValidatorConfiguration.MinimumBodyLength)
-                .WithMessage($"Todo item body should have minimum {CreateTodoItemValidatorConfiguration.MinimumBodyLength} characters")
-                .MaximumLength(CreateTodoItemValidatorConfiguration.MaximumBodyLength)
-                .WithMessage($"Todo item body should have maximum {CreateTodoItemValidatorConfiguration.MaximumBodyLength} characters");
+                .MinimumLength(TodoItemValidatorConfiguration.MinimumBodyLength)
+                .WithMessage($"Todo item body should have minimum {TodoItemValidatorConfiguration.MinimumBodyLength} characters")
+                .MaximumLength(TodoItemValidatorConfiguration.MaximumBodyLength)
+                .WithMessage($"Todo item body should have maximum {TodoItemValidatorConfiguration.MaximumBodyLength} characters");
         }
     }
 }

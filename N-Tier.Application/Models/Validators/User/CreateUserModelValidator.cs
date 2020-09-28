@@ -15,17 +15,11 @@ namespace N_Tier.Application.Models.Validators.User
         {
             _userManager = userManager;
 
-            var configuration = new
-            {
-                MinimumUsernameLength = 5,
-                MaximumUsernameLength = 20,
-            };
-
             RuleFor(u => u.Username)
-                .MinimumLength(configuration.MinimumUsernameLength)
-                .WithMessage($"Username should have minimum {configuration.MinimumUsernameLength} characters")
-                .MaximumLength(configuration.MaximumUsernameLength)
-                .WithMessage($"Username should have maximum {configuration.MaximumUsernameLength} characters")
+                .MinimumLength(UserValidatorConfiguration.MinimumUsernameLength)
+                .WithMessage($"Username should have minimum {UserValidatorConfiguration.MinimumUsernameLength} characters")
+                .MaximumLength(UserValidatorConfiguration.MaximumUsernameLength)
+                .WithMessage($"Username should have maximum {UserValidatorConfiguration.MaximumUsernameLength} characters")
                 .MustAsync(UsernameIsUniqueAsync)
                 .WithMessage($"Username is not available");
 
