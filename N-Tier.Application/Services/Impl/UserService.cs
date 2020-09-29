@@ -6,8 +6,10 @@ using N_Tier.Application.Common.Email;
 using N_Tier.Application.Exceptions;
 using N_Tier.Application.Helpers;
 using N_Tier.Application.Models.User;
+using N_Tier.Application.Templates;
 using N_Tier.Infrastructure.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,18 +21,21 @@ namespace N_Tier.Application.Services.Impl
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly ITemplateService _templateService;
         private readonly IEmailService _emailService;
 
         public UserService(IMapper mapper,
                            UserManager<ApplicationUser> userManager,
                            SignInManager<ApplicationUser> signInManager,
                            IConfiguration configuration,
+                           ITemplateService templateService,
                            IEmailService emailService)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _templateService = templateService;
             _emailService = emailService;
         }
 
@@ -47,7 +52,11 @@ namespace N_Tier.Application.Services.Impl
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            await _emailService.SendEmailAsync(EmailMessage.Create(user.Email, token, "Confirmation token"));
+            var emailTemplate = await _templateService.GetTemplateAsync(TemplateConstants.ConfirmationEmail);
+
+            var emailBody = _templateService.ReplaceInTemplate(emailTemplate, new Dictionary<string, string> { { "Token", token } });
+
+            await _emailService.SendEmailAsync(EmailMessage.Create(user.Email, emailBody, "[N-Tier]Confirm your email"));
 
             return Guid.Parse((await _userManager.FindByNameAsync(user.UserName)).Id);
         }

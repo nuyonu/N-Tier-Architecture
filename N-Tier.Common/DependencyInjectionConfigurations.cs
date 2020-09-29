@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using N_Tier.Application.Common.Email;
 using N_Tier.Application.MappingProfiles;
 using N_Tier.Application.Services;
@@ -14,7 +15,8 @@ using N_Tier.Infrastructure.Identity;
 using N_Tier.Infrastructure.Persistence;
 using N_Tier.Infrastructure.Repositories;
 using N_Tier.Infrastructure.Repositories.Impl;
-using N_Tier.Infrastructure.Services;
+using N_Tier.Shared.Services;
+using N_Tier.Shared.Services.Impl;
 using System;
 using System.Text;
 
@@ -30,6 +32,7 @@ namespace N_Tier.Common
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IClaimService, ClaimService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ITemplateService, TemplateService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)
@@ -53,6 +56,36 @@ namespace N_Tier.Common
                     options.UseSqlServer(databaseConfig.ConnectionString,
                     opt => opt.MigrationsAssembly(typeof(DatabaseContext).Assembly.FullName)));
             }
+        }
+
+        public static void AddSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(s =>
+            {
+                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer YOUR_TOKEN')",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+            });
         }
 
         public static void RegisterAutoMapper(this IServiceCollection services)
