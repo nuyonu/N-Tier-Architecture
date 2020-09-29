@@ -32,6 +32,7 @@ namespace N_Tier.Common
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IClaimService, ClaimService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ITemplateService, TemplateService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)

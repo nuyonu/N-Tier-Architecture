@@ -14,6 +14,11 @@ namespace N_Tier.Application.Services.Impl
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
+        public WeatherForecastService(ITemplateService htmlTemplateService)
+        {
+            htmlTemplateService.GetTemplateAsync("test");
+        }
+
         public async Task<IEnumerable<WeatherForecastResponseModel>> GetAsync()
         {
             var rng = new Random();
