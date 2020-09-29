@@ -17,8 +17,4 @@
     <ProjectReference Include="..\N-Tier.Infrastructure\N-Tier.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Templates\" />
-  </ItemGroup>
-
 </Project>
