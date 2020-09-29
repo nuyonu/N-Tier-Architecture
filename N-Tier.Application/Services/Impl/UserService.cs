@@ -47,6 +47,7 @@ namespace N_Tier.Application.Services.Impl
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
+            // TODO make template service with email.
             await _emailService.SendEmailAsync(EmailMessage.Create(user.Email, token, "Confirmation token"));
 
             return Guid.Parse((await _userManager.FindByNameAsync(user.UserName)).Id);
