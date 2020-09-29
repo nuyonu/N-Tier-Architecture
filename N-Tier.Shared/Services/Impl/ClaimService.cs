@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using N_Tier.Infrastructure.Services;
 using System.Security.Claims;
 
-namespace N_Tier.Application.Services.Impl
+namespace N_Tier.Shared.Services.Impl
 {
     public class ClaimService : IClaimService
     {
@@ -13,14 +12,10 @@ namespace N_Tier.Application.Services.Impl
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string GetUserId()
-        {
-            return GetClaim(ClaimTypes.NameIdentifier);
-        }
+        public string GetUserId() 
+            => GetClaim(ClaimTypes.NameIdentifier);
 
-        public string GetClaim(string key)
-        {
-            return _httpContextAccessor.HttpContext?.User?.FindFirstValue(key);
-        }
+        public string GetClaim(string key) 
+            => _httpContextAccessor.HttpContext?.User?.FindFirst(key).Value;
     }
 }

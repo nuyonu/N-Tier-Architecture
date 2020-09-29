@@ -15,7 +15,8 @@ using N_Tier.Infrastructure.Identity;
 using N_Tier.Infrastructure.Persistence;
 using N_Tier.Infrastructure.Repositories;
 using N_Tier.Infrastructure.Repositories.Impl;
-using N_Tier.Infrastructure.Services;
+using N_Tier.Shared.Services;
+using N_Tier.Shared.Services.Impl;
 using System;
 using System.Text;
 

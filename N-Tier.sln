@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Core", "N-Tier.Core\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Common", "N-Tier.Common\N-Tier.Common.csproj", "{682C9768-29F4-43F7-AB72-1E99AF993569}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N-Tier.Shared", "N-Tier.Shared\N-Tier.Shared.csproj", "{BEDAB5A5-6552-4FAE-9446-96E6EBA3BFF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{682C9768-29F4-43F7-AB72-1E99AF993569}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{682C9768-29F4-43F7-AB72-1E99AF993569}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{682C9768-29F4-43F7-AB72-1E99AF993569}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEDAB5A5-6552-4FAE-9446-96E6EBA3BFF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEDAB5A5-6552-4FAE-9446-96E6EBA3BFF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEDAB5A5-6552-4FAE-9446-96E6EBA3BFF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEDAB5A5-6552-4FAE-9446-96E6EBA3BFF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
