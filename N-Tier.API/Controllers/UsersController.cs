@@ -30,5 +30,11 @@ namespace N_Tier.API.Controllers
         {
             return Ok(ApiResult<LoginResponseModel>.Success200(await _userService.LoginAsync(loginUserModel)));
         }
+
+        [HttpPost("confirmEmail")]
+        public async Task<ActionResult> ConfirmEmailAsync(ConfirmEmailModel confirmEmailModel)
+        {
+            return Ok(ApiResult<ConfirmEmailResponseModel>.Success200(await _userService.ConfirmEmailAsync(confirmEmailModel)));
+        }
     }
 }

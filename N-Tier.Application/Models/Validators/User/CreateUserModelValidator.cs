@@ -27,11 +27,11 @@ namespace N_Tier.Application.Models.Validators.User
             RuleFor(u => u.Password)
                 .MinimumLength(1);
 
-            RuleFor(u => u.Email)
-                .EmailAddress()
-                .WithMessage($"Email address is not valid")
-                .MustAsync(EmailAddressIsUniqueAsync)
-                .WithMessage($"Email address is already in use");
+            //RuleFor(u => u.Email)
+            //    .EmailAddress()
+            //    .WithMessage($"Email address is not valid")
+            //    .MustAsync(EmailAddressIsUniqueAsync)
+            //    .WithMessage($"Email address is already in use");
         }
 
         private async Task<bool> EmailAddressIsUniqueAsync(string email, CancellationToken cancellationToken = new CancellationToken())
