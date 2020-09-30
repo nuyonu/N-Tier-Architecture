@@ -48,6 +48,10 @@ namespace N_Tier.API.Middleware
             {
                 code = HttpStatusCode.BadRequest;
             }
+            else if(ex is UnprocessableRequestException)
+            {
+                code = HttpStatusCode.UnprocessableEntity;
+            }
 
             string result = JsonConvert.SerializeObject(ApiResult<string>.Failure(400, errors));
 

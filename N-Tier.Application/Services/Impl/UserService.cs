@@ -54,7 +54,8 @@ namespace N_Tier.Application.Services.Impl
 
             var emailTemplate = await _templateService.GetTemplateAsync(TemplateConstants.ConfirmationEmail);
 
-            var emailBody = _templateService.ReplaceInTemplate(emailTemplate, new Dictionary<string, string> { { "Token", token } });
+            var emailBody = _templateService.ReplaceInTemplate(emailTemplate,
+                                                               new Dictionary<string, string> { { "{UserId}", user.Id }, { "{Token}", token } });
 
             await _emailService.SendEmailAsync(EmailMessage.Create(user.Email, emailBody, "[N-Tier]Confirm your email"));
 
@@ -80,6 +81,21 @@ namespace N_Tier.Application.Services.Impl
                 Username = user.UserName,
                 Email = user.Email,
                 Token = token
+            };
+        }
+
+        public async Task<ConfirmEmailResponseModel> ConfirmEmailAsync(ConfirmEmailModel confirmEmailModel)
+        {
+            var user = await _userManager.FindByIdAsync(confirmEmailModel.UserId);
+
+            var result = await _userManager.ConfirmEmailAsync(user, confirmEmailModel.Token);
+
+            if (!result.Succeeded)
+                throw new UnprocessableRequestException("Your verification link has expired");
+
+            return new ConfirmEmailResponseModel
+            {
+                Confirmed = true
             };
         }
     }
