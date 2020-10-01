@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.API", "N-Tier.API\N-Tier.API.csproj", "{82838190-1934-4EA8-8F64-E37A2601A5E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.API", "src\N-Tier.API\N-Tier.API.csproj", "{82838190-1934-4EA8-8F64-E37A2601A5E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Application", "N-Tier.Application\N-Tier.Application.csproj", "{5E06FE1C-2A7C-44DC-A885-42610E597397}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Application", "src\N-Tier.Application\N-Tier.Application.csproj", "{5E06FE1C-2A7C-44DC-A885-42610E597397}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Infrastructure", "N-Tier.Infrastructure\N-Tier.Infrastructure.csproj", "{9551A22F-132B-4DA9-9C88-652A576676B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Infrastructure", "src\N-Tier.Infrastructure\N-Tier.Infrastructure.csproj", "{9551A22F-132B-4DA9-9C88-652A576676B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Core", "N-Tier.Core\N-Tier.Core.csproj", "{674E7FDA-AD7A-47FA-8E2C-C582D5CC326A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Core", "src\N-Tier.Core\N-Tier.Core.csproj", "{674E7FDA-AD7A-47FA-8E2C-C582D5CC326A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Common", "N-Tier.Common\N-Tier.Common.csproj", "{682C9768-29F4-43F7-AB72-1E99AF993569}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Common", "src\N-Tier.Common\N-Tier.Common.csproj", "{682C9768-29F4-43F7-AB72-1E99AF993569}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "N-Tier.Shared", "N-Tier.Shared\N-Tier.Shared.csproj", "{BEDAB5A5-6552-4FAE-9446-96E6EBA3BFF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Shared", "src\N-Tier.Shared\N-Tier.Shared.csproj", "{BEDAB5A5-6552-4FAE-9446-96E6EBA3BFF0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7ED14D1A-A758-41DB-ACCA-1917FE909102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{82838190-1934-4EA8-8F64-E37A2601A5E5} = {7ED14D1A-A758-41DB-ACCA-1917FE909102}
+		{5E06FE1C-2A7C-44DC-A885-42610E597397} = {7ED14D1A-A758-41DB-ACCA-1917FE909102}
+		{9551A22F-132B-4DA9-9C88-652A576676B3} = {7ED14D1A-A758-41DB-ACCA-1917FE909102}
+		{674E7FDA-AD7A-47FA-8E2C-C582D5CC326A} = {7ED14D1A-A758-41DB-ACCA-1917FE909102}
+		{682C9768-29F4-43F7-AB72-1E99AF993569} = {7ED14D1A-A758-41DB-ACCA-1917FE909102}
+		{BEDAB5A5-6552-4FAE-9446-96E6EBA3BFF0} = {7ED14D1A-A758-41DB-ACCA-1917FE909102}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {330BD50E-D6E2-49BE-890F-2BA859172C9D}
