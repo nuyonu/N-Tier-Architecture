@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using N_Tier.Core.Common;
 using N_Tier.Core.Entities;
-using N_Tier.Infrastructure.Identity;
+using N_Tier.DataAccess.Identity;
 using N_Tier.Shared.Services;
 using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace N_Tier.Infrastructure.Persistence
+namespace N_Tier.DataAccess.Persistence
 {
     public class DatabaseContext : IdentityDbContext<ApplicationUser>
     {

@@ -7,7 +7,7 @@ using N_Tier.Application.Exceptions;
 using N_Tier.Application.Helpers;
 using N_Tier.Application.Models.User;
 using N_Tier.Application.Templates;
-using N_Tier.Infrastructure.Identity;
+using N_Tier.DataAccess.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using N_Tier.Infrastructure.Identity;
-using N_Tier.Infrastructure.Persistence;
+using N_Tier.DataAccess.Identity;
+using N_Tier.DataAccess.Persistence;
 using System;
 using System.Threading.Tasks;
 

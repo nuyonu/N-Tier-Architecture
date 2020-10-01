@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Internal;
-using N_Tier.Infrastructure.Identity;
+using N_Tier.DataAccess.Identity;
 using System.Threading.Tasks;
 
-namespace N_Tier.Infrastructure.Persistence
+namespace N_Tier.DataAccess.Persistence
 {
     public static class DatabaseContextSeed
     {

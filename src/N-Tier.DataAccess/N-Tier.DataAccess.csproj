@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>N_Tier.Infrastructure</RootNamespace>
+    <RootNamespace>N_Tier.DataAccess</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

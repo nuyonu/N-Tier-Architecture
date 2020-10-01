@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using N_Tier.Core.Common;
-using N_Tier.Infrastructure.Persistence;
+using N_Tier.DataAccess.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace N_Tier.Infrastructure.Repositories.Impl
+namespace N_Tier.DataAccess.Repositories.Impl
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {

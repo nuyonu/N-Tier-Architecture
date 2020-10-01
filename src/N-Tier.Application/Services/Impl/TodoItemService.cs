@@ -2,7 +2,7 @@
 using N_Tier.Application.Exceptions;
 using N_Tier.Application.Models.TodoItem;
 using N_Tier.Core.Entities;
-using N_Tier.Infrastructure.Repositories;
+using N_Tier.DataAccess.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

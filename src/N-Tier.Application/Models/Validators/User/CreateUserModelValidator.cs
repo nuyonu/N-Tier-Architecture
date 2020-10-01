@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using N_Tier.Application.Models.User;
-using N_Tier.Infrastructure.Identity;
+using N_Tier.DataAccess.Identity;
 using System.Threading;
 using System.Threading.Tasks;
 

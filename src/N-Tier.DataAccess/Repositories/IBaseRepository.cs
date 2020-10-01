@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace N_Tier.Infrastructure.Repositories
+namespace N_Tier.DataAccess.Repositories
 {
     public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     {

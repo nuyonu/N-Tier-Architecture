@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using N_Tier.Infrastructure.Identity;
+using N_Tier.DataAccess.Identity;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
