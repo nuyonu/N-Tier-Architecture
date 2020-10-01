@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.API", "src\N-Tier.AP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Application", "src\N-Tier.Application\N-Tier.Application.csproj", "{5E06FE1C-2A7C-44DC-A885-42610E597397}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Infrastructure", "src\N-Tier.Infrastructure\N-Tier.Infrastructure.csproj", "{9551A22F-132B-4DA9-9C88-652A576676B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.DataAccess", "src\N-Tier.DataAccess\N-Tier.DataAccess.csproj", "{9551A22F-132B-4DA9-9C88-652A576676B3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Core", "src\N-Tier.Core\N-Tier.Core.csproj", "{674E7FDA-AD7A-47FA-8E2C-C582D5CC326A}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Shared", "src\N-Tier.Shared\N-Tier.Shared.csproj", "{BEDAB5A5-6552-4FAE-9446-96E6EBA3BFF0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7ED14D1A-A758-41DB-ACCA-1917FE909102}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EF8183C1-207C-4A67-B1B9-B07F892E8635}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

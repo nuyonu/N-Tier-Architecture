@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Internal;
 using N_Tier.DataAccess.Identity;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace N_Tier.DataAccess.Persistence
 {

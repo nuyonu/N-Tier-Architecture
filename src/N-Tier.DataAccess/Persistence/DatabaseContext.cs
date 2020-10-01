@@ -34,7 +34,7 @@ namespace N_Tier.DataAccess.Persistence
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            foreach (var entry in ChangeTracker.Entries<AdvancedBaseEntity>())
+            foreach (var entry in ChangeTracker.Entries<IAuditedEntity>())
             {
                 switch (entry.State)
                 {

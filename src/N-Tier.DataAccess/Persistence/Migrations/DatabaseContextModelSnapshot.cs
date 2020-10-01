@@ -223,7 +223,7 @@ namespace N_Tier.DataAccess.Persistence.Migrations
                     b.ToTable("TodoLists");
                 });
 
-            modelBuilder.Entity("N_Tier.Infrastructure.Identity.ApplicationUser", b =>
+            modelBuilder.Entity("N_Tier.DataAccess.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -299,7 +299,7 @@ namespace N_Tier.DataAccess.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("N_Tier.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("N_Tier.DataAccess.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -308,7 +308,7 @@ namespace N_Tier.DataAccess.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("N_Tier.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("N_Tier.DataAccess.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -323,7 +323,7 @@ namespace N_Tier.DataAccess.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("N_Tier.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("N_Tier.DataAccess.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -332,7 +332,7 @@ namespace N_Tier.DataAccess.Persistence.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("N_Tier.Infrastructure.Identity.ApplicationUser", null)
+                    b.HasOne("N_Tier.DataAccess.Identity.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

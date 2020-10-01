@@ -2,7 +2,7 @@
 
 namespace N_Tier.Core.Common
 {
-    public abstract class AdvancedBaseEntity : BaseEntity
+    public interface IAuditedEntity
     {
         public string CreatedBy { get; set; }
         public DateTime CreatedOn { get; set; }
