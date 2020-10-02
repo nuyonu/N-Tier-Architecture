@@ -19,7 +19,7 @@ namespace N_Tier.Application.Services.Impl
 
         public async Task<string> GetTemplateAsync(string templateName)
         {
-            using StreamReader reader = new StreamReader(Path.Combine(_templatesPath, "confirmation_email.html"));
+            using StreamReader reader = new StreamReader(Path.Combine(_templatesPath, templateName));
 
             return await reader.ReadToEndAsync();
         }

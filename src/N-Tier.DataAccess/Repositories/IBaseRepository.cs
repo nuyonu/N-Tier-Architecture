@@ -8,7 +8,7 @@ namespace N_Tier.DataAccess.Repositories
 {
     public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        Task<TEntity> GetFirst(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate);
         Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
         Task<TEntity> AddAsync(TEntity entity);
         Task<TEntity> UpdateAsync(TEntity entity);
