@@ -23,9 +23,9 @@ steps:
   displayName: 'Prepare analysis configuration'
   inputs:
     SonarCloud: 'Sonar'
-    organization: 'nuyonu'
+    organization: 'nuyonu-github'
     scannerMode: 'MSBuild'
-    projectKey: 'N-Tier-Architecture'
+    projectKey: 'nuyonu_N-Tier-Architecture'
     projectName: 'N-Tier-Architecture'
 
 - task: DotNetCoreCLI@2
