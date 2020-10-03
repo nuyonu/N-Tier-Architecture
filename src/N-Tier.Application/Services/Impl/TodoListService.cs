@@ -43,7 +43,7 @@ namespace N_Tier.Application.Services.Impl
 
         public async Task<Guid> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
         {
-            var todoList = await _todoListRepository.GetFirst(tl => tl.Id == id);
+            var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == id);
 
             if(todoList == null)
                 throw new NotFoundException("List does not exist anymore");
@@ -60,7 +60,7 @@ namespace N_Tier.Application.Services.Impl
 
         public async Task<Guid> DeleteAsync(Guid id)
         {
-            var todoList = await _todoListRepository.GetFirst(tl => tl.Id == id);
+            var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == id);
 
             if (todoList == null)
                 throw new NotFoundException("List does not exist anymore");

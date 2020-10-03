@@ -41,7 +41,7 @@ namespace N_Tier.DataAccess.Repositories.Impl
             return await _dbSet.Where(predicate).ToListAsync();
         }
 
-        public async Task<TEntity> GetFirst(Expression<Func<TEntity, bool>> predicate)
+        public async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbSet.Where(predicate).FirstOrDefaultAsync();
         }

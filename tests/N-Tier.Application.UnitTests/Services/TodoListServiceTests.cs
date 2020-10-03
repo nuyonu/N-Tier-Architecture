@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using FizzWare.NBuilder;
+﻿using FizzWare.NBuilder;
 using FluentAssertions;
 using N_Tier.Application.Exceptions;
-using N_Tier.Application.MappingProfiles;
 using N_Tier.Application.Models.TodoList;
 using N_Tier.Application.Services.Impl;
 using N_Tier.Core.Entities;
-using N_Tier.DataAccess.Repositories;
-using N_Tier.Shared.Services;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using System;
@@ -18,26 +14,12 @@ using Xunit;
 
 namespace N_Tier.Application.UnitTests.Services
 {
-    public class TodoListServiceTests
+    public class TodoListServiceTests : BaseServiceTestConfiguration
     {
-        private readonly IMapper _mapper;
-        private readonly ITodoListRepository _todoListRepository;
-        private readonly IClaimService _claimService;
         private readonly TodoListService _sut;
 
         public TodoListServiceTests()
         {
-            _mapper = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile(new TodoItemProfile());
-                cfg.AddProfile(new TodoListProfile());
-            }).CreateMapper();
-
-            _todoListRepository = Substitute.For<ITodoListRepository>();
-
-            _claimService = Substitute.For<IClaimService>();
-            _claimService.GetUserId().Returns(new Guid().ToString());
-
             _sut = new TodoListService(_todoListRepository, _mapper, _claimService);
         }
 
@@ -63,10 +45,8 @@ namespace N_Tier.Application.UnitTests.Services
         {
             //Arrange
             var createTodoListModel = Builder<CreateTodoListModel>.CreateNew().Build();
-
-            var todoListId = Guid.NewGuid();
             var todoList = _mapper.Map<TodoList>(createTodoListModel);
-            todoList.Id = todoListId;
+            todoList.Id = Guid.NewGuid();
 
             _todoListRepository.AddAsync(Arg.Any<TodoList>()).Returns(todoList);
 
@@ -74,7 +54,7 @@ namespace N_Tier.Application.UnitTests.Services
             var result = await _sut.CreateAsync(createTodoListModel);
 
             //Assert
-            result.Should().Be(todoListId);
+            result.Should().Be(todoList.Id);
             await _todoListRepository.Received().AddAsync(Arg.Any<TodoList>());
         }
 
@@ -85,14 +65,14 @@ namespace N_Tier.Application.UnitTests.Services
             //Arrange
             var updateTodoListModel = Builder<UpdateTodoListModel>.CreateNew().Build();
 
-            _todoListRepository.GetFirst(Arg.Any<Expression<Func<TodoList, bool>>>()).ReturnsNull();
+            _todoListRepository.GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>()).ReturnsNull();
 
             //Act
             Func<Task> callUpdateAsync = async () => await _sut.UpdateAsync(Guid.NewGuid(), updateTodoListModel);
 
             //Assert
             callUpdateAsync.Should().Throw<NotFoundException>().WithMessage("List does not exist anymore");
-            await _todoListRepository.Received().GetFirst(Arg.Any<Expression<Func<TodoList, bool>>>());
+            await _todoListRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>());
         }
 
         [Fact]
@@ -103,14 +83,14 @@ namespace N_Tier.Application.UnitTests.Services
             var updateTodoListModel = Builder<UpdateTodoListModel>.CreateNew().Build();
             var todoList = Builder<TodoList>.CreateNew().Build();
 
-            _todoListRepository.GetFirst(Arg.Any<Expression<Func<TodoList, bool>>>()).Returns(todoList);
+            _todoListRepository.GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>()).Returns(todoList);
 
             //Act
             Func<Task> callUpdateAsync = async () => await _sut.UpdateAsync(Guid.NewGuid(), updateTodoListModel);
 
             //Assert
             callUpdateAsync.Should().Throw<BadRequestException>().WithMessage("The selected list does not belong to you");
-            await _todoListRepository.Received().GetFirst(Arg.Any<Expression<Func<TodoList, bool>>>());
+            await _todoListRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>());
             _claimService.Received().GetUserId();
         }
 
@@ -126,7 +106,7 @@ namespace N_Tier.Application.UnitTests.Services
                                             .With(tl => tl.Id = todoListId)
                                             .Build();
 
-            _todoListRepository.GetFirst(Arg.Any<Expression<Func<TodoList, bool>>>()).Returns(todoList);
+            _todoListRepository.GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>()).Returns(todoList);
             _todoListRepository.UpdateAsync(Arg.Any<TodoList>()).Returns(todoList);
 
             //Act
@@ -134,7 +114,7 @@ namespace N_Tier.Application.UnitTests.Services
 
             //Assert
             result.Should().Be(todoListId);
-            await _todoListRepository.Received().GetFirst(Arg.Any<Expression<Func<TodoList, bool>>>());
+            await _todoListRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>());
             _claimService.Received().GetUserId();
             await _todoListRepository.Received().UpdateAsync(Arg.Any<TodoList>());
         }
@@ -144,14 +124,14 @@ namespace N_Tier.Application.UnitTests.Services
         {
 
             //Arrange
-            _todoListRepository.GetFirst(Arg.Any<Expression<Func<TodoList, bool>>>()).ReturnsNull();
+            _todoListRepository.GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>()).ReturnsNull();
 
             //Act
             Func<Task> callUpdateAsync = async () => await _sut.DeleteAsync(Guid.NewGuid());
 
             //Assert
             callUpdateAsync.Should().Throw<NotFoundException>().WithMessage("List does not exist anymore");
-            await _todoListRepository.Received().GetFirst(Arg.Any<Expression<Func<TodoList, bool>>>());
+            await _todoListRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>());
         }
 
         [Fact]
@@ -165,15 +145,15 @@ namespace N_Tier.Application.UnitTests.Services
                                             .With(tl => tl.Id = todoListId)
                                             .Build();
 
-            _todoListRepository.GetFirst(Arg.Any<Expression<Func<TodoList, bool>>>()).Returns(todoList);
+            _todoListRepository.GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>()).Returns(todoList);
             _todoListRepository.DeleteAsync(Arg.Any<TodoList>()).Returns(todoList);
 
             //Act
-            var result =  await _sut.DeleteAsync(Guid.NewGuid());
+            var result = await _sut.DeleteAsync(Guid.NewGuid());
 
             //Assert
             result.Should().Be(todoListId);
-            await _todoListRepository.Received().GetFirst(Arg.Any<Expression<Func<TodoList, bool>>>());
+            await _todoListRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>());
             await _todoListRepository.Received().DeleteAsync(Arg.Any<TodoList>());
         }
     }

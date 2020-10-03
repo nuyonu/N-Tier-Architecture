@@ -20,8 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\N-Tier.Application\N-Tier.Application.csproj" />
     <ProjectReference Include="..\..\src\N-Tier.DataAccess\N-Tier.DataAccess.csproj" />
-    <ProjectReference Include="..\src\N-Tier.Application\N-Tier.Application.csproj" />
-    <ProjectReference Include="..\src\N-Tier.DataAccess\N-Tier.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>
