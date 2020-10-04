@@ -3,9 +3,9 @@ using N_Tier.Application.Models.TodoItem;
 
 namespace N_Tier.Application.Models.Validators.TodoItem
 {
-    public class UpdateTodoItemValidator : AbstractValidator<UpdateTodoItemModel>
+    public class UpdateTodoItemModelValidator : AbstractValidator<UpdateTodoItemModel>
     {
-        public UpdateTodoItemValidator()
+        public UpdateTodoItemModelValidator()
         {
             RuleFor(cti => cti.Title)
                 .MinimumLength(TodoItemValidatorConfiguration.MinimumTitleLength)
