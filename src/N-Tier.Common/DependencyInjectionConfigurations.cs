@@ -95,26 +95,24 @@ namespace N_Tier.Common
 
         public static void AddIdentity(this IServiceCollection services)
         {
-            // TODO update RequireConfirmedAccount = true
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<DatabaseContext>();
 
             services.Configure<IdentityOptions>(options =>
             {
-                // TODO update password settings
-                options.Password.RequireDigit = false; // true
-                options.Password.RequireLowercase = false; // true
-                options.Password.RequireNonAlphanumeric = false; // true
-                options.Password.RequireUppercase = false; // true
-                options.Password.RequiredLength = 2; // 6
-                options.Password.RequiredUniqueChars = 0; //1
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
 
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.AllowedForNewUsers = true;
 
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false; // true
+                options.User.RequireUniqueEmail = true;
             });
         }
 
