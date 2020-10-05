@@ -1,7 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
 using N_Tier.Application.Common.Email;
-using System;
 using System.Threading.Tasks;
 
 namespace N_Tier.Application.Services.Impl
@@ -33,12 +32,12 @@ namespace N_Tier.Application.Services.Impl
 
                 await client.SendAsync(message);
             }
-            catch (Exception ex)
+            catch
             {
                 await client.DisconnectAsync(true);
                 client.Dispose();
 
-                throw ex;
+                throw;
             }
         }
 

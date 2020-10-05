@@ -23,9 +23,11 @@ namespace N_Tier.Application.Models.Validators.User
                 .MustAsync(UsernameIsUniqueAsync)
                 .WithMessage($"Username is not available");
 
-            // TODO when configure IdentityOptions
             RuleFor(u => u.Password)
-                .MinimumLength(1);
+                .MinimumLength(UserValidatorConfiguration.MinimumPasswordLength)
+                .WithMessage($"Password should have minimum {UserValidatorConfiguration.MinimumPasswordLength} characters")
+                .MaximumLength(UserValidatorConfiguration.MaximumPasswordLength)
+                .WithMessage($"Password should have maximum {UserValidatorConfiguration.MaximumPasswordLength} characters");
 
             RuleFor(u => u.Email)
                 .EmailAddress()
