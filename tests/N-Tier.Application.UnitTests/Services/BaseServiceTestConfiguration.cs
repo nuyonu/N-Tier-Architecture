@@ -23,13 +23,12 @@ namespace N_Tier.Application.UnitTests.Services
             {
                 cfg.AddProfile(new TodoItemProfile());
                 cfg.AddProfile(new TodoListProfile());
+                cfg.AddProfile(new UserProfile());
             }).CreateMapper();
 
             var configurationBody = new Dictionary<string, string>
             {
-                {"Key1", "Value1"},
-                {"Nested:Key1", "NestedValue1"},
-                {"Nested:Key2", "NestedValue2"}
+                {"JwtConfiguration:SecretKey", "Super secret token key"},
             };
 
             _configuration = new ConfigurationBuilder()
