@@ -14,11 +14,10 @@ namespace N_Tier.Application.Services.Impl
             _smtpSettings = smtpSettings;
         }
 
-        public async Task SendEmailAsync(EmailMessage emailRequest)
+        public async Task SendEmailAsync(EmailMessage emailMessage)
         {
-            var emailMessage = CreateEmail(emailRequest);
-            await SendAsync(emailMessage);
-        }
+            await SendAsync(CreateEmail(emailMessage));
+        } 
 
         private async Task SendAsync(MimeMessage message)
         {
