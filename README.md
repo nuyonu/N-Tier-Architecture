@@ -21,3 +21,5 @@ dotnet ef migrations add InitialCreate --project N-Tier.Infrastructure -o Persis
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
 
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
+
+![](https://visitor-badge.glitch.me/badge?page_id=nuyonu/N-Tier-Architecture)
