@@ -5,6 +5,6 @@ namespace N_Tier.Application.Services
 {
     public interface IEmailService
     {
-        Task SendEmailAsync(EmailMessage emailRequest);
+        Task SendEmailAsync(EmailMessage emailMessage);
     }
 }

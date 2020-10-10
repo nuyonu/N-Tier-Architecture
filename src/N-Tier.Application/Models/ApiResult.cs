@@ -4,9 +4,14 @@ namespace N_Tier.Application.Models
 {
     public class ApiResult<T>
     {
+        private ApiResult() { }
+
         public bool Succeeded { get; set; }
+
         public int Code { get; set; }
+
         public T Result { get; set; }
+
         public IEnumerable<string> Errors { get; set; }
 
         private ApiResult(bool succeeded, int code, T result, IEnumerable<string> errors)
