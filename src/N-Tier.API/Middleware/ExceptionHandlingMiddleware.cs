@@ -53,7 +53,7 @@ namespace N_Tier.API.Middleware
                 code = HttpStatusCode.UnprocessableEntity;
             }
 
-            string result = JsonConvert.SerializeObject(ApiResult<string>.Failure(400, errors));
+            string result = JsonConvert.SerializeObject(ApiResult<string>.Failure((int)code, errors));
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
