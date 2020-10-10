@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using N_Tier.API.Filters;
 using N_Tier.API.Middleware;
 using N_Tier.Application.Models.Validators.TodoList;
