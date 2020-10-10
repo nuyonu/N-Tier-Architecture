@@ -27,7 +27,10 @@ namespace N_Tier.Api.IntegrationTests.Config
 
         private static HttpClient _client;
 
-        private SingletonConfig() { }
+        static SingletonConfig() 
+        {
+            _ = GetHostInstanceAsync().Result;
+        }
 
         public static async Task<IHost> GetHostInstanceAsync()
         {
@@ -36,7 +39,6 @@ namespace N_Tier.Api.IntegrationTests.Config
                 var hostBuilder = new HostBuilder()
                 .ConfigureWebHost(webHost =>
                 {
-                    // Add TestServer
                     webHost.UseTestServer();
                     webHost.UseStartup<Startup>();
                     webHost.ConfigureAppConfiguration((context, configBuilder) =>
@@ -55,17 +57,14 @@ namespace N_Tier.Api.IntegrationTests.Config
                             });
                     }); ;
 
-                    // configure the services after the startup has been called.
                     webHost.ConfigureTestServices(services =>
                     {
-                        // register the test one specifically
                         services.AddScoped<IEmailService, EmailTestService>();
                         services.AddScoped<ITemplateService, TemplateTestService>();
                     });
 
                 });
 
-                // Build and start the IHost
                 var host = await hostBuilder.StartAsync();
 
                 var context = host.Services.GetRequiredService<DatabaseContext>();
