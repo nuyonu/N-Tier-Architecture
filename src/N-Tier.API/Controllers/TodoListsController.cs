@@ -35,13 +35,13 @@ namespace N_Tier.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Guid>> CreateAsync(CreateTodoListModel createTodoListModel)
+        public async Task<ActionResult> CreateAsync(CreateTodoListModel createTodoListModel)
         {
             return Ok(ApiResult<Guid>.Success(201, await _todoListService.CreateAsync(createTodoListModel)));
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Guid>> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
+        public async Task<ActionResult> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
         {
             return Ok(ApiResult<Guid>.Success200(await _todoListService.UpdateAsync(id, updateTodoListModel)));
         }

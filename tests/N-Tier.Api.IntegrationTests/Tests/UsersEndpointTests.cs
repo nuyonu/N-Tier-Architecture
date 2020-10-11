@@ -9,12 +9,11 @@ using N_Tier.Application.Models.User;
 using N_Tier.DataAccess.Persistence;
 using Newtonsoft.Json;
 using System;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace N_Tier.Api.IntegrationTests
+namespace N_Tier.Api.IntegrationTests.Tests
 {
     public class UsersEndpointTests
     {

@@ -18,11 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\N-Tier.API\N-Tier.API.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Tests\" />
+    <ProjectReference Include="..\..\src\N-Tier.API\N-Tier.API.csproj" />
   </ItemGroup>
 
 </Project>
