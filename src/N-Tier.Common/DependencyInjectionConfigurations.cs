@@ -1,14 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using N_Tier.Application.Common.Email;
 using N_Tier.Application.MappingProfiles;
 using N_Tier.Application.Services;
+using N_Tier.Application.Services.DevImpl;
 using N_Tier.Application.Services.Impl;
 using N_Tier.Common.ConfigurationModels;
 using N_Tier.DataAccess.Identity;
@@ -24,15 +27,24 @@ namespace N_Tier.Common
 {
     public static class DependencyInjectionConfigurations
     {
-        public static void AddServices(this IServiceCollection services)
+        public static void AddServices(this IServiceCollection services, IWebHostEnvironment env)
         {
             services.AddScoped<IWeatherForecastService, WeatherForecastService>();
             services.AddScoped<ITodoListService, TodoListService>();
             services.AddScoped<ITodoItemService, TodoItemService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IClaimService, ClaimService>();
-            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<ITemplateService, TemplateService>();
+
+            if (env.IsDevelopment())
+            {
+                services.AddScoped<IEmailService, DevEmailService>();
+            }
+            else
+            {
+                services.AddScoped<IEmailService, EmailService>();
+            }
+
         }
 
         public static void AddRepositories(this IServiceCollection services)
