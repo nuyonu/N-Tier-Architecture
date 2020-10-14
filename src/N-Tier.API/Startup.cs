@@ -13,10 +13,12 @@ namespace N_Tier.API
     public class Startup
     {
         private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _env;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             _configuration = configuration;
+            _env = env;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -34,7 +36,7 @@ namespace N_Tier.API
 
             services.AddRepositories();
 
-            services.AddServices();
+            services.AddServices(_env);
 
             services.AddIdentity();
 
@@ -45,7 +47,7 @@ namespace N_Tier.API
             services.AddEmailConfiguration(_configuration);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseHttpsRedirection();
 
