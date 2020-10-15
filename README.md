@@ -1,4 +1,7 @@
 # N-Tier
+
+[![Build Status](https://dev.azure.com/nuyonu/N-Tier-Architecture/_apis/build/status/nuyonu.N-Tier-Architecture?branchName=master)](https://dev.azure.com/nuyonu/N-Tier-Architecture/_build/latest?definitionId=9&branchName=master)
+
 dotnet ef migrations add InitialCreate --project N-Tier.Infrastructure -o Persistence/Migrations --startup-project N-Tier.API
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=alert_status)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
 
@@ -23,3 +26,5 @@ dotnet ef migrations add InitialCreate --project N-Tier.Infrastructure -o Persis
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
 
 ![](https://visitor-badge.glitch.me/badge?page_id=nuyonu/N-Tier-Architecture)
+
+
