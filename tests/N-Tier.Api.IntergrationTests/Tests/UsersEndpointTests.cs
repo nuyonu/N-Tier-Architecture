@@ -1,31 +1,37 @@
-using FizzWare.NBuilder;
+﻿using FizzWare.NBuilder;
 using FluentAssertions;
-using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using N_Tier.Api.IntegrationTests.Config;
-using N_Tier.Api.IntegrationTests.Helpers;
+using N_Tier.Api.IntergrationTests.Config;
+using N_Tier.Api.IntergrationTests.Helpers;
 using N_Tier.Application.Models;
+using N_Tier.Application.Models.TodoList;
 using N_Tier.Application.Models.User;
+using N_Tier.Core.Entities;
 using N_Tier.DataAccess.Persistence;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 
-namespace N_Tier.Api.IntegrationTests.Tests
+namespace N_Tier.Api.IntergrationTests.Tests
 {
-    public class UsersEndpointTests
+    [TestFixture]
+    public class UsersEndpointTests : BaseOneTimeSetup
     {
-        [Fact]
+        [Test]
         public async Task Create_User_Should_Add_User_To_Database()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var context = host.Services.GetRequiredService<DatabaseContext>();
+            var context = _host.Services.GetRequiredService<DatabaseContext>();
 
-            var client = host.GetTestClient();
 
             var createModel = Builder<CreateUserModel>.CreateNew()
                 .With(cu => cu.Email = "IntegrationTest@gmail.com")
@@ -34,7 +40,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await client.PostAsync("/api/users", new JsonContent(createModel));
+            var apiResponse = await _client.PostAsync("/api/users", new JsonContent(createModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -43,20 +49,20 @@ namespace N_Tier.Api.IntegrationTests.Tests
             context.Users.Should().Contain(u => u.Id == response.Result.ToString());
         }
 
-        [Fact]
+        [Test]
         public async Task Create_User_Should_Return_BadRequest_If_The_Email_Is_Incorrect()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var client = host.GetTestClient();
+            //var _client = _host.GetTest_client();
 
             var createModel = Builder<CreateUserModel>.CreateNew()
                 .With(cu => cu.Email = "BadEmail")
                 .Build();
 
             // Act
-            var apiResponse = await client.PostAsync("/api/users", new JsonContent(createModel));
+            var apiResponse = await _client.PostAsync("/api/users", new JsonContent(createModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -64,13 +70,13 @@ namespace N_Tier.Api.IntegrationTests.Tests
             CheckResponse.Failure(response, 400);
         }
 
-        [Fact]
+        [Test]
         public async Task Create_User_Should_Return_BadRequest_If_The_Username_Is_Incorrect()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var client = host.GetTestClient();
+            //var _client = _host.GetTest_client();
 
             var createModel = Builder<CreateUserModel>.CreateNew()
                 .With(cu => cu.Email = "nuyonu@gmail.com")
@@ -79,7 +85,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await client.PostAsync("/api/users", new JsonContent(createModel));
+            var apiResponse = await _client.PostAsync("/api/users", new JsonContent(createModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -87,13 +93,13 @@ namespace N_Tier.Api.IntegrationTests.Tests
             CheckResponse.Failure(response, 400);
         }
 
-        [Fact]
+        [Test]
         public async Task Create_User_Should_Return_BadRequest_If_The_Password_Is_Incorrect()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var client = host.GetTestClient();
+            //var _client = _host.GetTest_client();
 
             var createModel = Builder<CreateUserModel>.CreateNew()
                 .With(cu => cu.Email = "nuyonu@gmail.com")
@@ -101,7 +107,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await client.PostAsync("/api/users", new JsonContent(createModel));
+            var apiResponse = await _client.PostAsync("/api/users", new JsonContent(createModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -109,13 +115,13 @@ namespace N_Tier.Api.IntegrationTests.Tests
             CheckResponse.Failure(response, 400);
         }
 
-        [Fact]
+        [Test]
         public async Task Login_Should_Return_User_Informations_And_Token()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var client = host.GetTestClient();
+            //var _client = _host.GetTest_client();
 
             var loginUserModel = Builder<LoginUserModel>.CreateNew()
                 .With(cu => cu.Username = "nuyonu")
@@ -123,7 +129,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
+            var apiResponse = await _client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
 
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<LoginResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
@@ -133,13 +139,13 @@ namespace N_Tier.Api.IntegrationTests.Tests
             response.Result.Token.Should().NotBeNullOrEmpty();
         }
 
-        [Fact]
+        [Test]
         public async Task Login_Should_Return_NotFoundException_If_Username_Does_Not_Exists_In_Database()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var client = host.GetTestClient();
+            //var _client = _host.GetTest_client();
 
             var loginUserModel = Builder<LoginUserModel>.CreateNew()
                 .With(cu => cu.Username = "NotExist")
@@ -147,7 +153,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
+            var apiResponse = await _client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -155,13 +161,13 @@ namespace N_Tier.Api.IntegrationTests.Tests
             CheckResponse.Failure(response, 404);
         }
 
-        [Fact]
+        [Test]
         public async Task Login_Should_Return_BadRequest_If_Password_Is_Incorrect()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var client = host.GetTestClient();
+            //var _client = _host.GetTest_client();
 
             var loginUserModel = Builder<LoginUserModel>.CreateNew()
                 .With(cu => cu.Username = "nuyonu")
@@ -169,7 +175,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
+            var apiResponse = await _client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
