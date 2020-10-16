@@ -48,8 +48,7 @@ namespace N_Tier.DataAccess.Repositories.Impl
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            //var updatedEntity = _dbSet.Update(entity).Entity;
-            _context.Entry(entity).CurrentValues.SetValues(entity);
+            _dbSet.Update(entity);
             await _context.SaveChangesAsync();
 
             return entity;

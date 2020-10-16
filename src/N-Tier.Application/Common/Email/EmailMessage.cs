@@ -5,8 +5,11 @@ namespace N_Tier.Application.Common.Email
     public class EmailMessage
     {
         public string ToAddress { get; private set; }
+
         public string Body { get; private set; }
+
         public string Subject { get; private set; }
+
         public List<EmailAttachment> Attachments { get; private set; }
 
         private EmailMessage() { }
