@@ -1,10 +1,13 @@
 ﻿using FizzWare.NBuilder;
 using FluentAssertions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using N_Tier.Api.IntergrationTests.Config;
 using N_Tier.Api.IntergrationTests.Helpers;
 using N_Tier.Application.Models;
 using N_Tier.Application.Models.User;
+using N_Tier.DataAccess.Identity;
 using N_Tier.DataAccess.Persistence;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -147,6 +150,68 @@ namespace N_Tier.Api.IntergrationTests.Tests
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
             CheckResponse.Failure(response, 400);
+        }
+
+        [Test]
+        public async Task ConfirmEmail_Should_Update_User_Status()
+        {
+            // Arrange
+            var user = Builder<ApplicationUser>.CreateNew()
+                .With(u => u.UserName = "ConfirmEmailUser")
+                .With(u => u.Email = "ConfirmEmailUser@email.com")
+                .Build();
+
+            var context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
+
+            var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+
+            var createdUser = await userManager.CreateAsync(user, "Password.1!");
+
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            var confirmEmailModel = Builder<ConfirmEmailModel>.CreateNew()
+                .With(ce => ce.UserId = user.Id)
+                .With(ce => ce.Token = token)
+                .Build();
+
+            // Act
+            var apiResponse = await _client.PostAsync("/api/users/confirmEmail", new JsonContent(confirmEmailModel));
+
+            // Assert
+            var response = JsonConvert.DeserializeObject<ApiResult<ConfirmEmailResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
+            var userFromDatabase = await context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
+            CheckResponse.Succeded(response);
+            response.Result.Confirmed.Should().BeTrue();
+            userFromDatabase.EmailConfirmed.Should().BeTrue();
+        }
+
+        [Test]
+        public async Task ConfirmEmail_Should_Return_UnprocessableEntity_If_Token_Or_UserId_Are_Incorrect()
+        {
+            // Arrange
+            var user = Builder<ApplicationUser>.CreateNew()
+                .With(u => u.UserName = "ConfirmEmailUser2")
+                .With(u => u.Email = "ConfirmEmailUser2@email.com")
+                .Build();
+
+            var context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
+
+            var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+
+            var createdUser = await userManager.CreateAsync(user, "Password.1!");
+
+            var confirmEmailModel = Builder<ConfirmEmailModel>.CreateNew()
+                .With(ce => ce.UserId = user.Id)
+                .With(ce => ce.Token = "InvalidToken")
+                .Build();
+
+            // Act
+            var apiResponse = await _client.PostAsync("/api/users/confirmEmail", new JsonContent(confirmEmailModel));
+
+            // Assert
+            apiResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            CheckResponse.Failure(response, 422);
         }
     }
 }
