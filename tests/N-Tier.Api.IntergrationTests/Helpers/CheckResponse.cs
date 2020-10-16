@@ -1,11 +1,14 @@
 ﻿using FluentAssertions;
 using N_Tier.Application.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace N_Tier.Api.IntegrationTests.Helpers
+namespace N_Tier.Api.IntergrationTests.Helpers
 {
     public class CheckResponse
     {
-        public static void Succeded<T>(ApiResult<T> result,int code = 200)
+        public static void Succeded<T>(ApiResult<T> result, int code = 200)
         {
             result.Code.Should().Be(code);
             result.Succeeded.Should().BeTrue();

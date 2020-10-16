@@ -2,39 +2,47 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using N_Tier.Api.IntegrationTests.Config;
-using N_Tier.Api.IntegrationTests.Helpers;
+using Microsoft.Extensions.Hosting;
+using N_Tier.Api.IntergrationTests.Config;
+using N_Tier.Api.IntergrationTests.Helpers;
 using N_Tier.Application.Models;
 using N_Tier.Application.Models.TodoList;
 using N_Tier.Core.Entities;
 using N_Tier.DataAccess.Persistence;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
-using Xunit;
 
-namespace N_Tier.Api.IntegrationTests.Tests
+namespace N_Tier.Api.IntergrationTests.Tests
 {
-    public class TodoListEndpointTests
+    [TestFixture]
+    public class TodoListEndpointTests : BaseOneTimeSetup
     {
-        [Fact]
+        //private IHost _host;
+        //private HttpClient _client;
+
+        [Test]
         public async Task Create_Should_Add_TodoList_In_Database()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var context = host.Services.GetRequiredService<DatabaseContext>();
+            var host = _host;
 
-            var client = await SingletonConfig.GetAuthenticatedClientInstanceAsync();
+            var context = _host.Services.GetRequiredService<DatabaseContext>();
+
+            //var _client = await SingletonConfig.GetAuthenticated_clientInstanceAsync();
 
             var createTodoListModel = Builder<CreateTodoListModel>.CreateNew().Build();
 
             // Act
-            var apiResponse = await client.PostAsync("/api/TodoLists", new JsonContent(createTodoListModel));
+            var apiResponse = await _client.PostAsync("/api/TodoLists", new JsonContent(createTodoListModel));
 
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<Guid>>(await apiResponse.Content.ReadAsStringAsync());
@@ -44,20 +52,20 @@ namespace N_Tier.Api.IntegrationTests.Tests
             todoListFromDatabase.Title.Should().Be(createTodoListModel.Title);
         }
 
-        [Fact]
+        [Test]
         public async Task Create_Should_Return_BadRequest_If_Title_Is_Incorrect()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var context = host.Services.GetRequiredService<DatabaseContext>();
+            var context = _host.Services.GetRequiredService<DatabaseContext>();
 
-            var client = await SingletonConfig.GetAuthenticatedClientInstanceAsync();
+            //var _client = await SingletonConfig.GetAuthenticated_clientInstanceAsync();
 
             var createTodoListModel = Builder<CreateTodoListModel>.CreateNew().With(ctl => ctl.Title = "1").Build();
 
             // Act
-            var apiResponse = await client.PostAsync("/api/TodoLists", new JsonContent(createTodoListModel));
+            var apiResponse = await _client.PostAsync("/api/TodoLists", new JsonContent(createTodoListModel));
 
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
@@ -67,13 +75,13 @@ namespace N_Tier.Api.IntegrationTests.Tests
             todoListFromDatabase.Should().BeNull();
         }
 
-        [Fact]
+        [Test]
         public async Task Update_Should_Update_Todo_List_From_Database()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var context = host.Services.GetRequiredService<DatabaseContext>();
+            var context = _host.Services.GetRequiredService<DatabaseContext>();
 
             var user = await context.Users.Where(u => u.Email == "nuyonu@gmail.com").FirstOrDefaultAsync();
 
@@ -81,14 +89,15 @@ namespace N_Tier.Api.IntegrationTests.Tests
 
             context.SaveChanges();
 
-            var client = await SingletonConfig.GetAuthenticatedClientInstanceAsync();
+            //var _client = await SingletonConfig.GetAuthenticated_clientInstanceAsync();
 
-            var updateTodoListModel = Builder<UpdateTodoListModel>.CreateNew().Build();
+            var updateTodoListModel = Builder<UpdateTodoListModel>.CreateNew().With(utl => utl.Title = "UpdateTodoListTitleIntegration").Build();
 
             // Act
-            var apiResponse = await client.PutAsync($"/api/TodoLists/{todoListFromDatabase.Id}", new JsonContent(updateTodoListModel));
+            var apiResponse = await _client.PutAsync($"/api/TodoLists/{todoListFromDatabase.Id}", new JsonContent(updateTodoListModel));
 
             // Assert
+            context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
             var response = JsonConvert.DeserializeObject<ApiResult<Guid>>(await apiResponse.Content.ReadAsStringAsync());
             var updatedTodoListFromDatabase = await context.TodoLists.Where(tl => tl.Id == response.Result).FirstOrDefaultAsync();
             CheckResponse.Succeded(response);
@@ -96,20 +105,20 @@ namespace N_Tier.Api.IntegrationTests.Tests
             updatedTodoListFromDatabase.Title.Should().Be(updateTodoListModel.Title);
         }
 
-        [Fact]
+        [Test]
         public async Task Update_Should_Return_NotFound_If_Todo_List_Does_Not_Exist_Anymore()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var context = host.Services.GetRequiredService<DatabaseContext>();
+            var context = _host.Services.GetRequiredService<DatabaseContext>();
 
-            var client = await SingletonConfig.GetAuthenticatedClientInstanceAsync();
+            //var _client = await SingletonConfig.GetAuthenticated_clientInstanceAsync();
 
-            var updateTodoListModel = Builder<UpdateTodoListModel>.CreateNew().Build();
+            var updateTodoListModel = Builder<UpdateTodoListModel>.CreateNew().With(utl => utl.Title = "UpdateTodoListIntegration").Build();
 
             // Act
-            var apiResponse = await client.PutAsync($"/api/TodoLists/{Guid.NewGuid()}", new JsonContent(updateTodoListModel));
+            var apiResponse = await _client.PutAsync($"/api/TodoLists/{Guid.NewGuid()}", new JsonContent(updateTodoListModel));
 
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
@@ -119,24 +128,24 @@ namespace N_Tier.Api.IntegrationTests.Tests
             updatedTodoListFromDatabase.Should().BeNull();
         }
 
-        [Fact]
+        [Test]
         public async Task Update_Should_Return_BadRequest_If_Todo_List_Does_Not_Belong_To_User()
         {
             // Arrange  
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var context = host.Services.GetRequiredService<DatabaseContext>();
+            var context = _host.Services.GetRequiredService<DatabaseContext>();
 
             var todoListFromDatabase = context.TodoLists.Add(Builder<TodoList>.CreateNew().With(tl => tl.Id = Guid.NewGuid()).Build()).Entity;
 
             context.SaveChanges();
 
-            var client = await SingletonConfig.GetAuthenticatedClientInstanceAsync();
+            //var _client = await SingletonConfig.GetAuthenticated_clientInstanceAsync();
 
             var updateTodoListModel = Builder<UpdateTodoListModel>.CreateNew().Build();
 
             // Act
-            var apiResponse = await client.PutAsync($"/api/TodoLists/{todoListFromDatabase.Id}", new JsonContent(updateTodoListModel));
+            var apiResponse = await _client.PutAsync($"/api/TodoLists/{todoListFromDatabase.Id}", new JsonContent(updateTodoListModel));
 
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
@@ -147,13 +156,13 @@ namespace N_Tier.Api.IntegrationTests.Tests
             updatedTodoListFromDatabase.Title.Should().Be(todoListFromDatabase.Title);
         }
 
-        [Fact]
+        [Test]
         public async Task Delete_Should_Delete_Todo_List_From_Database()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var context = host.Services.GetRequiredService<DatabaseContext>();
+            var context = _host.Services.GetRequiredService<DatabaseContext>();
 
             var user = await context.Users.Where(u => u.Email == "nuyonu@gmail.com").FirstOrDefaultAsync();
 
@@ -161,12 +170,12 @@ namespace N_Tier.Api.IntegrationTests.Tests
 
             context.SaveChanges();
 
-            var client = await SingletonConfig.GetAuthenticatedClientInstanceAsync();
+            //var _client = await SingletonConfig.GetAuthenticated_clientInstanceAsync();
 
             var updateTodoListModel = Builder<UpdateTodoListModel>.CreateNew().Build();
 
             // Act
-            var apiResponse = await client.DeleteAsync($"/api/TodoLists/{todoListFromDatabase.Id}");
+            var apiResponse = await _client.DeleteAsync($"/api/TodoLists/{todoListFromDatabase.Id}");
 
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<Guid>>(await apiResponse.Content.ReadAsStringAsync());
@@ -175,14 +184,14 @@ namespace N_Tier.Api.IntegrationTests.Tests
             updatedTodoListFromDatabase.Should().BeNull();
         }
 
-        [Fact]
+        [Test]
         public async Task Delete_Should_Return_NotFound_If_Todo_List_Does_Not_Exist_Anymore()
         {
             // Arrange
-            var client = await SingletonConfig.GetAuthenticatedClientInstanceAsync();
+            //var _client = await SingletonConfig.GetAuthenticated_clientInstanceAsync();
 
             // Act
-            var apiResponse = await client.DeleteAsync($"/api/TodoLists/{Guid.NewGuid()}");
+            var apiResponse = await _client.DeleteAsync($"/api/TodoLists/{Guid.NewGuid()}");
 
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
@@ -190,15 +199,17 @@ namespace N_Tier.Api.IntegrationTests.Tests
             CheckResponse.Failure(response, 404);
         }
 
-        [Fact]
+        [Test]
         public async Task Get_Todo_Lists_Should_Return_All_Todo_Lists_For_Specified_User_From_Database()
         {
             // Arrange
-            var host = await SingletonConfig.GetHostInstanceAsync();
+            //var _host = await SingletonConfig.Get_hostInstanceAsync();
 
-            var context = host.Services.GetRequiredService<DatabaseContext>();
+            var context = _host.Services.GetRequiredService<DatabaseContext>();
 
             var user = await context.Users.Where(u => u.Email == "nuyonu@gmail.com").FirstOrDefaultAsync();
+
+            context.TodoLists.RemoveRange(context.TodoLists.ToList());
 
             var todoLists = Builder<TodoList>.CreateListOfSize(10).All().With(tl => tl.Id = Guid.NewGuid()).With(tl => tl.CreatedBy = user.Id).Build();
             var todoListsNotBelongToTheUser = Builder<TodoList>.CreateListOfSize(10).All()
@@ -209,10 +220,10 @@ namespace N_Tier.Api.IntegrationTests.Tests
 
             context.SaveChanges();
 
-            var client = await SingletonConfig.GetAuthenticatedClientInstanceAsync();
+            //var _client = await SingletonConfig.GetAuthenticated_clientInstanceAsync();
 
             // Act
-            var apiResponse = await client.GetAsync($"/api/TodoLists");
+            var apiResponse = await _client.GetAsync($"/api/TodoLists");
 
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<IEnumerable<TodoListResponseModel>>>(await apiResponse.Content.ReadAsStringAsync());
