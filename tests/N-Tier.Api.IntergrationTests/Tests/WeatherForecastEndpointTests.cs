@@ -5,9 +5,7 @@ using N_Tier.Application.Models;
 using N_Tier.Application.Models.WeatherForecast;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace N_Tier.Api.IntergrationTests.Tests

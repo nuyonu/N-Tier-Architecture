@@ -1,22 +1,15 @@
 ﻿using FizzWare.NBuilder;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using N_Tier.Api.IntergrationTests.Config;
 using N_Tier.Api.IntergrationTests.Helpers;
 using N_Tier.Application.Models;
-using N_Tier.Application.Models.TodoList;
 using N_Tier.Application.Models.User;
-using N_Tier.Core.Entities;
 using N_Tier.DataAccess.Persistence;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace N_Tier.Api.IntergrationTests.Tests
@@ -28,10 +21,7 @@ namespace N_Tier.Api.IntergrationTests.Tests
         public async Task Create_User_Should_Add_User_To_Database()
         {
             // Arrange
-            //var _host = await SingletonConfig.Get_hostInstanceAsync();
-
             var context = _host.Services.GetRequiredService<DatabaseContext>();
-
 
             var createModel = Builder<CreateUserModel>.CreateNew()
                 .With(cu => cu.Email = "IntegrationTest@gmail.com")
@@ -53,10 +43,6 @@ namespace N_Tier.Api.IntergrationTests.Tests
         public async Task Create_User_Should_Return_BadRequest_If_The_Email_Is_Incorrect()
         {
             // Arrange
-            //var _host = await SingletonConfig.Get_hostInstanceAsync();
-
-            //var _client = _host.GetTest_client();
-
             var createModel = Builder<CreateUserModel>.CreateNew()
                 .With(cu => cu.Email = "BadEmail")
                 .Build();
@@ -74,10 +60,6 @@ namespace N_Tier.Api.IntergrationTests.Tests
         public async Task Create_User_Should_Return_BadRequest_If_The_Username_Is_Incorrect()
         {
             // Arrange
-            //var _host = await SingletonConfig.Get_hostInstanceAsync();
-
-            //var _client = _host.GetTest_client();
-
             var createModel = Builder<CreateUserModel>.CreateNew()
                 .With(cu => cu.Email = "nuyonu@gmail.com")
                 .With(cu => cu.Username = "Len")
@@ -97,10 +79,6 @@ namespace N_Tier.Api.IntergrationTests.Tests
         public async Task Create_User_Should_Return_BadRequest_If_The_Password_Is_Incorrect()
         {
             // Arrange
-            //var _host = await SingletonConfig.Get_hostInstanceAsync();
-
-            //var _client = _host.GetTest_client();
-
             var createModel = Builder<CreateUserModel>.CreateNew()
                 .With(cu => cu.Email = "nuyonu@gmail.com")
                 .With(cu => cu.Password = "incorrect")
@@ -119,10 +97,6 @@ namespace N_Tier.Api.IntergrationTests.Tests
         public async Task Login_Should_Return_User_Informations_And_Token()
         {
             // Arrange
-            //var _host = await SingletonConfig.Get_hostInstanceAsync();
-
-            //var _client = _host.GetTest_client();
-
             var loginUserModel = Builder<LoginUserModel>.CreateNew()
                 .With(cu => cu.Username = "nuyonu")
                 .With(cu => cu.Password = "Password.1!")
@@ -143,10 +117,6 @@ namespace N_Tier.Api.IntergrationTests.Tests
         public async Task Login_Should_Return_NotFoundException_If_Username_Does_Not_Exists_In_Database()
         {
             // Arrange
-            //var _host = await SingletonConfig.Get_hostInstanceAsync();
-
-            //var _client = _host.GetTest_client();
-
             var loginUserModel = Builder<LoginUserModel>.CreateNew()
                 .With(cu => cu.Username = "NotExist")
                 .With(cu => cu.Password = "Password.1!")
@@ -165,10 +135,6 @@ namespace N_Tier.Api.IntergrationTests.Tests
         public async Task Login_Should_Return_BadRequest_If_Password_Is_Incorrect()
         {
             // Arrange
-            //var _host = await SingletonConfig.Get_hostInstanceAsync();
-
-            //var _client = _host.GetTest_client();
-
             var loginUserModel = Builder<LoginUserModel>.CreateNew()
                 .With(cu => cu.Username = "nuyonu")
                 .With(cu => cu.Password = "Password.1")

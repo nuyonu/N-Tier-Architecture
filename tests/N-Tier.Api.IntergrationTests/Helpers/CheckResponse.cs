@@ -1,8 +1,5 @@
 ﻿using FluentAssertions;
 using N_Tier.Application.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace N_Tier.Api.IntergrationTests.Helpers
 {
