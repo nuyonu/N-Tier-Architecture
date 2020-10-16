@@ -88,6 +88,9 @@ namespace N_Tier.Application.Services.Impl
         {
             var user = await _userManager.FindByIdAsync(confirmEmailModel.UserId);
 
+            if (user == null)
+                throw new UnprocessableRequestException("Your verification link is incorrect");
+
             var result = await _userManager.ConfirmEmailAsync(user, confirmEmailModel.Token);
 
             if (!result.Succeeded)
