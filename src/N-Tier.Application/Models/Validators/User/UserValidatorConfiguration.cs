@@ -9,6 +9,5 @@
         public const int MinimumPasswordLength = 6;
 
         public const int MaximumPasswordLength = 128;
-
     }
 }
