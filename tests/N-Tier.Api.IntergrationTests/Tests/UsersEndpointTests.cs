@@ -157,8 +157,8 @@ namespace N_Tier.Api.IntergrationTests.Tests
         {
             // Arrange
             var user = Builder<ApplicationUser>.CreateNew()
-                .With(u => u.UserName = "IntegrationTest")
-                .With(u => u.Email = "IntegrationTest@email.com")
+                .With(u => u.UserName = "ConfirmEmailUser")
+                .With(u => u.Email = "ConfirmEmailUser@email.com")
                 .Build();
 
             var context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
@@ -190,8 +190,8 @@ namespace N_Tier.Api.IntergrationTests.Tests
         {
             // Arrange
             var user = Builder<ApplicationUser>.CreateNew()
-                .With(u => u.UserName = "IntegrationTest")
-                .With(u => u.Email = "IntegrationTest@email.com")
+                .With(u => u.UserName = "ConfirmEmailUser2")
+                .With(u => u.Email = "ConfirmEmailUser2@email.com")
                 .Build();
 
             var context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
@@ -199,8 +199,6 @@ namespace N_Tier.Api.IntergrationTests.Tests
             var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
 
             var createdUser = await userManager.CreateAsync(user, "Password.1!");
-
-            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
             var confirmEmailModel = Builder<ConfirmEmailModel>.CreateNew()
                 .With(ce => ce.UserId = user.Id)
