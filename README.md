@@ -1,13 +1,28 @@
-# N-Tier
+# N-Tier Architecture
 
-[![Build Status](https://dev.azure.com/nuyonu/N-Tier-Architecture/_apis/build/status/nuyonu.N-Tier-Architecture?branchName=master)](https://dev.azure.com/nuyonu/N-Tier-Architecture/_build/latest?definitionId=9&branchName=master)
+[![Build Status](https://dev.azure.com/nuyonu/N-Tier-Architecture/_apis/build/status/nuyonu.N-Tier-Architecture?branchName=master)](https://dev.azure.com/nuyonu/N-Tier-Architecture/_build/latest?definitionId=9&branchName=master) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=alert_status)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
 
+This is a n-layer architecture based on [Common web application architectures][common-web-architectures]
+
+
+## Introduction
+
+## Requirements
+
+## Installation
+
+## Configuration
+
+## Maintainers
+
+### Add migration
+
+<pre>
 dotnet ef migrations add InitialCreate --project N-Tier.Infrastructure -o Persistence/Migrations --startup-project N-Tier.API
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=alert_status)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
+</pre>
+
 
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
-
----
 
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
 
@@ -27,4 +42,4 @@ dotnet ef migrations add InitialCreate --project N-Tier.Infrastructure -o Persis
 
 ![](https://visitor-badge.glitch.me/badge?page_id=nuyonu/N-Tier-Architecture)
 
-
+[common-web-architectures]: https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures
