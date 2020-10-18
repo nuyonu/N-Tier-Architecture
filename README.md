@@ -1,45 +1,75 @@
-# N-Tier Architecture
+# **N-Tier Architecture**
 
-[![Build Status](https://dev.azure.com/nuyonu/N-Tier-Architecture/_apis/build/status/nuyonu.N-Tier-Architecture?branchName=master)](https://dev.azure.com/nuyonu/N-Tier-Architecture/_build/latest?definitionId=9&branchName=master) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=alert_status)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
+![Build Status](https://dev.azure.com/nuyonu/N-Tier-Architecture/_apis/build/status/nuyonu.N-Tier-Architecture?branchName=master) 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=alert_status)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
+![](https://visitor-badge.glitch.me/badge?page_id=nuyonu/N-Tier-Architecture)
 
-This is a n-layer architecture based on [Common web application architectures][common-web-architectures]
+This is a n-layer architecture based on [Common web application architectures][common-web-architectures]. The technologies used can be found below. It will be updated to the latest versions, depending on how stable they will be.
 
+## **Introduction**
 
-## Introduction
+<div align="center">
 
-## Requirements
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
 
-## Installation
-
-## Configuration
-
-## Maintainers
-
-### Add migration
-
-<pre>
-dotnet ef migrations add InitialCreate --project N-Tier.Infrastructure -o Persistence/Migrations --startup-project N-Tier.API
-</pre>
-
-
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
-
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
-
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
-
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=security_rating)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
-
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=bugs)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
-
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=code_smells)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
-
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture) 
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture) 
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=security_rating)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture) 
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=coverage)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
 
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=bugs)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=code_smells)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
-
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
 
-![](https://visitor-badge.glitch.me/badge?page_id=nuyonu/N-Tier-Architecture)
+</div>
+
+---
+
+## Technologies
+- .NET Core 3.1
+- ASP .NET Core 3.1
+- Swagger
+- Entity Framework Core 3.1
+- AutoMapper
+- FluentValidation
+- NUnit (integration tests)
+- XUnit (unit tests)
+- FluentAssertion (testing projects)
+- NBuilder (testing projects)
+
+---
+
+## Dependencies between projects
+
+<div align="center">
+
+![N-Tier-Dependencies](https://raw.githubusercontent.com/nuyonu/N-Tier-Architecture/master/github/images/N-Tier-Dependencies.png)
+
+</div>
+
+---
+
+## **Getting Started**
+
+<!-- Before you begin, please read the [requirements](#requirements).  -->
+
+A quick method to use the exposed solution is to download a copy of this project, if you meet all the requirements, the project will run without any problems and can be used from the first second.
+
+## Database migrations
+
+Migrations will be applied automatically. If you want to add new migrations to be applied to over the database, you will need to run the command below in the root folder
+
+```c#
+dotnet ef migrations add Migration-Name --project N-Tier.Infrastructure -o Persistence/Migrations --startup-project N-Tier.API
+```
+
+<!-- ## **Maintainers** -->
+<!-- // TODO -->
+
+## **Support**
+
+If you are having problems, please let me know by raising a [new issue](https://github.com/nuyonu/N-Tier-Architecture/issues/new/choose).
+
 
 [common-web-architectures]: https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures
