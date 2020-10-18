@@ -1,16 +1,16 @@
 # **N-Tier Architecture**
 
-![Build Status](https://dev.azure.com/nuyonu/N-Tier-Architecture/_apis/build/status/nuyonu.N-Tier-Architecture?branchName=master) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=alert_status)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
+![Build Status](https://dev.azure.com/nuyonu/N-Tier-Architecture/_apis/build/status/nuyonu.N-Tier-Architecture?branchName=master) 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=alert_status)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
+![](https://visitor-badge.glitch.me/badge?page_id=nuyonu/N-Tier-Architecture)
 
 This is a n-layer architecture based on [Common web application architectures][common-web-architectures]. The technologies used can be found below. It will be updated to the latest versions, depending on how stable they will be.
-
-
 
 ## **Introduction**
 
 <div align="center">
 
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
 
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture) 
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture) 
@@ -52,28 +52,24 @@ This is a n-layer architecture based on [Common web application architectures][c
 
 ## **Getting Started**
 
-Before you begin, please read the requirements under this section. 
+<!-- Before you begin, please read the [requirements](#requirements).  -->
 
 A quick method to use the exposed solution is to download a copy of this project, if you meet all the requirements, the project will run without any problems and can be used from the first second.
 
 ## Database migrations
 
+Migrations will be applied automatically. If you want to add new migrations to be applied to over the database, you will need to run the command below in the root folder
+
 ```c#
-dotnet ef migrations add InitialCreate --project N-Tier.Infrastructure -o Persistence/Migrations --startup-project N-Tier.API
+dotnet ef migrations add Migration-Name --project N-Tier.Infrastructure -o Persistence/Migrations --startup-project N-Tier.API
 ```
 
-## Database migrations
+<!-- ## **Maintainers** -->
+<!-- // TODO -->
 
-// TODO
+## **Support**
 
-## Requirements
+If you are having problems, please let me know by raising a [new issue](https://github.com/nuyonu/N-Tier-Architecture/issues/new/choose).
 
-// TODO
-
-## Maintainers
-
-// TODO
-
-<!-- ![](https://visitor-badge.glitch.me/badge?page_id=nuyonu/N-Tier-Architecture) -->
 
 [common-web-architectures]: https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures
