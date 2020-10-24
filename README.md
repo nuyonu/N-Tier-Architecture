@@ -29,14 +29,15 @@ This is a n-layer architecture based on [Common web application architectures][c
 ## Technologies
 - .NET Core 3.1
 - ASP .NET Core 3.1
-- Swagger
-- Entity Framework Core 3.1
+- Swagger (Documentation)
+- Entity Framework Core (SQL Server)
+- ASP.NET Core Identity (SQL Server)
 - AutoMapper
 - FluentValidation
-- NUnit (integration tests)
-- XUnit (unit tests)
-- FluentAssertion (testing projects)
-- NBuilder (testing projects)
+- NUnit (Integration tests)
+- XUnit (Unit tests)
+- FluentAssertion (Testing projects)
+- NBuilder (Testing projects)
 
 ---
 
