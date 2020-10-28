@@ -165,7 +165,7 @@ namespace N_Tier.Api.IntergrationTests.Tests
 
             var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
 
-            var createdUser = await userManager.CreateAsync(user, "Password.1!");
+            await userManager.CreateAsync(user, "Password.1!");
 
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -194,11 +194,9 @@ namespace N_Tier.Api.IntergrationTests.Tests
                 .With(u => u.Email = "ConfirmEmailUser2@email.com")
                 .Build();
 
-            var context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
-
             var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
 
-            var createdUser = await userManager.CreateAsync(user, "Password.1!");
+            await userManager.CreateAsync(user, "Password.1!");
 
             var confirmEmailModel = Builder<ConfirmEmailModel>.CreateNew()
                 .With(ce => ce.UserId = user.Id)
@@ -212,6 +210,109 @@ namespace N_Tier.Api.IntergrationTests.Tests
             apiResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
             CheckResponse.Failure(response, 422);
+        }
+
+        [Test]
+        public async Task ChangePassword_Should_Return_NotFoundException_If_User_Does_Not_Exists_In_Database()
+        {
+            // Arrange
+            var changePasswordModel = Builder<ChangePasswordModel>.CreateNew()
+                .With(cu => cu.OldPassword = "Password.1!")
+                .With(cu => cu.NewPassword = "Password.12!")
+                .Build();
+
+            // Act
+            var apiResponse = await _client.PutAsync($"/api/users/{Guid.NewGuid()}/changePassword", new JsonContent(changePasswordModel));
+
+            // Assert
+            apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            CheckResponse.Failure(response, 404);
+        }
+
+        [Test]
+        public async Task ChangePassword_Should_Return_BadRequest_If_OldPassword_Does_Not_Match_User_Password()
+        {
+            // Arrange
+            var user = Builder<ApplicationUser>.CreateNew()
+                .With(u => u.UserName = "ChangePasswordBadRequest")
+                .With(u => u.Email = "ChangePasswordBadRequest@email.com")
+                .Build();
+
+            var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+
+            var createdUser = await userManager.CreateAsync(user, "Password.1!");
+
+            var changePasswordModel = Builder<ChangePasswordModel>.CreateNew()
+                .With(cu => cu.OldPassword = "Password.12!")
+                .With(cu => cu.NewPassword = "Password.1!")
+                .Build();
+
+            // Act
+            var apiResponse = await _client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
+
+            // Assert
+            apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            CheckResponse.Failure(response, 400);
+        }
+
+        [Test]
+        public async Task ChangePassword_Should_Return_BadRequest_If_NewPassword_Does_Not_Follow_The_Rules()
+        {
+            // Arrange
+            var user = Builder<ApplicationUser>.CreateNew()
+                .With(u => u.UserName = "ChangePasswordBadRequest1")
+                .With(u => u.Email = "ChangePasswordBadRequest1@email.com")
+                .Build();
+
+            var context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
+
+            var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+
+            var createdUser = await userManager.CreateAsync(user, "Password.1!");
+
+            var changePasswordModel = Builder<ChangePasswordModel>.CreateNew()
+                .With(cu => cu.OldPassword = "Password.1!")
+                .With(cu => cu.NewPassword = "string")
+                .Build();
+
+            // Act
+            var apiResponse = await _client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
+
+            // Assert
+            apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            CheckResponse.Failure(response, 400);
+        }
+
+        [Test]
+        public async Task ChangePassword_Should_Update_User_Password_If_OldPassword_And_NewPassword_Are_Ok()
+        {
+            // Arrange
+            var user = Builder<ApplicationUser>.CreateNew()
+                .With(u => u.UserName = "ChangePasswordBadRequest1")
+                .With(u => u.Email = "ChangePasswordBadRequest1@email.com")
+                .With(u => u.EmailConfirmed = true)
+                .Build();
+
+            var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+
+            await userManager.CreateAsync(user, "Password.1!");
+
+            var changePasswordModel = Builder<ChangePasswordModel>.CreateNew()
+                .With(cu => cu.OldPassword = "Password.1!")
+                .With(cu => cu.NewPassword = "Password.12!")
+                .Build();
+
+            // Act
+            var apiResponse = await _client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
+
+            // Assert
+            apiResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+            var response = JsonConvert.DeserializeObject<ApiResult<Guid>>(await apiResponse.Content.ReadAsStringAsync());
+            CheckResponse.Succeded(response);
+            response.Result.Should().Be(user.Id);
         }
     }
 }
