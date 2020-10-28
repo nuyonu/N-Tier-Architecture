@@ -262,8 +262,8 @@ namespace N_Tier.Api.IntergrationTests.Tests
         {
             // Arrange
             var user = Builder<ApplicationUser>.CreateNew()
-                .With(u => u.UserName = "ChangePasswordBadRequest1")
-                .With(u => u.Email = "ChangePasswordBadRequest1@email.com")
+                .With(u => u.UserName = "ChangePasswordBadRequest2")
+                .With(u => u.Email = "ChangePasswordBadRequest2@email.com")
                 .Build();
 
             var context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
@@ -291,8 +291,8 @@ namespace N_Tier.Api.IntergrationTests.Tests
         {
             // Arrange
             var user = Builder<ApplicationUser>.CreateNew()
-                .With(u => u.UserName = "ChangePasswordBadRequest1")
-                .With(u => u.Email = "ChangePasswordBadRequest1@email.com")
+                .With(u => u.UserName = "ChangePasswordBadRequest3")
+                .With(u => u.Email = "ChangePasswordBadRequest3@email.com")
                 .With(u => u.EmailConfirmed = true)
                 .Build();
 
