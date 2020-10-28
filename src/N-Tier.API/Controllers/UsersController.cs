@@ -36,5 +36,11 @@ namespace N_Tier.API.Controllers
         {
             return Ok(ApiResult<ConfirmEmailResponseModel>.Success200(await _userService.ConfirmEmailAsync(confirmEmailModel)));
         }
+
+        [HttpPut("{id}/changePassword")]
+        public async Task<ActionResult> ChangePassword(Guid id, ChangePasswordModel changePasswordModel)
+        {
+            return Ok(ApiResult<Guid>.Success200(await _userService.ChangePasswordAsync(id, changePasswordModel)));
+        }
     }
 }
