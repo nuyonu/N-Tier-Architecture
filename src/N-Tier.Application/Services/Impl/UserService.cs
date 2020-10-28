@@ -101,5 +101,20 @@ namespace N_Tier.Application.Services.Impl
                 Confirmed = true
             };
         }
+
+        public async Task<Guid> ChangePasswordAsync(Guid userId, ChangePasswordModel changePasswordModel)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user == null)
+                throw new NotFoundException("User does not exist anymore");
+
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordModel.OldPassword, changePasswordModel.NewPassword);
+
+            if (!result.Succeeded)
+                throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
+
+            return userId;
+        }
     }
 }
