@@ -19,7 +19,7 @@ namespace N_Tier.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> Get()
+        public async Task<IActionResult> Get()
             => Ok(ApiResult<IEnumerable<WeatherForecastResponseModel>>.Success200(await _weatherForecastService.GetAsync()));
     }
 }

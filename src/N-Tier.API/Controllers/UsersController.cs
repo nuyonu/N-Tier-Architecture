@@ -19,26 +19,26 @@ namespace N_Tier.API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> RegisterAsync(CreateUserModel createUserModel)
+        public async Task<IActionResult> RegisterAsync(CreateUserModel createUserModel)
         {
             return Ok(ApiResult<Guid>.Success(201, await _userService.CreateAsync(createUserModel)));
         }
 
         [HttpPost("authenticate")]
         [AllowAnonymous]
-        public async Task<ActionResult> LoginAsync(LoginUserModel loginUserModel)
+        public async Task<IActionResult> LoginAsync(LoginUserModel loginUserModel)
         {
             return Ok(ApiResult<LoginResponseModel>.Success200(await _userService.LoginAsync(loginUserModel)));
         }
 
         [HttpPost("confirmEmail")]
-        public async Task<ActionResult> ConfirmEmailAsync(ConfirmEmailModel confirmEmailModel)
+        public async Task<IActionResult> ConfirmEmailAsync(ConfirmEmailModel confirmEmailModel)
         {
             return Ok(ApiResult<ConfirmEmailResponseModel>.Success200(await _userService.ConfirmEmailAsync(confirmEmailModel)));
         }
 
         [HttpPut("{id}/changePassword")]
-        public async Task<ActionResult> ChangePassword(Guid id, ChangePasswordModel changePasswordModel)
+        public async Task<IActionResult> ChangePassword(Guid id, ChangePasswordModel changePasswordModel)
         {
             return Ok(ApiResult<Guid>.Success200(await _userService.ChangePasswordAsync(id, changePasswordModel)));
         }

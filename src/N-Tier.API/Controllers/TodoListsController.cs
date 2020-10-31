@@ -23,31 +23,31 @@ namespace N_Tier.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<IActionResult> GetAll()
         {
             return Ok(ApiResult<IEnumerable<TodoListResponseModel>>.Success200(await _todoListService.GetAllAsync()));
         }
 
         [HttpGet("{id}/todoItems")]
-        public async Task<ActionResult> GetAllTodoItemsAsync(Guid id)
+        public async Task<IActionResult> GetAllTodoItemsAsync(Guid id)
         {
             return Ok(ApiResult<IEnumerable<TodoItemResponseModel>>.Success200(await _todoItemService.GetAllByListIdAsync(id)));
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateAsync(CreateTodoListModel createTodoListModel)
+        public async Task<IActionResult> CreateAsync(CreateTodoListModel createTodoListModel)
         {
             return Ok(ApiResult<Guid>.Success(201, await _todoListService.CreateAsync(createTodoListModel)));
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
+        public async Task<IActionResult> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
         {
             return Ok(ApiResult<Guid>.Success200(await _todoListService.UpdateAsync(id, updateTodoListModel)));
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteAsync(Guid id)
+        public async Task<IActionResult> DeleteAsync(Guid id)
         {
             return Ok(ApiResult<Guid>.Success200(await _todoListService.DeleteAsync(id)));
         }
