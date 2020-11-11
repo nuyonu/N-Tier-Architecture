@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>N_Tier.Application.UnitTests</RootNamespace>
 
     <IsPackable>false</IsPackable>
@@ -9,15 +9,21 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
     <PackageReference Include="MockQueryable.Core" Version="3.1.3" />
     <PackageReference Include="MockQueryable.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="MockQueryable.NSubstitute" Version="3.1.3" />
     <PackageReference Include="NBuilder" Version="6.1.0" />
     <PackageReference Include="NSubstitute" Version="4.2.2" />
-    <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
-    <PackageReference Include="coverlet.collector" Version="1.2.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="1.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
