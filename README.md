@@ -27,8 +27,8 @@ This is a n-layer architecture based on [Common web application architectures][c
 ---
 
 ## Technologies
-- .NET Core 3.1
-- ASP .NET Core 3.1
+- .NET Core 5.0
+- ASP .NET Core 5.0
 - Swagger (Documentation)
 - Entity Framework Core (SQL Server)
 - ASP.NET Core Identity (SQL Server)
@@ -62,7 +62,7 @@ A quick method to use the exposed solution is to download a copy of this project
 Migrations will be applied automatically. If you want to add new migrations to be applied to over the database, you will need to run the command below in the root folder
 
 ```c#
-dotnet ef migrations add Migration-Name --project N-Tier.Infrastructure -o Persistence/Migrations --startup-project N-Tier.API
+dotnet ef migrations add Migration-Name --project N-Tier.DataAccess -o Persistence/Migrations --startup-project N-Tier.API
 ```
 
 <!-- ## **Maintainers** -->
