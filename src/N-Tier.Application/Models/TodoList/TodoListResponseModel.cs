@@ -1,11 +1,7 @@
-﻿using System;
-
-namespace N_Tier.Application.Models.TodoList
+﻿namespace N_Tier.Application.Models.TodoList
 {
-    public class TodoListResponseModel
+    public class TodoListResponseModel : BaseResponseModel
     {
-        public Guid Id { get; set; }
-
         public string Title { get; set; }
     }
 }

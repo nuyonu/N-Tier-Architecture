@@ -35,8 +35,8 @@ namespace N_Tier.Api.IntergrationTests.Tests
             var apiResponse = await _client.PostAsync("/api/todoLists", new JsonContent(createTodoListModel));
 
             // Assert
-            var response = JsonConvert.DeserializeObject<ApiResult<Guid>>(await apiResponse.Content.ReadAsStringAsync());
-            var todoListFromDatabase = await context.TodoLists.Where(u => u.Id == response.Result).FirstOrDefaultAsync();
+            var response = JsonConvert.DeserializeObject<ApiResult<CreateTodoListResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
+            var todoListFromDatabase = await context.TodoLists.Where(u => u.Id == response.Result.Id).FirstOrDefaultAsync();
             CheckResponse.Succeded(response, 201);
             todoListFromDatabase.Should().NotBeNull();
             todoListFromDatabase.Title.Should().Be(createTodoListModel.Title);
@@ -80,8 +80,8 @@ namespace N_Tier.Api.IntergrationTests.Tests
 
             // Assert
             context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
-            var response = JsonConvert.DeserializeObject<ApiResult<Guid>>(await apiResponse.Content.ReadAsStringAsync());
-            var updatedTodoListFromDatabase = await context.TodoLists.Where(tl => tl.Id == response.Result).FirstOrDefaultAsync();
+            var response = JsonConvert.DeserializeObject<ApiResult<UpdateTodoListResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
+            var updatedTodoListFromDatabase = await context.TodoLists.Where(tl => tl.Id == response.Result.Id).FirstOrDefaultAsync();
             CheckResponse.Succeded(response);
             updatedTodoListFromDatabase.Should().NotBeNull();
             updatedTodoListFromDatabase.Title.Should().Be(updateTodoListModel.Title);
@@ -148,8 +148,8 @@ namespace N_Tier.Api.IntergrationTests.Tests
             var apiResponse = await _client.DeleteAsync($"/api/todoLists/{todoListFromDatabase.Id}");
 
             // Assert
-            var response = JsonConvert.DeserializeObject<ApiResult<Guid>>(await apiResponse.Content.ReadAsStringAsync());
-            var updatedTodoListFromDatabase = await context.TodoLists.Where(tl => tl.Id == response.Result).FirstOrDefaultAsync();
+            var response = JsonConvert.DeserializeObject<ApiResult<BaseResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
+            var updatedTodoListFromDatabase = await context.TodoLists.Where(tl => tl.Id == response.Result.Id).FirstOrDefaultAsync();
             CheckResponse.Succeded(response);
             updatedTodoListFromDatabase.Should().BeNull();
         }

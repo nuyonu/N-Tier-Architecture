@@ -12,4 +12,7 @@ namespace N_Tier.Application.Models.TodoItem
 
         public bool IsDone { get; set; }
     }
+
+    public class UpdateTodoItemResponseModel : BaseResponseModel
+    { }
 }

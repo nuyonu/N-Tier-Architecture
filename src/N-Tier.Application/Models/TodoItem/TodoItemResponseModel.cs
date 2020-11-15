@@ -1,11 +1,7 @@
-﻿using System;
-
-namespace N_Tier.Application.Models.TodoItem
+﻿namespace N_Tier.Application.Models.TodoItem
 {
-    public class TodoItemResponseModel
+    public class TodoItemResponseModel : BaseResponseModel
     {
-        public Guid Id { get; set; }
-
         public string Title { get; set; }
 
         public string Body { get; set; }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using N_Tier.Application.Exceptions;
+using N_Tier.Application.Models;
 using N_Tier.Application.Models.TodoList;
 using N_Tier.Core.Entities;
 using N_Tier.DataAccess.Repositories;
@@ -32,16 +33,19 @@ namespace N_Tier.Application.Services.Impl
             return _mapper.Map<IEnumerable<TodoListResponseModel>>(todoLists);
         }
 
-        public async Task<Guid> CreateAsync(CreateTodoListModel createTodoListModel)
+        public async Task<CreateTodoListResponseModel> CreateAsync(CreateTodoListModel createTodoListModel)
         {
             var todoList = _mapper.Map<TodoList>(createTodoListModel);
 
             var addedTodoList = await _todoListRepository.AddAsync(todoList);
 
-            return addedTodoList.Id;
+            return new CreateTodoListResponseModel
+            {
+                Id = addedTodoList.Id
+            };
         }
 
-        public async Task<Guid> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
+        public async Task<UpdateTodoListResponseModel> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
         {
             var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == id);
 
@@ -55,17 +59,23 @@ namespace N_Tier.Application.Services.Impl
 
             todoList.Title = updateTodoListModel.Title;
 
-            return (await _todoListRepository.UpdateAsync(todoList)).Id;
+            return new UpdateTodoListResponseModel
+            {
+                Id = (await _todoListRepository.UpdateAsync(todoList)).Id
+            };
         }
 
-        public async Task<Guid> DeleteAsync(Guid id)
+        public async Task<BaseResponseModel> DeleteAsync(Guid id)
         {
             var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == id);
 
             if (todoList == null)
                 throw new NotFoundException("List does not exist anymore");
 
-            return (await _todoListRepository.DeleteAsync(todoList)).Id;
+            return new BaseResponseModel
+            {
+                Id = (await _todoListRepository.DeleteAsync(todoList)).Id
+            };
         }
     }
 }

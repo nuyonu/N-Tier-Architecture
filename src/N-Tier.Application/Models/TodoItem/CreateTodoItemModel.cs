@@ -10,4 +10,7 @@ namespace N_Tier.Application.Models.TodoItem
 
         public string Body { get; set; }
     }
+
+    public class CreateTodoItemResponseModel : BaseResponseModel
+    { }
 }

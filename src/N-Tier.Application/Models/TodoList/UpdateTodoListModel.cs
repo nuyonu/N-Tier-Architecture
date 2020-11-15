@@ -4,4 +4,7 @@
     {
         public string Title { get; set; }
     }
+
+    public class UpdateTodoListResponseModel : BaseResponseModel
+    { }
 }
