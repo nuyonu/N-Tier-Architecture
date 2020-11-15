@@ -19,15 +19,13 @@ namespace N_Tier.Application.Services.Impl
 
         public async Task<IEnumerable<WeatherForecastResponseModel>> GetAsync()
         {
-            var rng = new Random();
-
             await Task.Delay(500);
 
             return Enumerable.Range(1, 5).Select(index => new WeatherForecastResponseModel
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = RandomGenerator.GenerateInteger(-20, 55),
-                Summary = _summaries[RandomGenerator.GenerateInteger(0, _summaries.Count())]
+                Summary = _summaries[RandomGenerator.GenerateInteger(0, _summaries.Count)]
             });
         }
     }
