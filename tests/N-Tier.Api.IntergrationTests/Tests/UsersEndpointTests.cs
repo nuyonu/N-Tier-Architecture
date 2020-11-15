@@ -37,9 +37,9 @@ namespace N_Tier.Api.IntergrationTests.Tests
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var response = JsonConvert.DeserializeObject<ApiResult<Guid>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = JsonConvert.DeserializeObject<ApiResult<CreateUserResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
             CheckResponse.Succeded(response, 201);
-            context.Users.Should().Contain(u => u.Id == response.Result.ToString());
+            context.Users.Should().Contain(u => u.Id == response.Result.Id.ToString());
         }
 
         [Test]
@@ -310,9 +310,9 @@ namespace N_Tier.Api.IntergrationTests.Tests
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var response = JsonConvert.DeserializeObject<ApiResult<Guid>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = JsonConvert.DeserializeObject<ApiResult<BaseResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
             CheckResponse.Succeded(response);
-            response.Result.Should().Be(user.Id);
+            response.Result.Id.Should().Be(user.Id);
         }
     }
 }

@@ -54,7 +54,7 @@ namespace N_Tier.Application.UnitTests.Services
             var result = await _sut.CreateAsync(createTodoListModel);
 
             //Assert
-            result.Should().Be(todoList.Id);
+            result.Id.Should().Be(todoList.Id);
             await _todoListRepository.Received().AddAsync(Arg.Any<TodoList>());
         }
 
@@ -113,7 +113,7 @@ namespace N_Tier.Application.UnitTests.Services
             var result = await _sut.UpdateAsync(todoListId, updateTodoListModel);
 
             //Assert
-            result.Should().Be(todoListId);
+            result.Id.Should().Be(todoListId);
             await _todoListRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>());
             _claimService.Received().GetUserId();
             await _todoListRepository.Received().UpdateAsync(Arg.Any<TodoList>());
@@ -152,7 +152,7 @@ namespace N_Tier.Application.UnitTests.Services
             var result = await _sut.DeleteAsync(Guid.NewGuid());
 
             //Assert
-            result.Should().Be(todoListId);
+            result.Id.Should().Be(todoListId);
             await _todoListRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>());
             await _todoListRepository.Received().DeleteAsync(Arg.Any<TodoList>());
         }

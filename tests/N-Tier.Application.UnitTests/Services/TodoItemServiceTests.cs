@@ -61,7 +61,7 @@ namespace N_Tier.Application.UnitTests.Services
             // Arrange
             var createTodoItemModel = Builder<CreateTodoItemModel>.CreateNew().Build();
             var todoList = Builder<TodoList>.CreateNew().Build();
-            var todoItem = Builder<TodoItem>.CreateNew().Build();
+            var todoItem = Builder<TodoItem>.CreateNew().With(ti => ti.Id = Guid.NewGuid()).Build();
 
             _todoListRepository.GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>()).Returns(todoList);
             _todoItemRepository.AddAsync(Arg.Any<TodoItem>()).Returns(todoItem);
@@ -70,7 +70,7 @@ namespace N_Tier.Application.UnitTests.Services
             var result = await _sut.CreateAsync(createTodoItemModel);
 
             // Assert
-            result.Should().Be(todoItem.Id);
+            result.Id.Should().Be(todoItem.Id);
             await _todoListRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>());
             await _todoItemRepository.Received().AddAsync(Arg.Any<TodoItem>());
         }
@@ -126,7 +126,7 @@ namespace N_Tier.Application.UnitTests.Services
             var result = await _sut.UpdateAsync(Guid.NewGuid(), updateTodoItem);
 
             // Assert
-            result.Should().Be(todoItem.Id);
+            result.Id.Should().Be(todoItem.Id);
             await _todoListRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>());
             await _todoItemRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoItem, bool>>>());
             await _todoItemRepository.Received().UpdateAsync(Arg.Any<TodoItem>());
@@ -158,7 +158,7 @@ namespace N_Tier.Application.UnitTests.Services
             var result = await _sut.DeleteAsync(Guid.NewGuid());
 
             // Assert
-            result.Should().Be(todoItem.Id);
+            result.Id.Should().Be(todoItem.Id);
             await _todoItemRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoItem, bool>>>());
             await _todoItemRepository.Received().DeleteAsync(Arg.Any<TodoItem>());
         }

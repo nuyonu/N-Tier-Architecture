@@ -8,4 +8,7 @@
 
         public string Password { get; set; }
     }
+
+    public class CreateUserResponseModel : BaseResponseModel
+    { }
 }

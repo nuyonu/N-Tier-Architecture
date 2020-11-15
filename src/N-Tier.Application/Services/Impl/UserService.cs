@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using N_Tier.Application.Common.Email;
 using N_Tier.Application.Exceptions;
 using N_Tier.Application.Helpers;
+using N_Tier.Application.Models;
 using N_Tier.Application.Models.User;
 using N_Tier.Application.Templates;
 using N_Tier.DataAccess.Identity;
@@ -39,7 +40,7 @@ namespace N_Tier.Application.Services.Impl
             _emailService = emailService;
         }
 
-        public async Task<Guid> CreateAsync(CreateUserModel createUserModel)
+        public async Task<CreateUserResponseModel> CreateAsync(CreateUserModel createUserModel)
         {
             var user = _mapper.Map<ApplicationUser>(createUserModel);
 
@@ -59,7 +60,10 @@ namespace N_Tier.Application.Services.Impl
 
             await _emailService.SendEmailAsync(EmailMessage.Create(user.Email, emailBody, "[N-Tier]Confirm your email"));
 
-            return Guid.Parse((await _userManager.FindByNameAsync(user.UserName)).Id);
+            return new CreateUserResponseModel
+            {
+                Id = Guid.Parse((await _userManager.FindByNameAsync(user.UserName)).Id)
+            };
         }
 
         public async Task<LoginResponseModel> LoginAsync(LoginUserModel loginUserModel)
@@ -76,7 +80,7 @@ namespace N_Tier.Application.Services.Impl
 
             var token = JwtHelper.GenerateToken(user, _configuration);
 
-            return new LoginResponseModel()
+            return new LoginResponseModel
             {
                 Username = user.UserName,
                 Email = user.Email,
@@ -102,7 +106,7 @@ namespace N_Tier.Application.Services.Impl
             };
         }
 
-        public async Task<Guid> ChangePasswordAsync(Guid userId, ChangePasswordModel changePasswordModel)
+        public async Task<BaseResponseModel> ChangePasswordAsync(Guid userId, ChangePasswordModel changePasswordModel)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
 
@@ -114,7 +118,10 @@ namespace N_Tier.Application.Services.Impl
             if (!result.Succeeded)
                 throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
 
-            return userId;
+            return new BaseResponseModel
+            {
+                Id = Guid.Parse(user.Id)
+            };
         }
     }
 }

@@ -37,19 +37,19 @@ namespace N_Tier.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateTodoListModel createTodoListModel)
         {
-            return Ok(ApiResult<Guid>.Success(201, await _todoListService.CreateAsync(createTodoListModel)));
+            return Ok(ApiResult<CreateTodoListResponseModel>.Success(201, await _todoListService.CreateAsync(createTodoListModel)));
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
         {
-            return Ok(ApiResult<Guid>.Success200(await _todoListService.UpdateAsync(id, updateTodoListModel)));
+            return Ok(ApiResult<UpdateTodoListResponseModel>.Success200(await _todoListService.UpdateAsync(id, updateTodoListModel)));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            return Ok(ApiResult<Guid>.Success200(await _todoListService.DeleteAsync(id)));
+            return Ok(ApiResult<BaseResponseModel>.Success200(await _todoListService.DeleteAsync(id)));
         }
     }
 }

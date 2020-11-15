@@ -21,7 +21,7 @@ namespace N_Tier.API.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> RegisterAsync(CreateUserModel createUserModel)
         {
-            return Ok(ApiResult<Guid>.Success(201, await _userService.CreateAsync(createUserModel)));
+            return Ok(ApiResult<CreateUserResponseModel>.Success(201, await _userService.CreateAsync(createUserModel)));
         }
 
         [HttpPost("authenticate")]
@@ -40,7 +40,7 @@ namespace N_Tier.API.Controllers
         [HttpPut("{id}/changePassword")]
         public async Task<IActionResult> ChangePassword(Guid id, ChangePasswordModel changePasswordModel)
         {
-            return Ok(ApiResult<Guid>.Success200(await _userService.ChangePasswordAsync(id, changePasswordModel)));
+            return Ok(ApiResult<BaseResponseModel>.Success200(await _userService.ChangePasswordAsync(id, changePasswordModel)));
         }
     }
 }
