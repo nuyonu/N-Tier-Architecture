@@ -12,6 +12,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Use .NET 5'
+  inputs:
+    version: '5.0.x'
+    performMultiLevelLookup: true
 - task: DotNetCoreCLI@2
   displayName: 'Restore solution'
   inputs:
