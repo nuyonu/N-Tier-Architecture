@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -60,7 +61,10 @@ namespace N_Tier.Common
             if (databaseConfig.UseInMemoryDatabase)
             {
                 services.AddDbContext<DatabaseContext>(options =>
-                    options.UseInMemoryDatabase("NTierDatabase"));
+                {
+                    options.UseInMemoryDatabase("NTierDatabase");
+                    options.ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                });
             }
             else
             {
