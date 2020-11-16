@@ -66,6 +66,8 @@ namespace N_Tier.API
 
             app.UseMiddleware<PerformanceMiddleware>();
 
+            app.UseMiddleware<TranscationMiddleware>();
+
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseEndpoints(endpoints =>
