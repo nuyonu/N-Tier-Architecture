@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Query;
 using MockQueryable.NSubstitute;
 using N_Tier.Application.Common.Email;
 using N_Tier.Application.Exceptions;
@@ -13,6 +14,8 @@ using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -76,7 +79,7 @@ namespace N_Tier.Application.UnitTests.Services
             await _userManager.Received(1).CreateAsync(Arg.Any<ApplicationUser>(), Arg.Any<string>());
         }
 
-        [Fact(Skip = "Update .NET 5.0")]
+        [Fact]
         public void LoginAsync_Should_Throw_Exception_If_User_Does_Not_Exist()
         {
             // Arrange
@@ -91,7 +94,7 @@ namespace N_Tier.Application.UnitTests.Services
             callCreateAsync.Should().Throw<NotFoundException>().WithMessage("Username or password is incorrect");
         }
 
-        [Fact(Skip = "Update .NET 5.0")]
+        [Fact]
         public async Task LoginAsync_Should_Throw_Exception_If_User_Does_Not_Provide_Good_Credentials()
         {
             // Arrange
@@ -110,7 +113,7 @@ namespace N_Tier.Application.UnitTests.Services
             await _signInManager.Received(1).PasswordSignInAsync(Arg.Any<ApplicationUser>(), Arg.Any<string>(), Arg.Any<bool>(), Arg.Any<bool>());
         }
 
-        [Fact(Skip = "Update .NET 5.0")]
+        [Fact]
         public async Task LoginAsync_Should_Return_Login_Response_If_Credentials_Are_Good()
         {
             // Arrange
