@@ -51,6 +51,12 @@ namespace N_Tier.API
         {
             app.UseHttpsRedirection();
 
+            app.UseCors(corsPolicyBuilder =>
+                   corsPolicyBuilder.AllowAnyOrigin()
+                                    .AllowAnyMethod()
+                                    .AllowAnyHeader()
+            );
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
