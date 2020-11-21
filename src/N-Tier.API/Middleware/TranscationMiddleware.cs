@@ -10,18 +10,16 @@ namespace N_Tier.API.Middleware
 
         private readonly RequestDelegate _next;
         private readonly ILogger<TranscationMiddleware> _logger;
-        private readonly DatabaseContext _databaseContext;
 
-        public TranscationMiddleware(RequestDelegate next, ILogger<TranscationMiddleware> logger, DatabaseContext databaseContext)
+        public TranscationMiddleware(RequestDelegate next, ILogger<TranscationMiddleware> logger)
         {
             _next = next;
             _logger = logger;
-            _databaseContext = databaseContext;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, DatabaseContext databaseContext)
         {
-            await using var transaction = await _databaseContext.Database.BeginTransactionAsync();
+            await using var transaction = await databaseContext.Database.BeginTransactionAsync();
 
             try
             {
