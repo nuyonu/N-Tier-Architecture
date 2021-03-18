@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
     <PackageReference Include="MockQueryable.Core" Version="5.0.0" />
     <PackageReference Include="MockQueryable.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="MockQueryable.NSubstitute" Version="5.0.0" />
