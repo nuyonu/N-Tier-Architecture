@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace N_Tier.Api.IntergrationTests.Helpers.Services
+namespace N_Tier.Api.IntegrationTests.Helpers.Services
 {
     public class TemplateTestService : ITemplateService
     {

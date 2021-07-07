@@ -21,7 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EF8183C1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Application.UnitTests", "tests\N-Tier.Application.UnitTests\N-Tier.Application.UnitTests.csproj", "{2D2C88FF-4129-4A10-ABDF-DD438B282DA1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Api.IntergrationTests", "tests\N-Tier.Api.IntergrationTests\N-Tier.Api.IntergrationTests.csproj", "{FD31F369-27D3-48B3-9FF7-F4A357F73B1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "N-Tier.Api.IntegrationTests", "tests\N-Tier.Api.IntegrationTests\N-Tier.Api.IntegrationTests.csproj", "{FD31F369-27D3-48B3-9FF7-F4A357F73B1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

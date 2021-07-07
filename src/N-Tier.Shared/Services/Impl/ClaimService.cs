@@ -16,6 +16,6 @@ namespace N_Tier.Shared.Services.Impl
             => GetClaim(ClaimTypes.NameIdentifier);
 
         public string GetClaim(string key) 
-            => _httpContextAccessor.HttpContext?.User?.FindFirst(key).Value;
+            => _httpContextAccessor.HttpContext?.User?.FindFirst(key)?.Value;
     }
 }

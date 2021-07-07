@@ -2,8 +2,6 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using N_Tier.Api.IntergrationTests.Config;
-using N_Tier.Api.IntergrationTests.Helpers;
 using N_Tier.Application.Models;
 using N_Tier.Application.Models.TodoList;
 using N_Tier.Core.Entities;
@@ -15,8 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using N_Tier.Api.IntegrationTests.Config;
+using N_Tier.Api.IntegrationTests.Helpers;
 
-namespace N_Tier.Api.IntergrationTests.Tests
+namespace N_Tier.Api.IntegrationTests.Tests
 {
     [TestFixture]
     public class TodoListEndpointTests : BaseOneTimeSetup

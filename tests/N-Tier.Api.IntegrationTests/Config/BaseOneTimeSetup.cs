@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using N_Tier.Api.IntergrationTests.Helpers.Services;
 using N_Tier.API;
 using N_Tier.Application.Helpers;
 using N_Tier.Application.Services;
@@ -16,8 +15,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using N_Tier.Api.IntegrationTests.Helpers.Services;
 
-namespace N_Tier.Api.IntergrationTests.Config
+namespace N_Tier.Api.IntegrationTests.Config
 {
     [SetUpFixture]
     public class BaseOneTimeSetup

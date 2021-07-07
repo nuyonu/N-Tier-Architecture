@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using N_Tier.Application.Models;
 
-namespace N_Tier.Api.IntergrationTests.Helpers
+namespace N_Tier.Api.IntegrationTests.Helpers
 {
     public class CheckResponse
     {

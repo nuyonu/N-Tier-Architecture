@@ -2,7 +2,7 @@
 using N_Tier.Application.Services;
 using System.Threading.Tasks;
 
-namespace N_Tier.Api.IntergrationTests.Helpers.Services
+namespace N_Tier.Api.IntegrationTests.Helpers.Services
 {
     public class EmailTestService : IEmailService
     {

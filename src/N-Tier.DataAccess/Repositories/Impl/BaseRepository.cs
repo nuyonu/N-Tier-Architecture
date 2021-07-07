@@ -11,45 +11,45 @@ namespace N_Tier.DataAccess.Repositories.Impl
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        private readonly DatabaseContext _context;
-        private readonly DbSet<TEntity> _dbSet;
+        protected readonly DatabaseContext Context;
+        protected readonly DbSet<TEntity> DbSet;
 
-        public BaseRepository(DatabaseContext context)
+        protected BaseRepository(DatabaseContext context)
         {
-            _context = context;
-            _dbSet = context.Set<TEntity>();
+            Context = context;
+            DbSet = context.Set<TEntity>();
         }
 
         public async Task<TEntity> AddAsync(TEntity entity)
         {
-            var addedEntity = (await _dbSet.AddAsync(entity)).Entity;
-            await _context.SaveChangesAsync();
+            var addedEntity = (await DbSet.AddAsync(entity)).Entity;
+            await Context.SaveChangesAsync();
 
             return addedEntity;
         }
 
         public async Task<TEntity> DeleteAsync(TEntity entity)
         {
-            var removedEntity = _dbSet.Remove(entity).Entity;
-            await _context.SaveChangesAsync();
+            var removedEntity = DbSet.Remove(entity).Entity;
+            await Context.SaveChangesAsync();
 
             return removedEntity;
         }
 
         public async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _dbSet.Where(predicate).ToListAsync();
+            return await DbSet.Where(predicate).ToListAsync();
         }
 
         public async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _dbSet.Where(predicate).FirstOrDefaultAsync();
+            return await DbSet.Where(predicate).FirstOrDefaultAsync();
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
+            DbSet.Update(entity);
+            await Context.SaveChangesAsync();
 
             return entity;
         }

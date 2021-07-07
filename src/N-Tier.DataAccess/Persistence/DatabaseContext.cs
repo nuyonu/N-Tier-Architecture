@@ -42,7 +42,6 @@ namespace N_Tier.DataAccess.Persistence
                         entry.Entity.CreatedBy = _claimService.GetUserId();
                         entry.Entity.CreatedOn = DateTime.Now;
                         break;
-
                     case EntityState.Modified:
                         entry.Entity.UpdatedBy = _claimService.GetUserId();
                         entry.Entity.UpdatedOn = DateTime.Now;

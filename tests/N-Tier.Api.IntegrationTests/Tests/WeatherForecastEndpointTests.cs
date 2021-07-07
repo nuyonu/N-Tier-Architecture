@@ -1,14 +1,14 @@
 ﻿using FluentAssertions;
-using N_Tier.Api.IntergrationTests.Config;
-using N_Tier.Api.IntergrationTests.Helpers;
 using N_Tier.Application.Models;
 using N_Tier.Application.Models.WeatherForecast;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using N_Tier.Api.IntegrationTests.Config;
+using N_Tier.Api.IntegrationTests.Helpers;
 
-namespace N_Tier.Api.IntergrationTests.Tests
+namespace N_Tier.Api.IntegrationTests.Tests
 {
     [TestFixture]
     public class WeatherForecastEndpointTests : BaseOneTimeSetup

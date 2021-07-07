@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace N_Tier.API.Middleware
 {
-    public class TranscationMiddleware
+    public class TransactionMiddleware
     {
 
         private readonly RequestDelegate _next;
-        private readonly ILogger<TranscationMiddleware> _logger;
+        private readonly ILogger<TransactionMiddleware> _logger;
 
-        public TranscationMiddleware(RequestDelegate next, ILogger<TranscationMiddleware> logger)
+        public TransactionMiddleware(RequestDelegate next, ILogger<TransactionMiddleware> logger)
         {
             _next = next;
             _logger = logger;

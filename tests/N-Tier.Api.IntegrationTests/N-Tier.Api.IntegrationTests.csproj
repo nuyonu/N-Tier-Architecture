@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>N_Tier.Api.IntergrationTests</RootNamespace>
+    <RootNamespace>N_Tier.Api.IntegrationTests</RootNamespace>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
