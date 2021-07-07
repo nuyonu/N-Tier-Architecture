@@ -40,20 +40,15 @@ namespace N_Tier.API.Middleware
             var code = HttpStatusCode.InternalServerError;
             var errors = new List<string>() { ex.Message };
 
-            if (ex is NotFoundException)
+            code = ex switch
             {
-                code = HttpStatusCode.NotFound;
-            }
-            else if(ex is BadRequestException)
-            {
-                code = HttpStatusCode.BadRequest;
-            }
-            else if(ex is UnprocessableRequestException)
-            {
-                code = HttpStatusCode.UnprocessableEntity;
-            }
+                NotFoundException => HttpStatusCode.NotFound,
+                BadRequestException => HttpStatusCode.BadRequest,
+                UnprocessableRequestException => HttpStatusCode.UnprocessableEntity,
+                _ => code
+            };
 
-            string result = JsonConvert.SerializeObject(ApiResult<string>.Failure((int)code, errors));
+            var result = JsonConvert.SerializeObject(ApiResult<string>.Failure((int)code, errors));
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;

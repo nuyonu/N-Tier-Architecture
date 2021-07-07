@@ -20,7 +20,7 @@ namespace N_Tier.API.Middleware
         {
             const int performanceTimeLog = 500;
 
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
 
             sw.Start();
 

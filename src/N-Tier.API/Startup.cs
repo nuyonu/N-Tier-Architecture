@@ -72,7 +72,7 @@ namespace N_Tier.API
 
             app.UseMiddleware<PerformanceMiddleware>();
 
-            app.UseMiddleware<TranscationMiddleware>();
+            app.UseMiddleware<TransactionMiddleware>();
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 

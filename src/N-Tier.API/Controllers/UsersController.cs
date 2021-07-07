@@ -37,7 +37,7 @@ namespace N_Tier.API.Controllers
             return Ok(ApiResult<ConfirmEmailResponseModel>.Success200(await _userService.ConfirmEmailAsync(confirmEmailModel)));
         }
 
-        [HttpPut("{id}/changePassword")]
+        [HttpPut("{id:guid}/changePassword")]
         public async Task<IActionResult> ChangePassword(Guid id, ChangePasswordModel changePasswordModel)
         {
             return Ok(ApiResult<BaseResponseModel>.Success200(await _userService.ChangePasswordAsync(id, changePasswordModel)));
