@@ -10,7 +10,7 @@ namespace N_Tier.DataAccess.Repositories
     {
         Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate);
 
-        Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task<TEntity> AddAsync(TEntity entity);
 

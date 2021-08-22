@@ -16,8 +16,8 @@ namespace N_Tier.Api.IntegrationTests.Helpers.Services
         {
             var response = string.Empty;
 
-            foreach (var temp in replaceWords)
-                response = input.Replace(temp.Key, temp.Value);
+            foreach (var (key, value) in replaceWords)
+                response = input.Replace(key, value);
 
             return response;
         }

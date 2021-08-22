@@ -3,9 +3,9 @@ using N_Tier.Application.Models;
 
 namespace N_Tier.Api.IntegrationTests.Helpers
 {
-    public class CheckResponse
+    public static class CheckResponse
     {
-        public static void Succeded<T>(ApiResult<T> result, int code = 200)
+        public static void Succeeded<T>(ApiResult<T> result, int code = 200)
         {
             result.Code.Should().Be(code);
             result.Succeeded.Should().BeTrue();

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using N_Tier.Application.Exceptions;
 using N_Tier.Application.Models;
 using N_Tier.Application.Models.TodoItem;
 using N_Tier.Core.Entities;
@@ -27,7 +26,7 @@ namespace N_Tier.Application.Services.Impl
 
         public async Task<IEnumerable<TodoItemResponseModel>> GetAllByListIdAsync(Guid id)
         {
-            var todoItems = await _todoItemRepository.GetAsync(ti => ti.List.Id == id);
+            var todoItems = await _todoItemRepository.GetAllAsync(ti => ti.List.Id == id);
 
             return _mapper.Map<IEnumerable<TodoItemResponseModel>>(todoItems);
         }
@@ -37,8 +36,7 @@ namespace N_Tier.Application.Services.Impl
             var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == createTodoItemModel.TodoListId);
             var todoItem = _mapper.Map<TodoItem>(createTodoItemModel);
 
-            todoItem.List = todoList ?? throw new NotFoundException("List does not exist anymore");
-            todoItem.IsDone = false;
+            todoItem.List = todoList;
 
             return new CreateTodoItemResponseModel
             {
@@ -48,19 +46,9 @@ namespace N_Tier.Application.Services.Impl
 
         public async Task<UpdateTodoItemResponseModel> UpdateAsync(Guid id, UpdateTodoItemModel updateTodoItemModel)
         {
-            var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == updateTodoItemModel.TodoListId);
-
-            if (todoList == null)
-                throw new NotFoundException("List does not exist anymore");
-
             var todoItem = await _todoItemRepository.GetFirstAsync(ti => ti.Id == id);
 
-            if(todoItem == null)
-                throw new NotFoundException("Todo item does not exist anymore");
-
-            todoItem.Title = updateTodoItemModel.Title;
-            todoItem.Body = updateTodoItemModel.Body;
-            todoItem.IsDone = updateTodoItemModel.IsDone;
+            _mapper.Map(updateTodoItemModel, todoItem);
 
             return new UpdateTodoItemResponseModel
             {
@@ -71,9 +59,6 @@ namespace N_Tier.Application.Services.Impl
         public async Task<BaseResponseModel> DeleteAsync(Guid id)
         {
             var todoItem = await _todoItemRepository.GetFirstAsync(ti => ti.Id == id);
-
-            if (todoItem == null)
-                throw new NotFoundException("Todo item does not exist anymore");
 
             return new BaseResponseModel
             {

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using N_Tier.Core.Exceptions;
 
 namespace N_Tier.API.Middleware
 {
@@ -38,11 +39,12 @@ namespace N_Tier.API.Middleware
             _logger.LogError(ex.Message);
 
             var code = HttpStatusCode.InternalServerError;
-            var errors = new List<string>() { ex.Message };
+            var errors = new List<string> { ex.Message };
 
             code = ex switch
             {
                 NotFoundException => HttpStatusCode.NotFound,
+                ResourceNotFoundException => HttpStatusCode.NotFound,
                 BadRequestException => HttpStatusCode.BadRequest,
                 UnprocessableRequestException => HttpStatusCode.UnprocessableEntity,
                 _ => code

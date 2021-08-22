@@ -48,7 +48,7 @@ namespace N_Tier.Application.Services.Impl
 
             if (!result.Succeeded)
             {
-                throw new BadRequestException(result.Errors.FirstOrDefault().Description);
+                throw new BadRequestException(result.Errors.FirstOrDefault()?.Description);
             }
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);

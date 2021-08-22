@@ -14,16 +14,16 @@ namespace N_Tier.Api.IntegrationTests.Tests
     public class WeatherForecastEndpointTests : BaseOneTimeSetup
     {
         [Test]
-        public async Task Login_Should_Return_User_Informations_And_Token()
+        public async Task Login_Should_Return_User_Information_And_Token()
         {
             // Arrange
 
             // Act
-            var apiResponse = await _client.GetAsync("/api/WeatherForecast");
+            var apiResponse = await Client.GetAsync("/api/WeatherForecast");
 
             // Assert
-            var response = JsonConvert.DeserializeObject<ApiResult<IEnumerable<WeatherForecastResponseModel>>>(await apiResponse.Content.ReadAsStringAsync());
-            CheckResponse.Succeded(response);
+            var response = await ResponseHelper.GetApiResultAsync<IEnumerable<WeatherForecastResponseModel>>(apiResponse);
+            CheckResponse.Succeeded(response);
             response.Result.Should().HaveCount(5);
         }
     }

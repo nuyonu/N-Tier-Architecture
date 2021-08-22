@@ -6,7 +6,7 @@ namespace N_Tier.Application.Models
     {
         private ApiResult() { }
 
-        private ApiResult(bool succeeded, int code, T result, IEnumerable<string> errors) : base()
+        private ApiResult(bool succeeded, int code, T result, IEnumerable<string> errors)
         {
             Succeeded = succeeded;
             Code = code;
@@ -24,7 +24,7 @@ namespace N_Tier.Application.Models
 
         public static ApiResult<T> Success(int code, T result)
         {
-            return new ApiResult<T>(true, code, result, new List<string>());
+            return new(true, code, result, new List<string>());
         }
 
         public static ApiResult<T> Success200(T result)
@@ -34,7 +34,7 @@ namespace N_Tier.Application.Models
 
         public static ApiResult<T> Failure(int code, IEnumerable<string> errors)
         {
-            return new ApiResult<T>(false, code, default, errors);
+            return new(false, code, default, errors);
         }
     }
 }

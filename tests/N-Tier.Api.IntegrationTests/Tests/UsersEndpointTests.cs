@@ -7,12 +7,12 @@ using N_Tier.Application.Models;
 using N_Tier.Application.Models.User;
 using N_Tier.DataAccess.Identity;
 using N_Tier.DataAccess.Persistence;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 using N_Tier.Api.IntegrationTests.Config;
+using N_Tier.Api.IntegrationTests.Config.Constants;
 using N_Tier.Api.IntegrationTests.Helpers;
 
 namespace N_Tier.Api.IntegrationTests.Tests
@@ -24,7 +24,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
         public async Task Create_User_Should_Add_User_To_Database()
         {
             // Arrange
-            var context = _host.Services.GetRequiredService<DatabaseContext>();
+            var context = Host.Services.GetRequiredService<DatabaseContext>();
 
             var createModel = Builder<CreateUserModel>.CreateNew()
                 .With(cu => cu.Email = "IntegrationTest@gmail.com")
@@ -33,12 +33,12 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await _client.PostAsync("/api/users", new JsonContent(createModel));
+            var apiResponse = await Client.PostAsync("/api/users", new JsonContent(createModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var response = JsonConvert.DeserializeObject<ApiResult<CreateUserResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
-            CheckResponse.Succeded(response, 201);
+            var response = await ResponseHelper.GetApiResultAsync<CreateUserResponseModel>(apiResponse);
+            CheckResponse.Succeeded(response, 201);
             context.Users.Should().Contain(u => u.Id == response.Result.Id.ToString());
         }
 
@@ -51,11 +51,11 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await _client.PostAsync("/api/users", new JsonContent(createModel));
+            var apiResponse = await Client.PostAsync("/api/users", new JsonContent(createModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
             CheckResponse.Failure(response, 400);
         }
 
@@ -70,11 +70,11 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await _client.PostAsync("/api/users", new JsonContent(createModel));
+            var apiResponse = await Client.PostAsync("/api/users", new JsonContent(createModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
             CheckResponse.Failure(response, 400);
         }
 
@@ -88,31 +88,31 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await _client.PostAsync("/api/users", new JsonContent(createModel));
+            var apiResponse = await Client.PostAsync("/api/users", new JsonContent(createModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
             CheckResponse.Failure(response, 400);
         }
 
         [Test]
-        public async Task Login_Should_Return_User_Informations_And_Token()
+        public async Task Login_Should_Return_User_Information_And_Token()
         {
             // Arrange
             var loginUserModel = Builder<LoginUserModel>.CreateNew()
-                .With(cu => cu.Username = "nuyonu")
-                .With(cu => cu.Password = "Password.1!")
+                .With(cu => cu.Username = UserConstants.DefaultUserDb.Username)
+                .With(cu => cu.Password = UserConstants.DefaultUserDb.Password)
                 .Build();
 
             // Act
-            var apiResponse = await _client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
+            var apiResponse = await Client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
 
             // Assert
-            var response = JsonConvert.DeserializeObject<ApiResult<LoginResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
-            CheckResponse.Succeded(response);
-            response.Result.Username.Should().Be("nuyonu");
-            response.Result.Email.Should().Be("nuyonu@gmail.com");
+            var response = await ResponseHelper.GetApiResultAsync<LoginResponseModel>(apiResponse); 
+            CheckResponse.Succeeded(response);
+            response.Result.Username.Should().Be(UserConstants.DefaultUserDb.Username);
+            response.Result.Email.Should().Be(UserConstants.DefaultUserDb.Email);
             response.Result.Token.Should().NotBeNullOrEmpty();
         }
 
@@ -126,11 +126,11 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await _client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
+            var apiResponse = await Client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
             CheckResponse.Failure(response, 404);
         }
 
@@ -139,16 +139,16 @@ namespace N_Tier.Api.IntegrationTests.Tests
         {
             // Arrange
             var loginUserModel = Builder<LoginUserModel>.CreateNew()
-                .With(cu => cu.Username = "nuyonu")
+                .With(cu => cu.Username = UserConstants.DefaultUserDb.Username)
                 .With(cu => cu.Password = "Password.1")
                 .Build();
 
             // Act
-            var apiResponse = await _client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
+            var apiResponse = await Client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
             CheckResponse.Failure(response, 400);
         }
 
@@ -163,7 +163,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
 
             var context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
 
-            var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = Host.Services.GetRequiredService<UserManager<ApplicationUser>>();
 
             await userManager.CreateAsync(user, "Password.1!");
 
@@ -175,12 +175,12 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await _client.PostAsync("/api/users/confirmEmail", new JsonContent(confirmEmailModel));
+            var apiResponse = await Client.PostAsync("/api/users/confirmEmail", new JsonContent(confirmEmailModel));
 
             // Assert
-            var response = JsonConvert.DeserializeObject<ApiResult<ConfirmEmailResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = await ResponseHelper.GetApiResultAsync<ConfirmEmailResponseModel>(apiResponse);
             var userFromDatabase = await context.Users.FirstOrDefaultAsync(u => u.Id == user.Id);
-            CheckResponse.Succeded(response);
+            CheckResponse.Succeeded(response);
             response.Result.Confirmed.Should().BeTrue();
             userFromDatabase.EmailConfirmed.Should().BeTrue();
         }
@@ -194,7 +194,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .With(u => u.Email = "ConfirmEmailUser2@email.com")
                 .Build();
 
-            var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = Host.Services.GetRequiredService<UserManager<ApplicationUser>>();
 
             await userManager.CreateAsync(user, "Password.1!");
 
@@ -204,11 +204,11 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await _client.PostAsync("/api/users/confirmEmail", new JsonContent(confirmEmailModel));
+            var apiResponse = await Client.PostAsync("/api/users/confirmEmail", new JsonContent(confirmEmailModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
-            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
             CheckResponse.Failure(response, 422);
         }
 
@@ -222,11 +222,11 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await _client.PutAsync($"/api/users/{Guid.NewGuid()}/changePassword", new JsonContent(changePasswordModel));
+            var apiResponse = await Client.PutAsync($"/api/users/{Guid.NewGuid()}/changePassword", new JsonContent(changePasswordModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
             CheckResponse.Failure(response, 404);
         }
 
@@ -239,7 +239,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .With(u => u.Email = "ChangePasswordBadRequest@email.com")
                 .Build();
 
-            var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = Host.Services.GetRequiredService<UserManager<ApplicationUser>>();
 
             var createdUser = await userManager.CreateAsync(user, "Password.1!");
 
@@ -249,11 +249,11 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await _client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
+            var apiResponse = await Client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
             CheckResponse.Failure(response, 400);
         }
 
@@ -268,7 +268,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
 
             var context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
 
-            var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = Host.Services.GetRequiredService<UserManager<ApplicationUser>>();
 
             var createdUser = await userManager.CreateAsync(user, "Password.1!");
 
@@ -278,11 +278,11 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await _client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
+            var apiResponse = await Client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
+            var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
             CheckResponse.Failure(response, 400);
         }
 
@@ -296,7 +296,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .With(u => u.EmailConfirmed = true)
                 .Build();
 
-            var userManager = _host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = Host.Services.GetRequiredService<UserManager<ApplicationUser>>();
 
             await userManager.CreateAsync(user, "Password.1!");
 
@@ -306,12 +306,12 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Build();
 
             // Act
-            var apiResponse = await _client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
+            var apiResponse = await Client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
 
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var response = JsonConvert.DeserializeObject<ApiResult<BaseResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
-            CheckResponse.Succeded(response);
+            var response = await ResponseHelper.GetApiResultAsync<BaseResponseModel>(apiResponse);
+            CheckResponse.Succeeded(response);
             response.Result.Id.Should().Be(user.Id);
         }
     }
