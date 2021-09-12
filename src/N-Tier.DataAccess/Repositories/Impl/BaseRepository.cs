@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using N_Tier.Core.Common;
-using N_Tier.DataAccess.Persistence;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using N_Tier.Core.Common;
+using N_Tier.Core.Exceptions;
+using N_Tier.DataAccess.Persistence;
 
 namespace N_Tier.DataAccess.Repositories.Impl
 {
@@ -36,13 +37,20 @@ namespace N_Tier.DataAccess.Repositories.Impl
             return removedEntity;
         }
 
-        public async Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await DbSet.Where(predicate).ToListAsync();
         }
 
         public async Task<TEntity> GetFirstAsync(Expression<Func<TEntity, bool>> predicate)
         {
+            var entity = await DbSet.Where(predicate).FirstOrDefaultAsync();
+            
+            if (entity == null)
+            {
+                throw new ResourceNotFoundException(typeof(TEntity));
+            }
+
             return await DbSet.Where(predicate).FirstOrDefaultAsync();
         }
 

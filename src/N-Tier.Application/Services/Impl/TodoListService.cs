@@ -28,7 +28,7 @@ namespace N_Tier.Application.Services.Impl
         {
             var currentUserId = _claimService.GetUserId();
 
-            var todoLists = await _todoListRepository.GetAsync(tl => tl.CreatedBy == currentUserId);
+            var todoLists = await _todoListRepository.GetAllAsync(tl => tl.CreatedBy == currentUserId);
 
             return _mapper.Map<IEnumerable<TodoListResponseModel>>(todoLists);
         }
@@ -48,10 +48,7 @@ namespace N_Tier.Application.Services.Impl
         public async Task<UpdateTodoListResponseModel> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
         {
             var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == id);
-
-            if(todoList == null)
-                throw new NotFoundException("List does not exist anymore");
-
+            
             var userId = _claimService.GetUserId();
 
             if (userId != todoList.CreatedBy)
@@ -68,10 +65,7 @@ namespace N_Tier.Application.Services.Impl
         public async Task<BaseResponseModel> DeleteAsync(Guid id)
         {
             var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == id);
-
-            if (todoList == null)
-                throw new NotFoundException("List does not exist anymore");
-
+            
             return new BaseResponseModel
             {
                 Id = (await _todoListRepository.DeleteAsync(todoList)).Id

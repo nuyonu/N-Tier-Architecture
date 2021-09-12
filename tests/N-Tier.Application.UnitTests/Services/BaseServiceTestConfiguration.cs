@@ -11,19 +11,17 @@ namespace N_Tier.Application.UnitTests.Services
 {
     public class BaseServiceTestConfiguration
     {
-        protected readonly IMapper _mapper;
-        protected readonly IConfiguration _configuration;
-        protected readonly ITodoListRepository _todoListRepository;
-        protected readonly ITodoItemRepository _todoItemRepository;
-        protected readonly IClaimService _claimService;
+        protected readonly IMapper Mapper;
+        protected readonly IConfiguration Configuration;
+        protected readonly ITodoListRepository TodoListRepository;
+        protected readonly ITodoItemRepository TodoItemRepository;
+        protected readonly IClaimService ClaimService;
 
-        public BaseServiceTestConfiguration()
+        protected BaseServiceTestConfiguration()
         {
-            _mapper = new MapperConfiguration(cfg =>
+            Mapper = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new TodoItemProfile());
-                cfg.AddProfile(new TodoListProfile());
-                cfg.AddProfile(new UserProfile());
+                cfg.AddMaps(typeof(TodoItemProfile));
             }).CreateMapper();
 
             var configurationBody = new Dictionary<string, string>
@@ -31,15 +29,15 @@ namespace N_Tier.Application.UnitTests.Services
                 {"JwtConfiguration:SecretKey", "Super secret token key"},
             };
 
-            _configuration = new ConfigurationBuilder()
+            Configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(configurationBody)
                 .Build();
 
-            _todoListRepository = Substitute.For<ITodoListRepository>();
-            _todoItemRepository = Substitute.For<ITodoItemRepository>();
+            TodoListRepository = Substitute.For<ITodoListRepository>();
+            TodoItemRepository = Substitute.For<ITodoItemRepository>();
 
-            _claimService = Substitute.For<IClaimService>();
-            _claimService.GetUserId().Returns(new Guid().ToString());
+            ClaimService = Substitute.For<IClaimService>();
+            ClaimService.GetUserId().Returns(new Guid().ToString());
         }
     }
 }

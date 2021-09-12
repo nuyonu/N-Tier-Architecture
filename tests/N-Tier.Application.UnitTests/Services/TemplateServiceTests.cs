@@ -18,7 +18,7 @@ namespace N_Tier.Application.UnitTests.Services
         public void ReplaceInTemplate_Should_Replace_All_Words_From_Input()
         {
             // Arrange
-            var input = "Hello {Username}. Welcome!";
+            const string input = "Hello {Username}. Welcome!";
             var replaceWords = new Dictionary<string, string>
             {
                 { "{Username}", "John983" }

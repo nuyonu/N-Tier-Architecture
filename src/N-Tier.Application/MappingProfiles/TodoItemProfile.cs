@@ -8,7 +8,8 @@ namespace N_Tier.Application.MappingProfiles
     {
         public TodoItemProfile()
         {
-            CreateMap<CreateTodoItemModel, TodoItem>();
+            CreateMap<CreateTodoItemModel, TodoItem>()
+                .ForMember(ti => ti.IsDone, ti => ti.MapFrom(cti => false));
 
             CreateMap<UpdateTodoItemModel, TodoItem>();
 

@@ -16,7 +16,7 @@ namespace N_Tier.Common
 
             if (context.Database.IsSqlServer())
             {
-                context.Database.Migrate();
+                await context.Database.MigrateAsync();
             }
 
             var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();

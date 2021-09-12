@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using N_Tier.Api.IntegrationTests.Config.Constants;
 using N_Tier.Api.IntegrationTests.Helpers.Services;
 
 namespace N_Tier.Api.IntegrationTests.Config
@@ -22,25 +23,25 @@ namespace N_Tier.Api.IntegrationTests.Config
     [SetUpFixture]
     public class BaseOneTimeSetup
     {
-        public IHost _host;
-        public HttpClient _client;
+        protected IHost Host;
+        protected HttpClient Client;
 
         [OneTimeSetUp]
         public async Task RunBeforeAnyTestsAsync()
         {
-            _host = await GetNewHostAsync();
+            Host = await GetNewHostAsync();
 
-            _client = await GetNewClient(_host);
+            Client = await GetNewClient(Host);
         }
 
-        protected async Task<IHost> GetNewHostAsync()
+        protected static async Task<IHost> GetNewHostAsync()
         {
             var hostBuilder = new HostBuilder()
                 .ConfigureWebHost(webHost =>
                 {
                     webHost.UseTestServer();
                     webHost.UseStartup<Startup>();
-                    webHost.ConfigureAppConfiguration((context, configBuilder) =>
+                    webHost.ConfigureAppConfiguration((_, configBuilder) =>
                     {
                         configBuilder.AddInMemoryCollection(
                             new Dictionary<string, string>
@@ -61,7 +62,6 @@ namespace N_Tier.Api.IntegrationTests.Config
                         services.AddScoped<IEmailService, EmailTestService>();
                         services.AddScoped<ITemplateService, TemplateTestService>();
                     });
-
                 });
 
             var host = await hostBuilder.StartAsync();
@@ -72,24 +72,24 @@ namespace N_Tier.Api.IntegrationTests.Config
 
             var databaseUser = Builder<ApplicationUser>.CreateNew()
                 .With(u => u.EmailConfirmed = true)
-                .With(u => u.Email = "nuyonu@gmail.com")
-                .With(u => u.UserName = "nuyonu")
+                .With(u => u.Email = UserConstants.DefaultUserDb.Email)
+                .With(u => u.UserName = UserConstants.DefaultUserDb.Username)
                 .Build();
 
-            await userManager.CreateAsync(databaseUser, "Password.1!");
+            await userManager.CreateAsync(databaseUser, UserConstants.DefaultUserDb.Password);
 
             await context.SaveChangesAsync();
 
             return host;
         }
 
-        public async Task<HttpClient> GetNewClient(IHost host)
+        private static async Task<HttpClient> GetNewClient(IHost host)
         {
             var configuration = host.Services.GetRequiredService<IConfiguration>();
 
             var userManager = host.Services.GetRequiredService<UserManager<ApplicationUser>>();
 
-            var user = await userManager.FindByNameAsync("nuyonu");
+            var user = await userManager.FindByNameAsync(UserConstants.DefaultUserDb.Username);
 
             var client = host.GetTestClient();
 
