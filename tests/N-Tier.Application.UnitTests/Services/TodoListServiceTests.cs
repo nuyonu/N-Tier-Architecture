@@ -70,7 +70,7 @@ namespace N_Tier.Application.UnitTests.Services
             Func<Task> callUpdateAsync = async () => await _sut.UpdateAsync(Guid.NewGuid(), updateTodoListModel);
 
             //Assert
-            callUpdateAsync.Should().Throw<BadRequestException>()
+            await callUpdateAsync.Should().ThrowAsync<BadRequestException>()
                 .WithMessage("The selected list does not belong to you");
             await TodoListRepository.Received().GetFirstAsync(Arg.Any<Expression<Func<TodoList, bool>>>());
             ClaimService.Received().GetUserId();

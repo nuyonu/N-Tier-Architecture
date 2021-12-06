@@ -76,13 +76,13 @@ namespace N_Tier.Application.UnitTests.Services
             Func<Task> callCreateAsync = async () => await _sut.CreateAsync(createUserModel);
 
             // Assert
-            callCreateAsync.Should().Throw<BadRequestException>()
+            await callCreateAsync.Should().ThrowAsync<BadRequestException>()
                 .WithMessage(identityErrors.FirstOrDefault()?.Description);
             await _userManager.Received(1).CreateAsync(Arg.Any<ApplicationUser>(), Arg.Any<string>());
         }
 
         [Fact]
-        public void LoginAsync_Should_Throw_Exception_If_User_Does_Not_Exist()
+        public async Task LoginAsync_Should_Throw_Exception_If_User_Does_Not_Exist()
         {
             // Arrange
             var loginUserModel = Builder<LoginUserModel>.CreateNew().Build();
@@ -93,7 +93,7 @@ namespace N_Tier.Application.UnitTests.Services
             Func<Task> callCreateAsync = async () => await _sut.LoginAsync(loginUserModel);
 
             // Assert
-            callCreateAsync.Should().Throw<NotFoundException>().WithMessage("Username or password is incorrect");
+            await callCreateAsync.Should().ThrowAsync<NotFoundException>().WithMessage("Username or password is incorrect");
         }
 
         [Fact]
@@ -113,7 +113,7 @@ namespace N_Tier.Application.UnitTests.Services
             Func<Task> callCreateAsync = async () => await _sut.LoginAsync(loginUserModel);
 
             // Assert
-            callCreateAsync.Should().Throw<BadRequestException>().WithMessage("Username or password is incorrect");
+            await callCreateAsync.Should().ThrowAsync<BadRequestException>().WithMessage("Username or password is incorrect");
             await _signInManager.Received(1).PasswordSignInAsync(Arg.Any<ApplicationUser>(), Arg.Any<string>(),
                 Arg.Any<bool>(), Arg.Any<bool>());
         }
@@ -155,7 +155,7 @@ namespace N_Tier.Application.UnitTests.Services
             Func<Task> callConfirmEmailAsync = async () => await _sut.ConfirmEmailAsync(confirmEmailModel);
 
             // Assert
-            callConfirmEmailAsync.Should().Throw<UnprocessableRequestException>()
+            await callConfirmEmailAsync.Should().ThrowAsync<UnprocessableRequestException>()
                 .WithMessage("Your verification link has expired");
             await _userManager.Received(1).FindByIdAsync(Arg.Any<string>());
             await _userManager.Received(1).ConfirmEmailAsync(Arg.Any<ApplicationUser>(), Arg.Any<string>());
