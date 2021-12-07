@@ -28,8 +28,8 @@ This is a n-layer architecture based on [Common web application architectures][c
 ---
 
 ## Technologies
-- .NET Core 5.0
-- ASP .NET Core 5.0
+- .NET Core 6.0
+- ASP .NET Core 6.0
 - Swagger (Documentation)
 - Entity Framework Core (SQL Server)
 - ASP.NET Core Identity (SQL Server)
