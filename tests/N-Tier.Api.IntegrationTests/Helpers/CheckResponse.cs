@@ -5,17 +5,15 @@ namespace N_Tier.Api.IntegrationTests.Helpers
 {
     public static class CheckResponse
     {
-        public static void Succeeded<T>(ApiResult<T> result, int code = 200)
+        public static void Succeeded<T>(ApiResult<T> result)
         {
-            result.Code.Should().Be(code);
             result.Succeeded.Should().BeTrue();
             result.Errors.Should().BeEmpty();
             result.Result.Should().NotBe(default);
         }
 
-        public static void Failure<T>(ApiResult<T> result, int code)
+        public static void Failure<T>(ApiResult<T> result)
         {
-            result.Code.Should().Be(code);
             result.Succeeded.Should().BeFalse();
             result.Errors.Should().HaveCountGreaterThan(0);
             result.Result.Should().Be(default);

@@ -21,19 +21,19 @@ namespace N_Tier.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAsync(CreateTodoItemModel createTodoItemModel)
         {
-            return Ok(ApiResult<CreateTodoItemResponseModel>.Success(201, await _todoItemService.CreateAsync(createTodoItemModel)));
+            return Ok(ApiResult<CreateTodoItemResponseModel>.Success(await _todoItemService.CreateAsync(createTodoItemModel)));
         }
 
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateAsync(Guid id, UpdateTodoItemModel updateTodoItemModel)
         {
-            return Ok(ApiResult<UpdateTodoItemResponseModel>.Success200(await _todoItemService.UpdateAsync(id, updateTodoItemModel)));
+            return Ok(ApiResult<UpdateTodoItemResponseModel>.Success(await _todoItemService.UpdateAsync(id, updateTodoItemModel)));
         }
 
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            return Ok(ApiResult<BaseResponseModel>.Success200(await _todoItemService.DeleteAsync(id)));
+            return Ok(ApiResult<BaseResponseModel>.Success(await _todoItemService.DeleteAsync(id)));
         }
     }
 }

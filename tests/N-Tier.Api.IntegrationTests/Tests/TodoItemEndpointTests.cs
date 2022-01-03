@@ -44,7 +44,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<CreateTodoItemResponseModel>>(await apiResponse.Content.ReadAsStringAsync());
             var todoItemFromDatabase = await context.TodoItems.Where(ti => ti.Id == response.Result.Id).FirstOrDefaultAsync();
-            CheckResponse.Succeeded(response, 201);
+            CheckResponse.Succeeded(response);
             todoItemFromDatabase.Should().NotBeNull();
             todoItemFromDatabase.Title.Should().Be(createTodoItemModel.Title);
             todoItemFromDatabase.List.Id.Should().Be(todoListFromDatabase.Id);
@@ -64,7 +64,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
             apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            CheckResponse.Failure(response, 404);
+            CheckResponse.Failure(response);
         }
 
         [Test]
@@ -115,7 +115,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
             apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            CheckResponse.Failure(response, 404);
+            CheckResponse.Failure(response);
         }
 
         [Test]
@@ -140,7 +140,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
             apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            CheckResponse.Failure(response, 404);
+            CheckResponse.Failure(response);
         }
 
         [Test]
@@ -182,7 +182,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
             apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            CheckResponse.Failure(response, 404);
+            CheckResponse.Failure(response);
         }
 
         [Test]

@@ -5,7 +5,6 @@ using N_Tier.Application.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using N_Tier.Core.Exceptions;
 
@@ -38,22 +37,22 @@ namespace N_Tier.API.Middleware
         {
             _logger.LogError(ex.Message);
 
-            var code = HttpStatusCode.InternalServerError;
+            var code = StatusCodes.Status500InternalServerError;
             var errors = new List<string> { ex.Message };
 
             code = ex switch
             {
-                NotFoundException => HttpStatusCode.NotFound,
-                ResourceNotFoundException => HttpStatusCode.NotFound,
-                BadRequestException => HttpStatusCode.BadRequest,
-                UnprocessableRequestException => HttpStatusCode.UnprocessableEntity,
+                NotFoundException => StatusCodes.Status404NotFound,
+                ResourceNotFoundException => StatusCodes.Status404NotFound,
+                BadRequestException => StatusCodes.Status400BadRequest,
+                UnprocessableRequestException => StatusCodes.Status422UnprocessableEntity,
                 _ => code
             };
 
-            var result = JsonConvert.SerializeObject(ApiResult<string>.Failure((int)code, errors));
+            var result = JsonConvert.SerializeObject(ApiResult<string>.Failure(errors));
 
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)code;
+            context.Response.StatusCode = code;
 
             return context.Response.WriteAsync(result);
         }
