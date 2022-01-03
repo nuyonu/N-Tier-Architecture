@@ -37,7 +37,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             var response = await ResponseHelper.GetApiResultAsync<CreateTodoListResponseModel>(apiResponse);
             var todoListFromDatabase =
                 await context.TodoLists.Where(u => u.Id == response.Result.Id).FirstOrDefaultAsync();
-            CheckResponse.Succeeded(response, 201);
+            CheckResponse.Succeeded(response);
             todoListFromDatabase.Should().NotBeNull();
             todoListFromDatabase.Title.Should().Be(createTodoListModel.Title);
         }
@@ -60,7 +60,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             var todoListFromDatabase = await context.TodoLists.Where(tl => tl.Title == createTodoListModel.Title)
                 .FirstOrDefaultAsync();
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            CheckResponse.Failure(response, 400);
+            CheckResponse.Failure(response);
             todoListFromDatabase.Should().BeNull();
         }
 
@@ -118,7 +118,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
                 .Where(tl => tl.Title == updateTodoListModel.Title)
                 .FirstOrDefaultAsync();
             apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            CheckResponse.Failure(response, 404);
+            CheckResponse.Failure(response);
             updatedTodoListFromDatabase.Should().BeNull();
         }
 
@@ -147,7 +147,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             var updatedTodoListFromDatabase = await context.TodoLists.Where(tl => tl.Title == updateTodoListModel.Title)
                 .FirstOrDefaultAsync();
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            CheckResponse.Failure(response, 400);
+            CheckResponse.Failure(response);
             updatedTodoListFromDatabase.Should().NotBeNull();
             updatedTodoListFromDatabase.Title.Should().Be(todoListFromDatabase.Title);
         }
@@ -192,7 +192,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
             apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
-            CheckResponse.Failure(response, 404);
+            CheckResponse.Failure(response);
         }
 
         [Test]

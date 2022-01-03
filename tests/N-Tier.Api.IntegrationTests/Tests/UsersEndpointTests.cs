@@ -38,7 +38,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.OK);
             var response = await ResponseHelper.GetApiResultAsync<CreateUserResponseModel>(apiResponse);
-            CheckResponse.Succeeded(response, 201);
+            CheckResponse.Succeeded(response);
             context.Users.Should().Contain(u => u.Id == response.Result.Id.ToString());
         }
 
@@ -56,7 +56,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
-            CheckResponse.Failure(response, 400);
+            CheckResponse.Failure(response);
         }
 
         [Test]
@@ -75,7 +75,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
-            CheckResponse.Failure(response, 400);
+            CheckResponse.Failure(response);
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
-            CheckResponse.Failure(response, 400);
+            CheckResponse.Failure(response);
         }
 
         [Test]
@@ -131,7 +131,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
             var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
-            CheckResponse.Failure(response, 404);
+            CheckResponse.Failure(response);
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
-            CheckResponse.Failure(response, 400);
+            CheckResponse.Failure(response);
         }
 
         [Test]
@@ -209,7 +209,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
             var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
-            CheckResponse.Failure(response, 422);
+            CheckResponse.Failure(response);
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
             var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
-            CheckResponse.Failure(response, 404);
+            CheckResponse.Failure(response);
         }
 
         [Test]
@@ -254,7 +254,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
-            CheckResponse.Failure(response, 400);
+            CheckResponse.Failure(response);
         }
 
         [Test]
@@ -283,7 +283,7 @@ namespace N_Tier.Api.IntegrationTests.Tests
             // Assert
             apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
-            CheckResponse.Failure(response, 400);
+            CheckResponse.Failure(response);
         }
 
         [Test]

@@ -17,7 +17,7 @@ namespace N_Tier.API.Filters
                     .SelectMany(modelState => modelState.Errors)
                     .Select(modelError => modelError.ErrorMessage);
 
-                context.Result = new BadRequestObjectResult(ApiResult<string>.Failure(400, errors));
+                context.Result = new BadRequestObjectResult(ApiResult<string>.Failure(errors));
             }
 
             await next();

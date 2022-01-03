@@ -20,6 +20,6 @@ namespace N_Tier.API.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Get()
-            => Ok(ApiResult<IEnumerable<WeatherForecastResponseModel>>.Success200(await _weatherForecastService.GetAsync()));
+            => Ok(ApiResult<IEnumerable<WeatherForecastResponseModel>>.Success(await _weatherForecastService.GetAsync()));
     }
 }
