@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using N_Tier.Common;
 using System.Threading.Tasks;
+using N_Tier.DataAccess.Persistence;
 
 namespace N_Tier.API
 {

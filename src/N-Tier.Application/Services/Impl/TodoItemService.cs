@@ -5,6 +5,7 @@ using N_Tier.Core.Entities;
 using N_Tier.DataAccess.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace N_Tier.Application.Services.Impl
@@ -24,14 +25,14 @@ namespace N_Tier.Application.Services.Impl
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TodoItemResponseModel>> GetAllByListIdAsync(Guid id)
+        public async Task<IEnumerable<TodoItemResponseModel>> GetAllByListIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var todoItems = await _todoItemRepository.GetAllAsync(ti => ti.List.Id == id);
 
             return _mapper.Map<IEnumerable<TodoItemResponseModel>>(todoItems);
         }
 
-        public async Task<CreateTodoItemResponseModel> CreateAsync(CreateTodoItemModel createTodoItemModel)
+        public async Task<CreateTodoItemResponseModel> CreateAsync(CreateTodoItemModel createTodoItemModel, CancellationToken cancellationToken = default)
         {
             var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == createTodoItemModel.TodoListId);
             var todoItem = _mapper.Map<TodoItem>(createTodoItemModel);
@@ -44,7 +45,7 @@ namespace N_Tier.Application.Services.Impl
             };
         }
 
-        public async Task<UpdateTodoItemResponseModel> UpdateAsync(Guid id, UpdateTodoItemModel updateTodoItemModel)
+        public async Task<UpdateTodoItemResponseModel> UpdateAsync(Guid id, UpdateTodoItemModel updateTodoItemModel, CancellationToken cancellationToken = default)
         {
             var todoItem = await _todoItemRepository.GetFirstAsync(ti => ti.Id == id);
 
@@ -56,7 +57,7 @@ namespace N_Tier.Application.Services.Impl
             };
         }
 
-        public async Task<BaseResponseModel> DeleteAsync(Guid id)
+        public async Task<BaseResponseModel> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var todoItem = await _todoItemRepository.GetFirstAsync(ti => ti.Id == id);
 
