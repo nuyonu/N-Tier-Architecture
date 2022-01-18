@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿namespace N_Tier.Application.Services;
 
-namespace N_Tier.Application.Services
+public interface ITemplateService
 {
-    public interface ITemplateService
-    {
-        Task<string> GetTemplateAsync(string templateName);
+    Task<string> GetTemplateAsync(string templateName);
 
-        string ReplaceInTemplate(string input, IDictionary<string, string> replaceWords);
-    }
+    string ReplaceInTemplate(string input, IDictionary<string, string> replaceWords);
 }

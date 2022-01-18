@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace N_Tier.Core.Common
+﻿namespace N_Tier.Core.Common
 {
     public interface IAuditedEntity
     {

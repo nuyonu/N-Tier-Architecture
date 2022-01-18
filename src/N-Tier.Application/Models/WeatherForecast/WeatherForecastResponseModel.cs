@@ -1,15 +1,12 @@
-﻿using System;
+﻿namespace N_Tier.Application.Models.WeatherForecast;
 
-namespace N_Tier.Application.Models.WeatherForecast
+public class WeatherForecastResponseModel
 {
-    public class WeatherForecastResponseModel
-    {
-        public DateTime Date { get; set; }
+    public DateTime Date { get; set; }
 
-        public int TemperatureC { get; set; }
+    public int TemperatureC { get; set; }
 
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    public int TemperatureF => 32 + (int) (TemperatureC / 0.5556);
 
-        public string Summary { get; set; }
-    }
+    public string Summary { get; set; }
 }

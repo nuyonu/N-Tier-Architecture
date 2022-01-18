@@ -1,36 +1,32 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using N_Tier.DataAccess.Persistence;
-using System.Threading.Tasks;
+﻿using N_Tier.DataAccess.Persistence;
 
-namespace N_Tier.API.Middleware
+namespace N_Tier.API.Middleware;
+
+public class TransactionMiddleware
 {
-    public class TransactionMiddleware
+    private readonly ILogger<TransactionMiddleware> _logger;
+
+    private readonly RequestDelegate _next;
+
+    public TransactionMiddleware(RequestDelegate next, ILogger<TransactionMiddleware> logger)
     {
+        _next = next;
+        _logger = logger;
+    }
 
-        private readonly RequestDelegate _next;
-        private readonly ILogger<TransactionMiddleware> _logger;
+    public async Task Invoke(HttpContext context, DatabaseContext databaseContext)
+    {
+        await using var transaction = await databaseContext.Database.BeginTransactionAsync();
 
-        public TransactionMiddleware(RequestDelegate next, ILogger<TransactionMiddleware> logger)
+        try
         {
-            _next = next;
-            _logger = logger;
+            await _next(context);
+
+            await transaction.CommitAsync();
         }
-
-        public async Task Invoke(HttpContext context, DatabaseContext databaseContext)
+        catch
         {
-            await using var transaction = await databaseContext.Database.BeginTransactionAsync();
-
-            try
-            {
-                await _next(context);
-
-                await transaction.CommitAsync();
-            }
-            catch
-            {
-                await transaction.RollbackAsync();
-            }
+            await transaction.RollbackAsync();
         }
     }
 }

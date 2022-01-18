@@ -1,12 +1,12 @@
 ﻿using N_Tier.Core.Common;
-using System;
-using System.Collections.Generic;
 
 namespace N_Tier.Core.Entities
 {
     public class TodoList : BaseEntity, IAuditedEntity
     {
         public string Title { get; set; }
+
+        public List<TodoItem> Items { get; } = new List<TodoItem>();
 
         public string CreatedBy { get; set; }
 
@@ -15,7 +15,5 @@ namespace N_Tier.Core.Entities
         public string UpdatedBy { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
-
-        public List<TodoItem> Items { get; private set; } = new List<TodoItem>();
     }
 }

@@ -1,34 +1,33 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using N_Tier.Application.Services.Impl;
-using System.Collections.Generic;
 using Xunit;
 
-namespace N_Tier.Application.UnitTests.Services
+namespace N_Tier.Application.UnitTests.Services;
+
+public class TemplateServiceTests
 {
-    public class TemplateServiceTests
+    private readonly TemplateService _sut;
+
+    public TemplateServiceTests()
     {
-        private readonly TemplateService _sut;
+        _sut = new TemplateService();
+    }
 
-        public TemplateServiceTests()
+    [Fact]
+    public void ReplaceInTemplate_Should_Replace_All_Words_From_Input()
+    {
+        // Arrange
+        const string input = "Hello {Username}. Welcome!";
+        var replaceWords = new Dictionary<string, string>
         {
-            _sut = new TemplateService();
-        }
+            { "{Username}", "John983" }
+        };
 
-        [Fact]
-        public void ReplaceInTemplate_Should_Replace_All_Words_From_Input()
-        {
-            // Arrange
-            const string input = "Hello {Username}. Welcome!";
-            var replaceWords = new Dictionary<string, string>
-            {
-                { "{Username}", "John983" }
-            };
+        // Act
+        var result = _sut.ReplaceInTemplate(input, replaceWords);
 
-            // Act
-            var result = _sut.ReplaceInTemplate(input, replaceWords);
-
-            // Assert
-            result.Should().Be("Hello John983. Welcome!");
-        }
+        // Assert
+        result.Should().Be("Hello John983. Welcome!");
     }
 }

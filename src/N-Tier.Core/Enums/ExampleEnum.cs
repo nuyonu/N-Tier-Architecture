@@ -4,6 +4,6 @@
     public enum ExampleTypes
     {
         ExampleOne,
-        ExampleTwo,
+        ExampleTwo
     }
 }

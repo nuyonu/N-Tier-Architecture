@@ -1,60 +1,54 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using N_Tier.Application.Exceptions;
+﻿using N_Tier.Application.Exceptions;
 using N_Tier.Application.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using N_Tier.Core.Exceptions;
+using Newtonsoft.Json;
 
-namespace N_Tier.API.Middleware
+namespace N_Tier.API.Middleware;
+
+public class ExceptionHandlingMiddleware
 {
-    public class ExceptionHandlingMiddleware
+    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+    private readonly RequestDelegate _next;
+
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+        _next = next;
+        _logger = logger;
+    }
 
-        public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+    public async Task Invoke(HttpContext context)
+    {
+        try
         {
-            _next = next;
-            _logger = logger;
+            await _next(context);
         }
-
-        public async Task Invoke(HttpContext context)
+        catch (Exception ex)
         {
-            try
-            {
-                await _next(context);
-            }
-            catch (Exception ex)
-            {
-                await HandleException(context, ex);
-            }
+            await HandleException(context, ex);
         }
+    }
 
-        private Task HandleException(HttpContext context, Exception ex)
+    private Task HandleException(HttpContext context, Exception ex)
+    {
+        _logger.LogError(ex.Message);
+
+        var code = StatusCodes.Status500InternalServerError;
+        var errors = new List<string> { ex.Message };
+
+        code = ex switch
         {
-            _logger.LogError(ex.Message);
+            NotFoundException => StatusCodes.Status404NotFound,
+            ResourceNotFoundException => StatusCodes.Status404NotFound,
+            BadRequestException => StatusCodes.Status400BadRequest,
+            UnprocessableRequestException => StatusCodes.Status422UnprocessableEntity,
+            _ => code
+        };
 
-            var code = StatusCodes.Status500InternalServerError;
-            var errors = new List<string> { ex.Message };
+        var result = JsonConvert.SerializeObject(ApiResult<string>.Failure(errors));
 
-            code = ex switch
-            {
-                NotFoundException => StatusCodes.Status404NotFound,
-                ResourceNotFoundException => StatusCodes.Status404NotFound,
-                BadRequestException => StatusCodes.Status400BadRequest,
-                UnprocessableRequestException => StatusCodes.Status422UnprocessableEntity,
-                _ => code
-            };
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = code;
 
-            var result = JsonConvert.SerializeObject(ApiResult<string>.Failure(errors));
-
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = code;
-
-            return context.Response.WriteAsync(result);
-        }
+        return context.Response.WriteAsync(result);
     }
 }

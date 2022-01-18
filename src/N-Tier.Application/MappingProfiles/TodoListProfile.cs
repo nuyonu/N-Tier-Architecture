@@ -2,15 +2,14 @@
 using N_Tier.Application.Models.TodoList;
 using N_Tier.Core.Entities;
 
-namespace N_Tier.Application.MappingProfiles
-{
-    public class TodoListProfile : Profile
-    {
-        public TodoListProfile()
-        {
-            CreateMap<CreateTodoListModel, TodoList>();
+namespace N_Tier.Application.MappingProfiles;
 
-            CreateMap<TodoList, TodoListResponseModel>();
-        }
+public class TodoListProfile : Profile
+{
+    public TodoListProfile()
+    {
+        CreateMap<CreateTodoListModel, TodoList>();
+
+        CreateMap<TodoList, TodoListResponseModel>();
     }
 }
