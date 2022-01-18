@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace N_Tier.Shared.Services.Impl
 {
@@ -12,10 +12,14 @@ namespace N_Tier.Shared.Services.Impl
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string GetUserId() 
-            => GetClaim(ClaimTypes.NameIdentifier);
+        public string GetUserId()
+        {
+            return GetClaim(ClaimTypes.NameIdentifier);
+        }
 
-        public string GetClaim(string key) 
-            => _httpContextAccessor.HttpContext?.User?.FindFirst(key)?.Value;
+        public string GetClaim(string key)
+        {
+            return _httpContextAccessor.HttpContext?.User?.FindFirst(key)?.Value;
+        }
     }
 }

@@ -17,7 +17,7 @@ public static class ApplicationDependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services, IWebHostEnvironment env)
     {
         services.AddServices(env);
-        
+
         services.RegisterAutoMapper();
 
         return services;
@@ -33,21 +33,16 @@ public static class ApplicationDependencyInjection
         services.AddScoped<ITemplateService, TemplateService>();
 
         if (env.IsDevelopment())
-        {
             services.AddScoped<IEmailService, DevEmailService>();
-        }
         else
-        {
             services.AddScoped<IEmailService, EmailService>();
-        }
     }
-    
+
     private static void RegisterAutoMapper(this IServiceCollection services)
     {
-        // TODO use marker
-        services.AddAutoMapper(typeof(TodoListProfile).Assembly);
+        services.AddAutoMapper(typeof(IMappingProfilesMarker));
     }
-    
+
     public static void AddEmailConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton(configuration.GetSection("SmtpSettings").Get<SmtpSettings>());

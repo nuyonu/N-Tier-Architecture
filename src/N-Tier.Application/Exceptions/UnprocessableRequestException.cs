@@ -1,10 +1,6 @@
-﻿using System;
+﻿namespace N_Tier.Application.Exceptions;
 
-namespace N_Tier.Application.Exceptions
+public class UnprocessableRequestException : Exception
 {
-    public class UnprocessableRequestException : Exception
-    {
-        public UnprocessableRequestException(string message) : base(message)
-        { }
-    }
+    public UnprocessableRequestException(string message) : base(message) { }
 }

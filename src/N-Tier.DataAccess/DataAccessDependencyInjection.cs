@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -16,9 +15,9 @@ public static class DataAccessDependencyInjection
     public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDatabase(configuration);
-        
+
         services.AddIdentity();
-        
+
         services.AddRepositories();
 
         return services;
@@ -29,27 +28,23 @@ public static class DataAccessDependencyInjection
         services.AddScoped<ITodoItemRepository, TodoItemRepository>();
         services.AddScoped<ITodoListRepository, TodoListRepository>();
     }
-    
+
     private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         var databaseConfig = configuration.GetSection("Database").Get<DatabaseConfiguration>();
 
         if (databaseConfig.UseInMemoryDatabase)
-        {
             services.AddDbContext<DatabaseContext>(options =>
             {
                 options.UseInMemoryDatabase("NTierDatabase");
                 options.ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning));
             });
-        }
         else
-        {
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(databaseConfig.ConnectionString,
                     opt => opt.MigrationsAssembly(typeof(DatabaseContext).Assembly.FullName)));
-        }
     }
-    
+
     private static void AddIdentity(this IServiceCollection services)
     {
         services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -68,7 +63,8 @@ public static class DataAccessDependencyInjection
             options.Lockout.MaxFailedAccessAttempts = 5;
             options.Lockout.AllowedForNewUsers = true;
 
-            options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+            options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
             options.User.RequireUniqueEmail = true;
         });
     }
@@ -80,5 +76,4 @@ public class DatabaseConfiguration
     public bool UseInMemoryDatabase { get; set; }
 
     public string ConnectionString { get; set; }
-
 }

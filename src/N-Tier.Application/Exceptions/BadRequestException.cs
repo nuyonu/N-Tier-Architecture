@@ -1,11 +1,7 @@
-﻿using System;
+﻿namespace N_Tier.Application.Exceptions;
 
-namespace N_Tier.Application.Exceptions
+[Serializable]
+public class BadRequestException : Exception
 {
-    [Serializable]
-    public class BadRequestException : Exception
-    {
-        public BadRequestException(string message) : base(message)
-        { }
-    }
+    public BadRequestException(string message) : base(message) { }
 }

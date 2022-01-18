@@ -1,12 +1,8 @@
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using N_Tier.API.Filters;
 using N_Tier.API.Middleware;
 using N_Tier.Application;
-using N_Tier.Application.Models.Validators.TodoList;
+using N_Tier.Application.Models.Validators;
 using N_Tier.DataAccess;
 
 namespace N_Tier.API;
@@ -28,8 +24,7 @@ public class Startup
                 config => config.Filters.Add(typeof(ValidateModelAttribute))
             )
             .AddFluentValidation(
-                // TODO add marker here
-                options => options.RegisterValidatorsFromAssemblyContaining<CreateTodoListModelValidator>()
+                options => options.RegisterValidatorsFromAssemblyContaining<IValidationsMarker>()
             );
 
         services.AddSwagger();

@@ -1,42 +1,38 @@
-﻿using System.Collections.Generic;
+﻿namespace N_Tier.Application.Common.Email;
 
-namespace N_Tier.Application.Common.Email
+public class EmailMessage
 {
-    public class EmailMessage
+    private EmailMessage() { }
+    public string ToAddress { get; private set; }
+
+    public string Body { get; private set; }
+
+    public string Subject { get; private set; }
+
+    public List<EmailAttachment> Attachments { get; private set; }
+
+    public static EmailMessage Create(string toAddress, string body, string subject,
+        List<EmailAttachment> attachments = null)
     {
-        public string ToAddress { get; private set; }
+        attachments ??= new List<EmailAttachment>();
 
-        public string Body { get; private set; }
-
-        public string Subject { get; private set; }
-
-        public List<EmailAttachment> Attachments { get; private set; }
-
-        private EmailMessage() { }
-
-        public static EmailMessage Create(string toAddress, string body, string subject, List<EmailAttachment> attachments = null)
+        return new EmailMessage
         {
-            attachments ??= new List<EmailAttachment>();
+            ToAddress = toAddress,
+            Body = body,
+            Subject = subject,
+            Attachments = attachments
+        };
+    }
 
-            return new EmailMessage()
-            {
-                ToAddress = toAddress,
-                Body = body,
-                Subject = subject,
-                Attachments = attachments,
-            };
-        }
-
-        public static EmailMessage Create(string toAddress, string body, string subject, EmailAttachment attachment)
+    public static EmailMessage Create(string toAddress, string body, string subject, EmailAttachment attachment)
+    {
+        return new EmailMessage
         {
-            return new EmailMessage()
-            {
-                ToAddress = toAddress,
-                Body = body,
-                Subject = subject,
-                Attachments = new List<EmailAttachment>() { attachment },
-            };
-        }
-
+            ToAddress = toAddress,
+            Body = body,
+            Subject = subject,
+            Attachments = new List<EmailAttachment> { attachment }
+        };
     }
 }

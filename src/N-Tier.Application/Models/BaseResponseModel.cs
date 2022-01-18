@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace N_Tier.Application.Models;
 
-namespace N_Tier.Application.Models
+public class BaseResponseModel
 {
-    public class BaseResponseModel
-    {
-        public Guid Id { get; set; }
-    }
+    public Guid Id { get; set; }
 }

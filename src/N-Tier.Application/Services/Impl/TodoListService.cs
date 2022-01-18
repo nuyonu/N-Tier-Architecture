@@ -5,71 +5,67 @@ using N_Tier.Application.Models.TodoList;
 using N_Tier.Core.Entities;
 using N_Tier.DataAccess.Repositories;
 using N_Tier.Shared.Services;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace N_Tier.Application.Services.Impl
+namespace N_Tier.Application.Services.Impl;
+
+public class TodoListService : ITodoListService
 {
-    public class TodoListService : ITodoListService
+    private readonly IClaimService _claimService;
+    private readonly IMapper _mapper;
+    private readonly ITodoListRepository _todoListRepository;
+
+    public TodoListService(ITodoListRepository todoListRepository, IMapper mapper, IClaimService claimService)
     {
-        private readonly ITodoListRepository _todoListRepository;
-        private readonly IMapper _mapper;
-        private readonly IClaimService _claimService;
+        _todoListRepository = todoListRepository;
+        _mapper = mapper;
+        _claimService = claimService;
+    }
 
-        public TodoListService(ITodoListRepository todoListRepository, IMapper mapper, IClaimService claimService)
+    public async Task<IEnumerable<TodoListResponseModel>> GetAllAsync()
+    {
+        var currentUserId = _claimService.GetUserId();
+
+        var todoLists = await _todoListRepository.GetAllAsync(tl => tl.CreatedBy == currentUserId);
+
+        return _mapper.Map<IEnumerable<TodoListResponseModel>>(todoLists);
+    }
+
+    public async Task<CreateTodoListResponseModel> CreateAsync(CreateTodoListModel createTodoListModel)
+    {
+        var todoList = _mapper.Map<TodoList>(createTodoListModel);
+
+        var addedTodoList = await _todoListRepository.AddAsync(todoList);
+
+        return new CreateTodoListResponseModel
         {
-            _todoListRepository = todoListRepository;
-            _mapper = mapper;
-            _claimService = claimService;
-        }
+            Id = addedTodoList.Id
+        };
+    }
 
-        public async Task<IEnumerable<TodoListResponseModel>> GetAllAsync()
+    public async Task<UpdateTodoListResponseModel> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
+    {
+        var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == id);
+
+        var userId = _claimService.GetUserId();
+
+        if (userId != todoList.CreatedBy)
+            throw new BadRequestException("The selected list does not belong to you");
+
+        todoList.Title = updateTodoListModel.Title;
+
+        return new UpdateTodoListResponseModel
         {
-            var currentUserId = _claimService.GetUserId();
+            Id = (await _todoListRepository.UpdateAsync(todoList)).Id
+        };
+    }
 
-            var todoLists = await _todoListRepository.GetAllAsync(tl => tl.CreatedBy == currentUserId);
+    public async Task<BaseResponseModel> DeleteAsync(Guid id)
+    {
+        var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == id);
 
-            return _mapper.Map<IEnumerable<TodoListResponseModel>>(todoLists);
-        }
-
-        public async Task<CreateTodoListResponseModel> CreateAsync(CreateTodoListModel createTodoListModel)
+        return new BaseResponseModel
         {
-            var todoList = _mapper.Map<TodoList>(createTodoListModel);
-
-            var addedTodoList = await _todoListRepository.AddAsync(todoList);
-
-            return new CreateTodoListResponseModel
-            {
-                Id = addedTodoList.Id
-            };
-        }
-
-        public async Task<UpdateTodoListResponseModel> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
-        {
-            var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == id);
-            
-            var userId = _claimService.GetUserId();
-
-            if (userId != todoList.CreatedBy)
-                throw new BadRequestException("The selected list does not belong to you");
-
-            todoList.Title = updateTodoListModel.Title;
-
-            return new UpdateTodoListResponseModel
-            {
-                Id = (await _todoListRepository.UpdateAsync(todoList)).Id
-            };
-        }
-
-        public async Task<BaseResponseModel> DeleteAsync(Guid id)
-        {
-            var todoList = await _todoListRepository.GetFirstAsync(tl => tl.Id == id);
-            
-            return new BaseResponseModel
-            {
-                Id = (await _todoListRepository.DeleteAsync(todoList)).Id
-            };
-        }
+            Id = (await _todoListRepository.DeleteAsync(todoList)).Id
+        };
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace N_Tier.Application.Models.TodoList
+﻿namespace N_Tier.Application.Models.TodoList;
+
+public class TodoListResponseModel : BaseResponseModel
 {
-    public class TodoListResponseModel : BaseResponseModel
-    {
-        public string Title { get; set; }
-    }
+    public string Title { get; set; }
 }

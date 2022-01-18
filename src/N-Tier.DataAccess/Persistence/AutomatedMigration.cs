@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using N_Tier.DataAccess.Identity;
@@ -13,10 +11,7 @@ public static class AutomatedMigration
     {
         var context = services.GetRequiredService<DatabaseContext>();
 
-        if (context.Database.IsSqlServer())
-        {
-            await context.Database.MigrateAsync();
-        }
+        if (context.Database.IsSqlServer()) await context.Database.MigrateAsync();
 
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
