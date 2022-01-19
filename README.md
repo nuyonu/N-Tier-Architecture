@@ -46,8 +46,8 @@ This is a n-layer architecture based on [Common web application architectures][c
 
 <div align="center">
 
-![N-Tier-Dependencies](https://raw.githubusercontent.com/nuyonu/N-Tier-Architecture/master/github/images/N-Tier-Dependencies.png)
-
+<img src="https://raw.githubusercontent.com/nuyonu/N-Tier-Architecture/master/github/images/N-Tier-Dependencies.png" alt="drawing" width="400"/>
+    
 </div>
 
 ---
