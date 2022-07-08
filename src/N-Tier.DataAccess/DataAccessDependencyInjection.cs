@@ -32,6 +32,7 @@ public static class DataAccessDependencyInjection
     private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         var databaseConfig = configuration.GetSection("Database").Get<DatabaseConfiguration>();
+        var connectionString = string.IsNullOrEmpty(databaseConfig.ConnectionString) ? configuration["CONNECTION_STRING"] : databaseConfig.ConnectionString;
 
         if (databaseConfig.UseInMemoryDatabase)
             services.AddDbContext<DatabaseContext>(options =>
@@ -41,7 +42,7 @@ public static class DataAccessDependencyInjection
             });
         else
             services.AddDbContext<DatabaseContext>(options =>
-                options.UseSqlServer(databaseConfig.ConnectionString,
+                options.UseSqlServer(connectionString,
                     opt => opt.MigrationsAssembly(typeof(DatabaseContext).Assembly.FullName)));
     }
 
@@ -68,12 +69,4 @@ public static class DataAccessDependencyInjection
             options.User.RequireUniqueEmail = true;
         });
     }
-}
-
-// TODO move outside?
-public class DatabaseConfiguration
-{
-    public bool UseInMemoryDatabase { get; set; }
-
-    public string ConnectionString { get; set; }
 }
