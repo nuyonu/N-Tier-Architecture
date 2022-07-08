@@ -16,6 +16,6 @@ public class DevEmailService : IEmailService
     {
         await Task.Delay(100);
 
-        _logger.LogInformation($"Email was sent to: [{emailMessage.ToAddress}]. Body: {emailMessage.Body}");
+        _logger.LogInformation("Email was sent to: [{ToAddress}]. Body: {Body}", emailMessage.ToAddress, emailMessage.Body);
     }
 }

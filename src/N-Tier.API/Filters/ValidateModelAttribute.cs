@@ -4,6 +4,7 @@ using N_Tier.Application.Models;
 
 namespace N_Tier.API.Filters;
 
+[AttributeUsage(AttributeTargets.Class)]
 public class ValidateModelAttribute : Attribute, IAsyncResultFilter
 {
     public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
