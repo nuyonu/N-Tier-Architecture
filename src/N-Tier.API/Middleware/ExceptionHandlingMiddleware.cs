@@ -30,7 +30,7 @@ public class ExceptionHandlingMiddleware
 
     private Task HandleException(HttpContext context, Exception ex)
     {
-        _logger.LogError(ex.Message);
+        _logger.LogError("{Exception}", ex.Message);
 
         var code = StatusCodes.Status500InternalServerError;
         var errors = new List<string> { ex.Message };

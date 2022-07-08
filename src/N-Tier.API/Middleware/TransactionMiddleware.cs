@@ -4,14 +4,11 @@ namespace N_Tier.API.Middleware;
 
 public class TransactionMiddleware
 {
-    private readonly ILogger<TransactionMiddleware> _logger;
-
     private readonly RequestDelegate _next;
 
-    public TransactionMiddleware(RequestDelegate next, ILogger<TransactionMiddleware> logger)
+    public TransactionMiddleware(RequestDelegate next)
     {
         _next = next;
-        _logger = logger;
     }
 
     public async Task Invoke(HttpContext context, DatabaseContext databaseContext)

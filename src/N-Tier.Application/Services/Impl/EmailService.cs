@@ -33,7 +33,6 @@ public class EmailService : IEmailService
         catch
         {
             await client.DisconnectAsync(true);
-            client.Dispose();
 
             throw;
         }
