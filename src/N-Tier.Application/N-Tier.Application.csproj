@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
@@ -7,15 +7,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="10.1.1"/>
-        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1"/>
-        <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.4"/>
-        <PackageReference Include="MailKit" Version="2.15.0"/>
-        <PackageReference Include="MimeKit" Version="2.15.1"/>
+        <PackageReference Include="AutoMapper" Version="10.1.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.4" />
+        <PackageReference Include="MailKit" Version="2.15.0" />
+        <PackageReference Include="MimeKit" Version="2.15.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\N-Tier.DataAccess\N-Tier.DataAccess.csproj"/>
+        <ProjectReference Include="..\N-Tier.DataAccess\N-Tier.DataAccess.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Templates\confirmation_email.html" />
+      <Content Include="Templates\confirmation_email.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

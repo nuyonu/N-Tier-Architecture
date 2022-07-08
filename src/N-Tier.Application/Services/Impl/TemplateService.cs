@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace N_Tier.Application.Services.Impl;
+﻿namespace N_Tier.Application.Services.Impl;
 
 public class TemplateService : ITemplateService
 {
@@ -8,10 +6,7 @@ public class TemplateService : ITemplateService
 
     public TemplateService()
     {
-        var projectPath = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
-        var templateProject = Assembly.GetExecutingAssembly().GetName().Name;
-
-        _templatesPath = Path.Combine(projectPath, templateProject, "Templates");
+        _templatesPath = Path.Combine(AppContext.BaseDirectory, "Templates");
     }
 
     public async Task<string> GetTemplateAsync(string templateName)
