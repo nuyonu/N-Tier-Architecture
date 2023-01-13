@@ -56,11 +56,11 @@ This is a n-layer architecture based on [Common web application architectures][c
 
 <!-- Before you begin, please read the [requirements](#requirements).  -->
 
-A quick method to use the exposed solution is to download a copy of this project, if you meet all the requirements, the project will run without any problems and can be used from the first second.
+A quick method to use the exposed solution is to download a copy of this project. If you meet all the requirements, the project will run without any problems and can be used from the first second.
 
 ## Database migrations
 
-Migrations will be applied automatically. If you want to add new migrations to be applied to over the database, you will need to run the command below in the root folder
+Migrations will be applied automatically. If you want to add new migrations to be applied to the database, you will need to run the command below in the root folder.
 
 ```c#
 dotnet ef migrations add Migration-Name --project N-Tier.DataAccess -o Persistence/Migrations --startup-project N-Tier.API
