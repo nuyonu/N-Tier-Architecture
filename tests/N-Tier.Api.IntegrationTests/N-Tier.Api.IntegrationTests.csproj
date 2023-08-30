@@ -8,16 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="6.2.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.0"/>
-        <PackageReference Include="NBuilder" Version="6.1.0"/>
-        <PackageReference Include="nunit" Version="3.13.2"/>
-        <PackageReference Include="NUnit3TestAdapter" Version="4.1.0"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0"/>
+        <PackageReference Include="FluentAssertions" Version="6.12.0" />
+        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.21" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
+        <PackageReference Include="NBuilder" Version="6.1.0" />
+        <PackageReference Include="nunit" Version="3.13.3" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\N-Tier.API\N-Tier.API.csproj"/>
+        <ProjectReference Include="..\..\src\N-Tier.API\N-Tier.API.csproj" />
     </ItemGroup>
 
 </Project>

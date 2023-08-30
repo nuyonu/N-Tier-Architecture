@@ -8,22 +8,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="6.2.0"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0"/>
-        <PackageReference Include="MockQueryable.Core" Version="5.0.1"/>
-        <PackageReference Include="MockQueryable.EntityFrameworkCore" Version="5.0.1"/>
-        <PackageReference Include="MockQueryable.NSubstitute" Version="5.0.1"/>
-        <PackageReference Include="NBuilder" Version="6.1.0"/>
-        <PackageReference Include="NSubstitute" Version="4.2.2"/>
-        <PackageReference Include="xunit" Version="2.4.1"/>
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+        <PackageReference Include="FluentAssertions" Version="6.12.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+        <PackageReference Include="MockQueryable.Core" Version="7.0.0" />
+        <PackageReference Include="MockQueryable.EntityFrameworkCore" Version="7.0.0" />
+        <PackageReference Include="MockQueryable.NSubstitute" Version="7.0.0" />
+        <PackageReference Include="NBuilder" Version="6.1.0" />
+        <PackageReference Include="NSubstitute" Version="5.0.0" />
+        <PackageReference Include="xunit" Version="2.5.0" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\N-Tier.Application\N-Tier.Application.csproj"/>
+        <ProjectReference Include="..\..\src\N-Tier.Application\N-Tier.Application.csproj" />
     </ItemGroup>
 
 </Project>
