@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using N_Tier.Api.IntegrationTests.Config;
 using N_Tier.Api.IntegrationTests.Config.Constants;
 using N_Tier.Api.IntegrationTests.Helpers;
@@ -14,24 +13,31 @@ using N_Tier.Application.Models;
 using N_Tier.Application.Models.TodoList;
 using N_Tier.Core.Entities;
 using N_Tier.DataAccess.Persistence;
-using NUnit.Framework;
+using Xunit;
 
 namespace N_Tier.Api.IntegrationTests.Tests;
 
-[TestFixture]
-public class TodoListEndpointTests : BaseOneTimeSetup
+public class TodoListEndpointTests
 {
-    [Test]
+    private readonly ApiApplicationFactory<Program> _factory;
+
+    public TodoListEndpointTests()
+    {
+        _factory = new ApiApplicationFactory<Program>();
+    }
+    
+    [Fact]
     public async Task Create_Should_Add_TodoList_In_Database()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var createTodoListModel = Builder<CreateTodoListModel>.CreateNew()
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/todoLists", new JsonContent(createTodoListModel));
+        var apiResponse = await client.PostAsync("/api/todoLists", new JsonContent(createTodoListModel));
 
         // Assert
         var response = await ResponseHelper.GetApiResultAsync<CreateTodoListResponseModel>(apiResponse);
@@ -42,18 +48,19 @@ public class TodoListEndpointTests : BaseOneTimeSetup
         todoListFromDatabase.Title.Should().Be(createTodoListModel.Title);
     }
 
-    [Test]
+    [Fact]
     public async Task Create_Should_Return_BadRequest_If_Title_Is_Incorrect()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var createTodoListModel = Builder<CreateTodoListModel>.CreateNew()
             .With(ctl => ctl.Title = "1")
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/todoLists", new JsonContent(createTodoListModel));
+        var apiResponse = await client.PostAsync("/api/todoLists", new JsonContent(createTodoListModel));
 
         // Assert
         var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
@@ -64,11 +71,12 @@ public class TodoListEndpointTests : BaseOneTimeSetup
         todoListFromDatabase.Should().BeNull();
     }
 
-    [Test]
+    [Fact]
     public async Task Update_Should_Update_Todo_List_From_Database()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var user = await context.Users.Where(u => u.Email == UserConstants.DefaultUserDb.Email).FirstOrDefaultAsync();
 
@@ -85,11 +93,11 @@ public class TodoListEndpointTests : BaseOneTimeSetup
             .With(utl => utl.Title = "UpdateTodoListTitleIntegration").Build();
 
         // Act
-        var apiResponse = await Client.PutAsync($"/api/todoLists/{todoListFromDatabase.Id}",
+        var apiResponse = await client.PutAsync($"/api/todoLists/{todoListFromDatabase.Id}",
             new JsonContent(updateTodoListModel));
 
         // Assert
-        context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
+        context = _factory.GetRequiredService<DatabaseContext>();
         var response = await ResponseHelper.GetApiResultAsync<UpdateTodoListResponseModel>(apiResponse);
         var updatedTodoListFromDatabase = await context.TodoLists
             .Where(tl => tl.Id == response.Result.Id)
@@ -99,18 +107,19 @@ public class TodoListEndpointTests : BaseOneTimeSetup
         updatedTodoListFromDatabase.Title.Should().Be(updateTodoListModel.Title);
     }
 
-    [Test]
+    [Fact]
     public async Task Update_Should_Return_NotFound_If_Todo_List_Does_Not_Exist_Anymore()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var updateTodoListModel = Builder<UpdateTodoListModel>.CreateNew()
             .With(utl => utl.Title = "UpdateTodoListIntegration").Build();
 
         // Act
         var apiResponse =
-            await Client.PutAsync($"/api/todoLists/{Guid.NewGuid()}", new JsonContent(updateTodoListModel));
+            await client.PutAsync($"/api/todoLists/{Guid.NewGuid()}", new JsonContent(updateTodoListModel));
 
         // Assert
         var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
@@ -122,11 +131,12 @@ public class TodoListEndpointTests : BaseOneTimeSetup
         updatedTodoListFromDatabase.Should().BeNull();
     }
 
-    [Test]
+    [Fact]
     public async Task Update_Should_Return_BadRequest_If_Todo_List_Does_Not_Belong_To_User()
     {
-        // Arrange  
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var todoList = Builder<TodoList>.CreateNew()
             .With(tl => tl.Id = Guid.NewGuid())
@@ -139,7 +149,7 @@ public class TodoListEndpointTests : BaseOneTimeSetup
         var updateTodoListModel = Builder<UpdateTodoListModel>.CreateNew().Build();
 
         // Act
-        var apiResponse = await Client.PutAsync($"/api/todoLists/{todoListFromDatabase.Id}",
+        var apiResponse = await client.PutAsync($"/api/todoLists/{todoListFromDatabase.Id}",
             new JsonContent(updateTodoListModel));
 
         // Assert
@@ -152,11 +162,12 @@ public class TodoListEndpointTests : BaseOneTimeSetup
         updatedTodoListFromDatabase.Title.Should().Be(todoListFromDatabase.Title);
     }
 
-    [Test]
+    [Fact]
     public async Task Delete_Should_Delete_Todo_List_From_Database()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var user = await context.Users.Where(u => u.Email == "nuyonu@gmail.com").FirstOrDefaultAsync();
 
@@ -170,7 +181,7 @@ public class TodoListEndpointTests : BaseOneTimeSetup
         await context.SaveChangesAsync();
 
         // Act
-        var apiResponse = await Client.DeleteAsync($"/api/todoLists/{todoListFromDatabase.Id}");
+        var apiResponse = await client.DeleteAsync($"/api/todoLists/{todoListFromDatabase.Id}");
 
         // Assert
         var response = await ResponseHelper.GetApiResultAsync<BaseResponseModel>(apiResponse);
@@ -180,14 +191,15 @@ public class TodoListEndpointTests : BaseOneTimeSetup
         updatedTodoListFromDatabase.Should().BeNull();
     }
 
-    [Test]
+    [Fact]
     public async Task Delete_Should_Return_NotFound_If_Todo_List_Does_Not_Exist_Anymore()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var randomId = Guid.NewGuid();
 
         // Act
-        var apiResponse = await Client.DeleteAsync($"/api/todoLists/{randomId}");
+        var apiResponse = await client.DeleteAsync($"/api/todoLists/{randomId}");
 
         // Assert
         var response = await ResponseHelper.GetApiResultAsync<string>(apiResponse);
@@ -195,11 +207,12 @@ public class TodoListEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task Get_Todo_Lists_Should_Return_All_Todo_Lists_For_Specified_User_From_Database()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var user = await context.Users.Where(u => u.Email == UserConstants.DefaultUserDb.Email)
             .FirstOrDefaultAsync();
@@ -222,7 +235,7 @@ public class TodoListEndpointTests : BaseOneTimeSetup
         await ((DbContext) context).SaveChangesAsync();
 
         // Act
-        var apiResponse = await Client.GetAsync("/api/todoLists");
+        var apiResponse = await client.GetAsync("/api/todoLists");
 
         // Assert
         var response = await ResponseHelper.GetApiResultAsync<IEnumerable<TodoListResponseModel>>(apiResponse);

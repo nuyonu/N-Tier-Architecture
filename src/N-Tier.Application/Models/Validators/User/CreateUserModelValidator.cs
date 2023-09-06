@@ -18,7 +18,7 @@ public class CreateUserModelValidator : AbstractValidator<CreateUserModel>
             .WithMessage($"Username should have minimum {UserValidatorConfiguration.MinimumUsernameLength} characters")
             .MaximumLength(UserValidatorConfiguration.MaximumUsernameLength)
             .WithMessage($"Username should have maximum {UserValidatorConfiguration.MaximumUsernameLength} characters")
-            .MustAsync(UsernameIsUniqueAsync)
+            .Must(UsernameIsUnique)
             .WithMessage("Username is not available");
 
         RuleFor(u => u.Password)
@@ -30,20 +30,20 @@ public class CreateUserModelValidator : AbstractValidator<CreateUserModel>
         RuleFor(u => u.Email)
             .EmailAddress()
             .WithMessage("Email address is not valid")
-            .MustAsync(EmailAddressIsUniqueAsync)
+            .Must(EmailAddressIsUnique)
             .WithMessage("Email address is already in use");
     }
 
-    private async Task<bool> EmailAddressIsUniqueAsync(string email, CancellationToken cancellationToken = new())
+    private bool EmailAddressIsUnique(string email)
     {
-        var user = await _userManager.FindByEmailAsync(email);
+        var user = _userManager.FindByEmailAsync(email).GetAwaiter().GetResult();
 
         return user == null;
     }
 
-    private async Task<bool> UsernameIsUniqueAsync(string username, CancellationToken cancellationToken = new())
+    private bool UsernameIsUnique(string username)
     {
-        var user = await _userManager.FindByNameAsync(username);
+        var user = _userManager.FindByNameAsync(username).GetAwaiter().GetResult();
 
         return user == null;
     }
