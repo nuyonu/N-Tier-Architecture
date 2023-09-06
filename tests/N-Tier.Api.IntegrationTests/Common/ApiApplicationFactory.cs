@@ -12,7 +12,7 @@ using N_Tier.Api.IntegrationTests.Helpers.Services;
 using N_Tier.Application.Services;
 using N_Tier.DataAccess.Persistence;
 
-namespace N_Tier.Api.IntegrationTests.Config;
+namespace N_Tier.Api.IntegrationTests.Common;
 
 public class ApiApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
 {

@@ -59,4 +59,7 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program { }
+namespace N_Tier.API
+{
+    public partial class Program { }
+}

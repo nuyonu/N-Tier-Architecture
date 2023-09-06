@@ -5,12 +5,13 @@ using FizzWare.NBuilder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using N_Tier.Api.IntegrationTests.Config.Constants;
+using N_Tier.API;
+using N_Tier.Api.IntegrationTests.Common.Constants;
 using N_Tier.Application.Helpers;
 using N_Tier.DataAccess.Identity;
 using N_Tier.DataAccess.Persistence;
 
-namespace N_Tier.Api.IntegrationTests.Config;
+namespace N_Tier.Api.IntegrationTests.Common;
 
 public static class FactoryExtension
 {

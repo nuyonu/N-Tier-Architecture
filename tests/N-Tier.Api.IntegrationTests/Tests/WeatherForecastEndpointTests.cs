@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
-using N_Tier.Api.IntegrationTests.Config;
+using N_Tier.API;
+using N_Tier.Api.IntegrationTests.Common;
 using N_Tier.Api.IntegrationTests.Helpers;
 using N_Tier.Application.Models.WeatherForecast;
 using Xunit;
