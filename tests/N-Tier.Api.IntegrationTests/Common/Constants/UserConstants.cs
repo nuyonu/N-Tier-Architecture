@@ -1,4 +1,4 @@
-﻿namespace N_Tier.Api.IntegrationTests.Config.Constants;
+﻿namespace N_Tier.Api.IntegrationTests.Common.Constants;
 
 public static class UserConstants
 {

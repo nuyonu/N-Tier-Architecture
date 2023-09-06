@@ -13,9 +13,9 @@ variables:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET 6'
+  displayName: 'Use .NET 7'
   inputs:
-    version: '6.0.x'
+    version: '7.0.x'
     performMultiLevelLookup: true
 - task: DotNetCoreCLI@2
   displayName: 'Restore solution'

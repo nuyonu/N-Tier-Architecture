@@ -5,26 +5,33 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using N_Tier.Api.IntegrationTests.Config;
-using N_Tier.Api.IntegrationTests.Config.Constants;
+using N_Tier.API;
+using N_Tier.Api.IntegrationTests.Common;
+using N_Tier.Api.IntegrationTests.Common.Constants;
 using N_Tier.Api.IntegrationTests.Helpers;
 using N_Tier.Application.Models;
 using N_Tier.Application.Models.User;
 using N_Tier.DataAccess.Identity;
 using N_Tier.DataAccess.Persistence;
-using NUnit.Framework;
+using Xunit;
 
 namespace N_Tier.Api.IntegrationTests.Tests;
 
-[TestFixture]
-public class UsersEndpointTests : BaseOneTimeSetup
+public class UsersEndpointTests
 {
-    [Test]
+    private readonly ApiApplicationFactory<Program> _factory;
+
+    public UsersEndpointTests()
+    {
+        _factory = new ApiApplicationFactory<Program>();
+    }
+
+    [Fact]
     public async Task Create_User_Should_Add_User_To_Database()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var createModel = Builder<CreateUserModel>.CreateNew()
             .With(cu => cu.Email = "IntegrationTest@gmail.com")
@@ -33,7 +40,7 @@ public class UsersEndpointTests : BaseOneTimeSetup
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/users", new JsonContent(createModel));
+        var apiResponse = await client.PostAsync("/api/users", new JsonContent(createModel));
 
         // Assert
         apiResponse.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -42,16 +49,17 @@ public class UsersEndpointTests : BaseOneTimeSetup
         context.Users.Should().Contain(u => u.Id == response.Result.Id.ToString());
     }
 
-    [Test]
+    [Fact]
     public async Task Create_User_Should_Return_BadRequest_If_The_Email_Is_Incorrect()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var createModel = Builder<CreateUserModel>.CreateNew()
             .With(cu => cu.Email = "BadEmail")
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/users", new JsonContent(createModel));
+        var apiResponse = await client.PostAsync("/api/users", new JsonContent(createModel));
 
         // Assert
         apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -59,10 +67,11 @@ public class UsersEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task Create_User_Should_Return_BadRequest_If_The_Username_Is_Incorrect()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var createModel = Builder<CreateUserModel>.CreateNew()
             .With(cu => cu.Email = "nuyonu@gmail.com")
             .With(cu => cu.Username = "Len")
@@ -70,7 +79,7 @@ public class UsersEndpointTests : BaseOneTimeSetup
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/users", new JsonContent(createModel));
+        var apiResponse = await client.PostAsync("/api/users", new JsonContent(createModel));
 
         // Assert
         apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -78,17 +87,18 @@ public class UsersEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task Create_User_Should_Return_BadRequest_If_The_Password_Is_Incorrect()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var createModel = Builder<CreateUserModel>.CreateNew()
             .With(cu => cu.Email = "nuyonu@gmail.com")
             .With(cu => cu.Password = "incorrect")
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/users", new JsonContent(createModel));
+        var apiResponse = await client.PostAsync("/api/users", new JsonContent(createModel));
 
         // Assert
         apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -96,17 +106,18 @@ public class UsersEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task Login_Should_Return_User_Information_And_Token()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var loginUserModel = Builder<LoginUserModel>.CreateNew()
             .With(cu => cu.Username = UserConstants.DefaultUserDb.Username)
             .With(cu => cu.Password = UserConstants.DefaultUserDb.Password)
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
+        var apiResponse = await client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
 
         // Assert
         var response = await ResponseHelper.GetApiResultAsync<LoginResponseModel>(apiResponse);
@@ -116,17 +127,18 @@ public class UsersEndpointTests : BaseOneTimeSetup
         response.Result.Token.Should().NotBeNullOrEmpty();
     }
 
-    [Test]
+    [Fact]
     public async Task Login_Should_Return_NotFoundException_If_Username_Does_Not_Exists_In_Database()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var loginUserModel = Builder<LoginUserModel>.CreateNew()
             .With(cu => cu.Username = "NotExist")
             .With(cu => cu.Password = "Password.1!")
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
+        var apiResponse = await client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
 
         // Assert
         apiResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -134,17 +146,18 @@ public class UsersEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task Login_Should_Return_BadRequest_If_Password_Is_Incorrect()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var loginUserModel = Builder<LoginUserModel>.CreateNew()
             .With(cu => cu.Username = UserConstants.DefaultUserDb.Username)
             .With(cu => cu.Password = "Password.1")
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
+        var apiResponse = await client.PostAsync("/api/users/authenticate", new JsonContent(loginUserModel));
 
         // Assert
         apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -152,18 +165,18 @@ public class UsersEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task ConfirmEmail_Should_Update_User_Status()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
         var user = Builder<ApplicationUser>.CreateNew()
             .With(u => u.UserName = "ConfirmEmailUser")
             .With(u => u.Email = "ConfirmEmailUser@email.com")
             .Build();
 
-        var context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
-
-        var userManager = Host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+        var userManager = _factory.GetRequiredService<UserManager<ApplicationUser>>();
 
         await userManager.CreateAsync(user, "Password.1!");
 
@@ -175,7 +188,7 @@ public class UsersEndpointTests : BaseOneTimeSetup
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/users/confirmEmail", new JsonContent(confirmEmailModel));
+        var apiResponse = await client.PostAsync("/api/users/confirmEmail", new JsonContent(confirmEmailModel));
 
         // Assert
         var response = await ResponseHelper.GetApiResultAsync<ConfirmEmailResponseModel>(apiResponse);
@@ -185,16 +198,17 @@ public class UsersEndpointTests : BaseOneTimeSetup
         userFromDatabase.EmailConfirmed.Should().BeTrue();
     }
 
-    [Test]
+    [Fact]
     public async Task ConfirmEmail_Should_Return_UnprocessableEntity_If_Token_Or_UserId_Are_Incorrect()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var user = Builder<ApplicationUser>.CreateNew()
             .With(u => u.UserName = "ConfirmEmailUser2")
             .With(u => u.Email = "ConfirmEmailUser2@email.com")
             .Build();
 
-        var userManager = Host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+        var userManager = _factory.GetRequiredService<UserManager<ApplicationUser>>();
 
         await userManager.CreateAsync(user, "Password.1!");
 
@@ -204,7 +218,7 @@ public class UsersEndpointTests : BaseOneTimeSetup
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/users/confirmEmail", new JsonContent(confirmEmailModel));
+        var apiResponse = await client.PostAsync("/api/users/confirmEmail", new JsonContent(confirmEmailModel));
 
         // Assert
         apiResponse.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
@@ -212,17 +226,18 @@ public class UsersEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task ChangePassword_Should_Return_NotFoundException_If_User_Does_Not_Exists_In_Database()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var changePasswordModel = Builder<ChangePasswordModel>.CreateNew()
             .With(cu => cu.OldPassword = "Password.1!")
             .With(cu => cu.NewPassword = "Password.12!")
             .Build();
 
         // Act
-        var apiResponse = await Client.PutAsync($"/api/users/{Guid.NewGuid()}/changePassword",
+        var apiResponse = await client.PutAsync($"/api/users/{Guid.NewGuid()}/changePassword",
             new JsonContent(changePasswordModel));
 
         // Assert
@@ -231,18 +246,19 @@ public class UsersEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task ChangePassword_Should_Return_BadRequest_If_OldPassword_Does_Not_Match_User_Password()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var user = Builder<ApplicationUser>.CreateNew()
             .With(u => u.UserName = "ChangePasswordBadRequest")
             .With(u => u.Email = "ChangePasswordBadRequest@email.com")
             .Build();
 
-        var userManager = Host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+        var userManager = _factory.GetRequiredService<UserManager<ApplicationUser>>();
 
-        var createdUser = await userManager.CreateAsync(user, "Password.1!");
+        await userManager.CreateAsync(user, "Password.1!");
 
         var changePasswordModel = Builder<ChangePasswordModel>.CreateNew()
             .With(cu => cu.OldPassword = "Password.12!")
@@ -251,7 +267,7 @@ public class UsersEndpointTests : BaseOneTimeSetup
 
         // Act
         var apiResponse =
-            await Client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
+            await client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
 
         // Assert
         apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -259,20 +275,19 @@ public class UsersEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task ChangePassword_Should_Return_BadRequest_If_NewPassword_Does_Not_Follow_The_Rules()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var user = Builder<ApplicationUser>.CreateNew()
             .With(u => u.UserName = "ChangePasswordBadRequest2")
             .With(u => u.Email = "ChangePasswordBadRequest2@email.com")
             .Build();
 
-        var context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
+        var userManager = _factory.GetRequiredService<UserManager<ApplicationUser>>();
 
-        var userManager = Host.Services.GetRequiredService<UserManager<ApplicationUser>>();
-
-        var createdUser = await userManager.CreateAsync(user, "Password.1!");
+        await userManager.CreateAsync(user, "Password.1!");
 
         var changePasswordModel = Builder<ChangePasswordModel>.CreateNew()
             .With(cu => cu.OldPassword = "Password.1!")
@@ -281,7 +296,7 @@ public class UsersEndpointTests : BaseOneTimeSetup
 
         // Act
         var apiResponse =
-            await Client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
+            await client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
 
         // Assert
         apiResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -289,17 +304,18 @@ public class UsersEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task ChangePassword_Should_Update_User_Password_If_OldPassword_And_NewPassword_Are_Ok()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var user = Builder<ApplicationUser>.CreateNew()
             .With(u => u.UserName = "ChangePasswordBadRequest3")
             .With(u => u.Email = "ChangePasswordBadRequest3@email.com")
             .With(u => u.EmailConfirmed = true)
             .Build();
 
-        var userManager = Host.Services.GetRequiredService<UserManager<ApplicationUser>>();
+        var userManager = _factory.GetRequiredService<UserManager<ApplicationUser>>();
 
         await userManager.CreateAsync(user, "Password.1!");
 
@@ -310,7 +326,7 @@ public class UsersEndpointTests : BaseOneTimeSetup
 
         // Act
         var apiResponse =
-            await Client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
+            await client.PutAsync($"/api/users/{user.Id}/changePassword", new JsonContent(changePasswordModel));
 
         // Assert
         apiResponse.StatusCode.Should().Be(HttpStatusCode.OK);

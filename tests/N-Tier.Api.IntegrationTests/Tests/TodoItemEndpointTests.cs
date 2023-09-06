@@ -6,27 +6,34 @@ using System.Threading.Tasks;
 using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using N_Tier.Api.IntegrationTests.Config;
-using N_Tier.Api.IntegrationTests.Config.Constants;
+using N_Tier.API;
+using N_Tier.Api.IntegrationTests.Common;
+using N_Tier.Api.IntegrationTests.Common.Constants;
 using N_Tier.Api.IntegrationTests.Helpers;
 using N_Tier.Application.Models;
 using N_Tier.Application.Models.TodoItem;
 using N_Tier.Core.Entities;
 using N_Tier.DataAccess.Persistence;
 using Newtonsoft.Json;
-using NUnit.Framework;
+using Xunit;
 
 namespace N_Tier.Api.IntegrationTests.Tests;
 
-[TestFixture]
-public class TodoItemEndpointTests : BaseOneTimeSetup
+public class TodoItemEndpointTests
 {
-    [Test]
+    private readonly ApiApplicationFactory<Program> _factory;
+
+    public TodoItemEndpointTests()
+    {
+        _factory = new ApiApplicationFactory<Program>();
+    }
+
+    [Fact]
     public async Task Create_Should_Add_TodoItem_In_Database()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var user = await context.Users.Where(u => u.Email == UserConstants.DefaultUserDb.Email).FirstOrDefaultAsync();
 
@@ -41,7 +48,7 @@ public class TodoItemEndpointTests : BaseOneTimeSetup
             .With(cti => cti.TodoListId = todoListFromDatabase.Id).Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/todoItems", new JsonContent(createTodoItemModel));
+        var apiResponse = await client.PostAsync("/api/todoItems", new JsonContent(createTodoItemModel));
 
         // Assert
         var response =
@@ -55,17 +62,17 @@ public class TodoItemEndpointTests : BaseOneTimeSetup
         todoItemFromDatabase.List.Id.Should().Be(todoListFromDatabase.Id);
     }
 
-    [Test]
+    [Fact]
     public async Task Create_Should_Return_Not_Found_If_Todo_List_Does_Not_Exist_Anymore()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
 
         var createTodoItemModel = Builder<CreateTodoItemModel>.CreateNew().With(cti => cti.TodoListId = Guid.NewGuid())
             .Build();
 
         // Act
-        var apiResponse = await Client.PostAsync("/api/todoItems", new JsonContent(createTodoItemModel));
+        var apiResponse = await client.PostAsync("/api/todoItems", new JsonContent(createTodoItemModel));
 
         // Assert
         var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
@@ -73,37 +80,38 @@ public class TodoItemEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task Update_Should_Update_Todo_Item_From_Database()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
-
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
+    
         var user = await context.Users.Where(u => u.Email == UserConstants.DefaultUserDb.Email).FirstOrDefaultAsync();
-
+    
         var todoListFromDatabase = Builder<TodoList>.CreateNew().With(tl => tl.Id = Guid.NewGuid())
             .With(tl => tl.CreatedBy = user.Id).Build();
-
+    
         var todoItemFromDatabase = Builder<TodoItem>.CreateNew().With(ti => ti.Id = Guid.NewGuid())
             .With(ti => ti.CreatedBy = user.Id).Build();
-
+    
         todoListFromDatabase.Items.Add(todoItemFromDatabase);
-
+    
         await context.TodoLists.AddAsync(todoListFromDatabase);
-
+    
         await context.SaveChangesAsync();
-
+    
         var updateTodoItemModel = Builder<UpdateTodoItemModel>.CreateNew()
             .With(cti => cti.TodoListId = todoListFromDatabase.Id)
             .With(cti => cti.Title = "UpdateTodoItemTitle")
             .With(cti => cti.Body = "UpdateTodoItemBody").Build();
-
+    
         // Act
-        var apiResponse = await Client.PutAsync($"/api/todoItems/{todoItemFromDatabase.Id}",
+        var apiResponse = await client.PutAsync($"/api/todoItems/{todoItemFromDatabase.Id}",
             new JsonContent(updateTodoItemModel));
-
+    
         // Assert
-        context = (await GetNewHostAsync()).Services.GetRequiredService<DatabaseContext>();
+        context = _factory.GetRequiredService<DatabaseContext>();
         var response =
             JsonConvert.DeserializeObject<ApiResult<CreateTodoItemResponseModel>>(
                 await apiResponse.Content.ReadAsStringAsync());
@@ -115,15 +123,16 @@ public class TodoItemEndpointTests : BaseOneTimeSetup
         modifiedTodoItemFromDatabase.Body.Should().Be(updateTodoItemModel.Body);
     }
 
-    [Test]
+    [Fact]
     public async Task Update_Should_Return_NotFound_If_Todo_List_Does_Not_Exist_Anymore()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
         var updateTodoItemModel = Builder<UpdateTodoItemModel>.CreateNew().Build();
 
         // Act
         var apiResponse =
-            await Client.PutAsync($"/api/todoItems/{Guid.NewGuid()}", new JsonContent(updateTodoItemModel));
+            await client.PutAsync($"/api/todoItems/{Guid.NewGuid()}", new JsonContent(updateTodoItemModel));
 
         // Assert
         var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
@@ -131,11 +140,12 @@ public class TodoItemEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task Update_Should_Return_NotFound_If_Todo_Item_Does_Not_Exist_Anymore()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var user = await context.Users.Where(u => u.Email == UserConstants.DefaultUserDb.Email).FirstOrDefaultAsync();
 
@@ -151,7 +161,7 @@ public class TodoItemEndpointTests : BaseOneTimeSetup
 
         // Act
         var apiResponse =
-            await Client.PutAsync($"/api/todoItems/{Guid.NewGuid()}", new JsonContent(updateTodoItemModel));
+            await client.PutAsync($"/api/todoItems/{Guid.NewGuid()}", new JsonContent(updateTodoItemModel));
 
         // Assert
         var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
@@ -159,11 +169,12 @@ public class TodoItemEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task Delete_Should_Delete_Todo_Item_From_Database()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var user = await context.Users.Where(u => u.Email == UserConstants.DefaultUserDb.Email).FirstOrDefaultAsync();
 
@@ -180,7 +191,7 @@ public class TodoItemEndpointTests : BaseOneTimeSetup
         await context.SaveChangesAsync();
 
         // Act
-        var apiResponse = await Client.DeleteAsync($"/api/todoItems/{todoItemFromDatabase.Id}");
+        var apiResponse = await client.DeleteAsync($"/api/todoItems/{todoItemFromDatabase.Id}");
 
         // Assert
         var response =
@@ -191,13 +202,14 @@ public class TodoItemEndpointTests : BaseOneTimeSetup
         deletedTodoListFromDatabase.Should().BeNull();
     }
 
-    [Test]
+    [Fact]
     public async Task Delete_Should_Return_NotFound_If_Item_Does_Not_Exist_Anymore()
     {
         // Arrange
+        var client = await _factory.CreateDefaultClientAsync();
 
         // Act
-        var apiResponse = await Client.DeleteAsync($"/api/todoItems/{Guid.NewGuid()}");
+        var apiResponse = await client.DeleteAsync($"/api/todoItems/{Guid.NewGuid()}");
 
         // Assert
         var response = JsonConvert.DeserializeObject<ApiResult<string>>(await apiResponse.Content.ReadAsStringAsync());
@@ -205,11 +217,12 @@ public class TodoItemEndpointTests : BaseOneTimeSetup
         CheckResponse.Failure(response);
     }
 
-    [Test]
+    [Fact]
     public async Task GetAllByListId_Should_Return_All_Todo_Items_From_Specific_List()
     {
         // Arrange
-        var context = Host.Services.GetRequiredService<DatabaseContext>();
+        var client = await _factory.CreateDefaultClientAsync();
+        var context = _factory.GetRequiredService<DatabaseContext>();
 
         var user = await context.Users.Where(u => u.Email == UserConstants.DefaultUserDb.Email).FirstOrDefaultAsync();
 
@@ -234,7 +247,7 @@ public class TodoItemEndpointTests : BaseOneTimeSetup
         await context.SaveChangesAsync();
 
         // Act
-        var apiResponse = await Client.GetAsync($"/api/todoLists/{todoListFromDatabase.Id}/todoItems");
+        var apiResponse = await client.GetAsync($"/api/todoLists/{todoListFromDatabase.Id}/todoItems");
 
         // Assert
         var response =
