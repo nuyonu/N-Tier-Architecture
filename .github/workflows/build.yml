@@ -1,0 +1,31 @@
+name: Build and Analyze with SonarCloud
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: windows-latest
+        
+        env:
+            DOTNET_VERSION: '9.0.x'
+        
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Setup .NET ${{ env.DOTNET_VERSION }}
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: ${{ env.DOTNET_VERSION }}
+
+            - name: Restore dependencies
+              run: dotnet restore
+
+            - name: Build solution
+              run: dotnet build --no-restore
+
+            - name: Test with code coverage
+              run: dotnet test --no-build --collect:"Code Coverage"
