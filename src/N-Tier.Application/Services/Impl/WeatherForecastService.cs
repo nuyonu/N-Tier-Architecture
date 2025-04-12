@@ -5,13 +5,7 @@ namespace N_Tier.Application.Services.Impl;
 
 public class WeatherForecastService : IWeatherForecastService
 {
-    private readonly List<string> _summaries;
-
-    public WeatherForecastService()
-    {
-        _summaries = new List<string>
-            { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-    }
+    private readonly List<string> _summaries = new() { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
 
     public async Task<IEnumerable<WeatherForecastResponseModel>> GetAsync()
     {

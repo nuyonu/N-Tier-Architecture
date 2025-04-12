@@ -28,7 +28,7 @@ public class ApiApplicationFactory<TProgram> : WebApplicationFactory<TProgram> w
                 new Dictionary<string, string>
                 {
                     ["Database:UseInMemoryDatabase"] = "true",
-                    ["JwtConfiguration:SecretKey"] = "Super secret token key",
+                    ["JwtConfiguration:SecretKey"] = "tI079UygByXy52J552Xb4odrUjYXjrPBDuK6FhFv6Qa6eD6SZG",
                     ["SmtpSettings:Server"] = "",
                     ["SmtpSettings:Port"] = "548",
                     ["SmtpSettings:SenderName"] = "",

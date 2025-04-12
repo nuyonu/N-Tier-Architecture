@@ -4,15 +4,8 @@ using N_Tier.Application.Common.Email;
 
 namespace N_Tier.Application.Services.Impl;
 
-public class EmailService : IEmailService
+public class EmailService(SmtpSettings smtpSettings) : IEmailService
 {
-    private readonly SmtpSettings _smtpSettings;
-
-    public EmailService(SmtpSettings smtpSettings)
-    {
-        _smtpSettings = smtpSettings;
-    }
-
     public async Task SendEmailAsync(EmailMessage emailMessage)
     {
         await SendAsync(CreateEmail(emailMessage));
@@ -24,9 +17,9 @@ public class EmailService : IEmailService
 
         try
         {
-            await client.ConnectAsync(_smtpSettings.Server, _smtpSettings.Port, true);
+            await client.ConnectAsync(smtpSettings.Server, smtpSettings.Port, true);
             client.AuthenticationMechanisms.Remove("XOAUTH2");
-            await client.AuthenticateAsync(_smtpSettings.Username, _smtpSettings.Password);
+            await client.AuthenticateAsync(smtpSettings.Username, smtpSettings.Password);
 
             await client.SendAsync(message);
         }
@@ -53,7 +46,7 @@ public class EmailService : IEmailService
             Body = builder.ToMessageBody()
         };
 
-        email.From.Add(new MailboxAddress(_smtpSettings.SenderName, _smtpSettings.SenderEmail));
+        email.From.Add(new MailboxAddress(smtpSettings.SenderName, smtpSettings.SenderEmail));
         email.To.Add(new MailboxAddress(emailMessage.ToAddress.Split("@")[0], emailMessage.ToAddress));
 
         return email;

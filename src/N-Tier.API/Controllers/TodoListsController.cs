@@ -8,47 +8,38 @@ using N_Tier.Application.Services;
 namespace N_Tier.API.Controllers;
 
 [Authorize]
-public class TodoListsController : ApiController
+public class TodoListsController(ITodoListService todoListService, ITodoItemService todoItemService) : ApiController
 {
-    private readonly ITodoItemService _todoItemService;
-    private readonly ITodoListService _todoListService;
-
-    public TodoListsController(ITodoListService todoListService, ITodoItemService todoItemService)
-    {
-        _todoListService = todoListService;
-        _todoItemService = todoItemService;
-    }
-
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(ApiResult<IEnumerable<TodoListResponseModel>>.Success(await _todoListService.GetAllAsync()));
+        return Ok(ApiResult<IEnumerable<TodoListResponseModel>>.Success(await todoListService.GetAllAsync()));
     }
 
     [HttpGet("{id:guid}/todoItems")]
     public async Task<IActionResult> GetAllTodoItemsAsync(Guid id)
     {
         return Ok(ApiResult<IEnumerable<TodoItemResponseModel>>.Success(
-            await _todoItemService.GetAllByListIdAsync(id)));
+            await todoItemService.GetAllByListIdAsync(id)));
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateAsync(CreateTodoListModel createTodoListModel)
     {
         return Ok(ApiResult<CreateTodoListResponseModel>.Success(
-            await _todoListService.CreateAsync(createTodoListModel)));
+            await todoListService.CreateAsync(createTodoListModel)));
     }
 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateAsync(Guid id, UpdateTodoListModel updateTodoListModel)
     {
         return Ok(ApiResult<UpdateTodoListResponseModel>.Success(
-            await _todoListService.UpdateAsync(id, updateTodoListModel)));
+            await todoListService.UpdateAsync(id, updateTodoListModel)));
     }
 
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteAsync(Guid id)
     {
-        return Ok(ApiResult<BaseResponseModel>.Success(await _todoListService.DeleteAsync(id)));
+        return Ok(ApiResult<BaseResponseModel>.Success(await todoListService.DeleteAsync(id)));
     }
 }

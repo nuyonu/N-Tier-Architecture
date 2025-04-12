@@ -21,12 +21,7 @@ namespace N_Tier.Api.IntegrationTests.Tests;
 
 public class TodoItemEndpointTests
 {
-    private readonly ApiApplicationFactory<Program> _factory;
-
-    public TodoItemEndpointTests()
-    {
-        _factory = new ApiApplicationFactory<Program>();
-    }
+    private readonly ApiApplicationFactory<Program> _factory = new();
 
     [Fact]
     public async Task Create_Should_Add_TodoItem_In_Database()

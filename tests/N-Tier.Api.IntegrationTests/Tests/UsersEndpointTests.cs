@@ -19,12 +19,7 @@ namespace N_Tier.Api.IntegrationTests.Tests;
 
 public class UsersEndpointTests
 {
-    private readonly ApiApplicationFactory<Program> _factory;
-
-    public UsersEndpointTests()
-    {
-        _factory = new ApiApplicationFactory<Program>();
-    }
+    private readonly ApiApplicationFactory<Program> _factory = new();
 
     [Fact]
     public async Task Create_User_Should_Add_User_To_Database()
@@ -35,7 +30,7 @@ public class UsersEndpointTests
 
         var createModel = Builder<CreateUserModel>.CreateNew()
             .With(cu => cu.Email = "IntegrationTest@gmail.com")
-            .With(cu => cu.Username = "IntegrationTest")
+            .With(cu => cu.UserName = "IntegrationTest")
             .With(cu => cu.Password = "Password.1!")
             .Build();
 
@@ -74,7 +69,7 @@ public class UsersEndpointTests
         var client = await _factory.CreateDefaultClientAsync();
         var createModel = Builder<CreateUserModel>.CreateNew()
             .With(cu => cu.Email = "nuyonu@gmail.com")
-            .With(cu => cu.Username = "Len")
+            .With(cu => cu.UserName = "Len")
             .With(cu => cu.Password = "Password.1!")
             .Build();
 

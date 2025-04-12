@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using AutoMapper;
+using Mapster;
+using MapsterMapper;
 using Microsoft.Extensions.Configuration;
 using N_Tier.Application.MappingProfiles;
 using N_Tier.DataAccess.Repositories;
@@ -19,11 +20,16 @@ public class BaseServiceTestConfiguration
 
     protected BaseServiceTestConfiguration()
     {
-        Mapper = new MapperConfiguration(cfg => { cfg.AddMaps(typeof(TodoItemProfile)); }).CreateMapper();
+        var config = new TypeAdapterConfig();
+        
+        config.Scan(typeof(IMappingProfilesMarker).Assembly);
+        
+        // Mapper = new MapperConfiguration(cfg => { cfg.AddMaps(typeof(TodoItemProfile)); }).CreateMapper();
+        Mapper = new Mapper(config);
 
         var configurationBody = new Dictionary<string, string>
         {
-            { "JwtConfiguration:SecretKey", "Super secret token key" }
+            { "JwtConfiguration:SecretKey", "tI079UygByXy52J552Xb4odrUjYXjrPBDuK6FhFv6Qa6eD6SZG" }
         };
 
         Configuration = new ConfigurationBuilder()
@@ -34,6 +40,6 @@ public class BaseServiceTestConfiguration
         TodoItemRepository = Substitute.For<ITodoItemRepository>();
 
         ClaimService = Substitute.For<IClaimService>();
-        ClaimService.GetUserId().Returns(new Guid().ToString());
+        ClaimService.GetUserId().Returns(Guid.Empty.ToString());
     }
 }
