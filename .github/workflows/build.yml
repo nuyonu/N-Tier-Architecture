@@ -1,4 +1,4 @@
-name: Build and Analyze with SonarCloud
+name: Build
 
 on:
     push:
