@@ -3,7 +3,7 @@
 ![Build Status](https://dev.azure.com/nuyonu/N-Tier-Architecture/_apis/build/status/nuyonu.N-Tier-Architecture?branchName=master) 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nuyonu_N-Tier-Architecture&metric=alert_status)](https://sonarcloud.io/dashboard?id=nuyonu_N-Tier-Architecture)
 ![](https://camo.githubusercontent.com/deab10366c6377e3d4cc454a26f96225e2cc196214b129b95c9d5284207b64d7/68747470733a2f2f696d672e736869656c64732e696f2f7374617469632f76313f6c6162656c3d254630253946253843253946266d6573736167653d496625323055736566756c267374796c653d7374796c653d666c617426636f6c6f723d424334453939)
-![](https://visitor-badge.glitch.me/badge?page_id=nuyonu/N-Tier-Architecture)
+![](https://api.visitorbadge.io/api/VisitorHit?user=nuyonu&repo=N-Tier-Architecture&countColor=%237B1E7A)
 
 This is a n-layer architecture based on [Common web application architectures][common-web-architectures]. The technologies used can be found below. It will be updated to the latest versions, depending on how stable they will be.
 
@@ -28,17 +28,17 @@ This is a n-layer architecture based on [Common web application architectures][c
 ---
 
 ## Technologies
-- .NET 7
-- ASP.NET Core 7
+- .NET 9
+- ASP.NET Core 9
 - Swagger (Documentation)
 - Entity Framework Core (SQL Server)
 - ASP.NET Core Identity (SQL Server)
-- AutoMapper
-- FluentValidation
-- NUnit (Integration tests)
-- XUnit (Unit tests)
-- FluentAssertion (Testing projects)
-- NBuilder (Testing projects)
+- [Mapster](https://github.com/MapsterMapper/Mapster)
+- [FluentValidation](https://docs.fluentvalidation.net/en/latest/)
+- [NUnit (Integration tests)](https://nunit.org/)
+- [XUnit (Unit tests)](https://xunit.net/)
+- [FluentAssertion (Testing projects)](https://fluentassertions.com/)
+- [NBuilder (Testing projects)](https://github.com/nbuilder/nbuilder)
 
 ---
 

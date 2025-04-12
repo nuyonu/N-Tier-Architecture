@@ -1,7 +1,6 @@
 #Build and run SonarCloud
-
 trigger:
-- master
+- main
 
 pool:
   vmImage: 'windows-latest'
@@ -13,9 +12,9 @@ variables:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET 7'
+  displayName: 'Use .NET 9'
   inputs:
-    version: '7.0.x'
+    version: '9.0.x'
     performMultiLevelLookup: true
 - task: DotNetCoreCLI@2
   displayName: 'Restore solution'

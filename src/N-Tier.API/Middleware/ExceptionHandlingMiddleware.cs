@@ -5,22 +5,13 @@ using Newtonsoft.Json;
 
 namespace N_Tier.API.Middleware;
 
-public class ExceptionHandlingMiddleware
+public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
 {
-    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
-    private readonly RequestDelegate _next;
-
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
-    {
-        _next = next;
-        _logger = logger;
-    }
-
     public async Task Invoke(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception ex)
         {
@@ -30,7 +21,7 @@ public class ExceptionHandlingMiddleware
 
     private Task HandleException(HttpContext context, Exception ex)
     {
-        _logger.LogError(ex.Message);
+        logger.LogError(ex.Message);
 
         var code = StatusCodes.Status500InternalServerError;
         var errors = new List<string> { ex.Message };

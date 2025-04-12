@@ -7,12 +7,7 @@ namespace N_Tier.Application.UnitTests.Services;
 
 public class TemplateServiceTests
 {
-    private readonly TemplateService _sut;
-
-    public TemplateServiceTests()
-    {
-        _sut = new TemplateService();
-    }
+    private readonly TemplateService _sut = new();
 
     [Fact]
     public void ReplaceInTemplate_Should_Replace_All_Words_From_Input()

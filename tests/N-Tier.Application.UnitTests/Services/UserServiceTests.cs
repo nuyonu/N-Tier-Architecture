@@ -6,7 +6,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using MockQueryable.NSubstitute;
+using MockQueryable;
 using N_Tier.Application.Common.Email;
 using N_Tier.Application.Exceptions;
 using N_Tier.Application.Models.User;

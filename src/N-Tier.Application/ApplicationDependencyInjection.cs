@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Mapster;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,7 +19,7 @@ public static class ApplicationDependencyInjection
     {
         services.AddServices(env);
 
-        services.RegisterAutoMapper();
+        services.RegisterMapper();
 
         return services;
     }
@@ -38,9 +39,9 @@ public static class ApplicationDependencyInjection
             services.AddScoped<IEmailService, EmailService>();
     }
 
-    private static void RegisterAutoMapper(this IServiceCollection services)
+    private static void RegisterMapper(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(IMappingProfilesMarker));
+        services.AddMapster();
     }
 
     public static void AddEmailConfiguration(this IServiceCollection services, IConfiguration configuration)

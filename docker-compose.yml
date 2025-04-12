@@ -2,19 +2,20 @@ version: "3.9"
 
 services:
     n-tier-api:
+        container_name: n-tier-api
         build:
             context: .
             dockerfile: Dockerfile
         ports:
             - "8080:80"
         depends_on:
-            - dockerDB
+            - n-tier-sqlserver
 
-    dockerDB:
+    n-tier-sqlserver:
+        container_name: n-tier-sqlserver
         image: "mcr.microsoft.com/mssql/server:2022-latest"
         ports:
             - "1433:1433"
-
         environment:
             SA_PASSWORD: "S3cur3P@ssW0rd!"
             ACCEPT_EULA: "Y"

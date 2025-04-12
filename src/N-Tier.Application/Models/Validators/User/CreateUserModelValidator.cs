@@ -13,7 +13,7 @@ public class CreateUserModelValidator : AbstractValidator<CreateUserModel>
     {
         _userManager = userManager;
 
-        RuleFor(u => u.Username)
+        RuleFor(u => u.UserName)
             .MinimumLength(UserValidatorConfiguration.MinimumUsernameLength)
             .WithMessage($"Username should have minimum {UserValidatorConfiguration.MinimumUsernameLength} characters")
             .MaximumLength(UserValidatorConfiguration.MaximumUsernameLength)
